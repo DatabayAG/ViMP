@@ -308,7 +308,7 @@ class xvmpMedium extends xvmpObject
             }
             return false;
         } else {
-            throw new xvmpException((string) xvmpException::INTERNAL_ERROR,
+            throw new xvmpException(xvmpException::INTERNAL_ERROR,
                 '$video must be of type array or xvmpMedium: ' . print_r($video, true));
         }
     }
