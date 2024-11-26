@@ -95,7 +95,8 @@ class xvmpEventLogTableGUI extends xvmpTableGUI
                         $this->tpl->setCurrentBlock('block_object_title');
                         $this->tpl->setVariable('VAL_OBJECT_TITLE', ilObject2::_lookupTitle((int) $value));
 
-                        $this->ctrl->setParameterByClass(ilObjViMPGUI::class, 'ref_id', array_shift(ilObject2::_getAllReferences((int) $value)));
+                        $ref_ids = ilObject2::_getAllReferences((int) $value);
+                        $this->ctrl->setParameterByClass(ilObjViMPGUI::class, 'ref_id', array_shift($ref_ids));
                         $link = $this->ctrl->getLinkTargetByClass(array(ilObjPluginDispatchGUI::class, ilObjViMPGUI::class), ilObjViMPGUI::CMD_SHOW_CONTENT);
                         $this->tpl->setVariable('VAL_OBJECT_LINK', $link);
 

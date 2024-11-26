@@ -14,11 +14,8 @@ class xvmpEditVideoFormGUI extends xvmpVideoFormGUI
     /**
      * @var xvmpOwnVideosGUI | ilVimpPageComponentPluginGUI
      */
-    protected $parent_gui;
-    /**
-     * @var array
-     */
-    protected $medium;
+    protected ilViMPConfigGUI $parent_gui;
+    protected array $medium;
 
 
     /**
@@ -38,7 +35,7 @@ class xvmpEditVideoFormGUI extends xvmpVideoFormGUI
 
 
 
-    protected function initForm()
+    protected function initForm() : void
     {
         $this->addHiddenIdInput();
 
@@ -66,7 +63,7 @@ class xvmpEditVideoFormGUI extends xvmpVideoFormGUI
         }
     }
 
-    public function fillForm()
+    public function fillForm() : void
     {
         $array = $this->medium;
         $array[xvmpMedium::F_CATEGORIES] = array_keys($this->medium[xvmpMedium::F_CATEGORIES]);
@@ -107,7 +104,7 @@ class xvmpEditVideoFormGUI extends xvmpVideoFormGUI
         return (int) $this->data['mid'];
     }
 
-    protected function addCommandButtons()
+    protected function addCommandButtons() : void
     {
         if ($this->parent_gui instanceof xvmpOwnVideosGUI) {
             $this->addCommandButton(xvmpOwnVideosGUI::CMD_UPDATE_VIDEO, $this->lng->txt('save'));

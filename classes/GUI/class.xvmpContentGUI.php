@@ -24,11 +24,7 @@ class xvmpContentGUI extends xvmpGUI
     public const CMD_PLAY_VIDEO = 'playVideo';
     public const GET_TEMPLATE = 'tpl';
 
-
-    /**
-     *
-     */
-    protected function index($play_video_id = null)
+    protected function index($play_video_id = null) : void
     {
         /** @var xvmpSettings $settings */
         $settings = xvmpSettings::find($this->getObjId());
@@ -66,7 +62,7 @@ class xvmpContentGUI extends xvmpGUI
     }
 
 
-    protected function performCommand($cmd)
+    protected function performCommand($cmd) : void
     {
         switch ($cmd) {
             case self::CMD_RENDER_LIST_ITEM:
@@ -88,7 +84,7 @@ class xvmpContentGUI extends xvmpGUI
     /**
      * used for goto link
      */
-    public function playVideo()
+    public function playVideo() : void
     {
         $mid = filter_input(INPUT_GET, ilObjViMPGUI::GET_VIDEO_ID, FILTER_SANITIZE_NUMBER_INT);
         $play_video_id = xvmpMedium::find($mid)->isTranscoded() ? $mid : null;

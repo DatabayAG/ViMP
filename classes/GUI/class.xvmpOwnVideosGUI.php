@@ -28,7 +28,7 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
     public const CMD_UPLOAD_CHUNKS = 'uploadChunks';
 
 
-    protected function performCommand($cmd)
+    protected function performCommand($cmd) : void
     {
         switch ($cmd) {
             case self::CMD_EDIT_VIDEO:
@@ -68,7 +68,7 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
      *
      * @throws ilCtrlException
      */
-    public function editVideo()
+    public function editVideo() : void
     {
         $mid = $_GET['mid'];
         $xvmpEditVideoFormGUI = new xvmpEditVideoFormGUI($this, $mid);
@@ -82,7 +82,7 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
      * @throws ilCtrlException
      * @throws xvmpException
      */
-    public function changeOwner()
+    public function changeOwner() : void
     {
         $mid = filter_input(INPUT_GET, 'mid');
         $login = filter_input(INPUT_POST, 'login');
@@ -113,7 +113,7 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
     /**
      *
      */
-    public function confirmedChangeOwner()
+    public function confirmedChangeOwner() : void
     {
         $mid = (int) filter_input(INPUT_POST, 'mid');
         $login = filter_input(INPUT_POST, 'login');
@@ -180,7 +180,7 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
     /**
      *
      */
-    public function updateVideo()
+    public function updateVideo() : void
     {
         $xvmpEditVideoFormGUI = new xvmpEditVideoFormGUI($this, $_POST['mid']);
         $xvmpEditVideoFormGUI->setValuesByPost();
@@ -195,7 +195,7 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
     /**
      *
      */
-    public function uploadVideoForm()
+    public function uploadVideoForm() : void
     {
         $xvmpUploadVideoFormGUI = new xvmpUploadVideoFormGUI($this);
         $xvmpUploadVideoFormGUI->fillForm();
@@ -206,7 +206,7 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
     /**
      *
      */
-    public function create()
+    public function create() : void
     {
         $xvmpEditVideoFormGUI = new xvmpUploadVideoFormGUI($this);
         $xvmpEditVideoFormGUI->setValuesByPost();
@@ -224,7 +224,7 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
     /**
      *
      */
-    public function deleteVideo()
+    public function deleteVideo() : void
     {
         $mid = $_GET['mid'];
         $video = xvmpMedium::find($mid);
@@ -241,7 +241,7 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
     /**
      *
      */
-    public function confirmedDeleteVideo()
+    public function confirmedDeleteVideo() : void
     {
         $mid = (int) $_POST['mid'];
 
@@ -260,7 +260,7 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
     /**
      *
      */
-    protected function uploadChunks()
+    protected function uploadChunks() : void
     {
         $xoctPlupload = new xoctPlupload();
         $tmp_id = filter_input(INPUT_GET, 'tmp_id', FILTER_SANITIZE_STRING);

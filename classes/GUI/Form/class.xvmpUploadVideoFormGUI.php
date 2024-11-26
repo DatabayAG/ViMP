@@ -25,7 +25,7 @@ class xvmpUploadVideoFormGUI extends xvmpVideoFormGUI
     /**
      * @var xvmpOwnVideosGUI
      */
-    protected $parent_gui;
+    protected ilViMPConfigGUI $parent_gui;
     /**
      * @var ?ilObjUser
      */
@@ -56,7 +56,7 @@ class xvmpUploadVideoFormGUI extends xvmpVideoFormGUI
      *
      * @throws ilCtrlException
      */
-    protected function initForm()
+    protected function initForm() : void
     {
         $this->setFormAction($this->ctrl->getFormAction($this->parent_gui));
 
@@ -96,7 +96,7 @@ class xvmpUploadVideoFormGUI extends xvmpVideoFormGUI
     }
 
 
-    protected function addCustomInputs()
+    protected function addCustomInputs() : void
     {
         foreach (xvmpConf::getConfig(xvmpConf::F_FORM_FIELDS) as $field) {
             if (!$field[xvmpConf::F_FORM_FIELD_ID]) {
@@ -144,7 +144,7 @@ class xvmpUploadVideoFormGUI extends xvmpVideoFormGUI
         return $this->data['mid'];
     }
 
-    protected function fillVideoByPost()
+    protected function fillVideoByPost() : void
     {
         parent::fillVideoByPost();
         if (!xvmp::isAllowedToSetPublic()) {
@@ -160,7 +160,7 @@ class xvmpUploadVideoFormGUI extends xvmpVideoFormGUI
         $this->data['uid'] = xvmpUser::getOrCreateVimpUser($this->user)->getUid();
     }
 
-    public function fillForm()
+    public function fillForm() : void
     {
         $array = array();
         if (in_array(
@@ -181,7 +181,7 @@ class xvmpUploadVideoFormGUI extends xvmpVideoFormGUI
     /**
      *
      */
-    protected function addCommandButtons()
+    protected function addCommandButtons() : void
     {
         $this->addCommandButton(xvmpOwnVideosGUI::CMD_CREATE, $this->lng->txt('save'));
         $this->addCommandButton(xvmpGUI::CMD_CANCEL, $this->lng->txt(xvmpGUI::CMD_CANCEL));

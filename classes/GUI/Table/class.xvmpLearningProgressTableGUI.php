@@ -56,7 +56,7 @@ class xvmpLearningProgressTableGUI extends xvmpTableGUI
     /**
      * xvmpSelectedVideosTableGUI constructor.
      *
-     * @param int $parent_gui
+     * @param $parent_gui
      * @param string $parent_cmd
      * @throws ilCtrlException|xvmpException
      * @throws xvmpException
@@ -68,7 +68,6 @@ class xvmpLearningProgressTableGUI extends xvmpTableGUI
         $this->setTitle($this->pl->txt('selected_videos'));
         $this->setExternalSorting(true);
         $this->setEnableNumInfo(false);
-        $this->setLimit(0);
         $this->setShowRowsSelector(false);
 
         $base_link = $this->ctrl->getLinkTarget($this->parent_obj, '', '', true);
@@ -80,7 +79,7 @@ class xvmpLearningProgressTableGUI extends xvmpTableGUI
         $this->addCommandButton(xvmpLearningProgressGUI::CMD_SAVE, $this->pl->txt('save_settings'));
     }
 
-    protected function initColumns()
+    protected function initColumns() : void
     {
 
         $this->addColumn('', '', "210", true);
@@ -92,7 +91,7 @@ class xvmpLearningProgressTableGUI extends xvmpTableGUI
     /**
      * @throws xvmpException
      */
-    public function parseData()
+    public function parseData() : void
     {
         $this->setData(xvmpMedium::getAvailableForLP($this->parent_obj->getObjId()));
     }

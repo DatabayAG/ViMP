@@ -135,7 +135,7 @@ class xvmpCurlError
     /**
      * @param int $error_nr
      */
-    public function setErrorNr(int $error_nr)
+    public function setErrorNr(int $error_nr) : void
     {
         $this->error_nr = $error_nr;
     }
@@ -153,7 +153,7 @@ class xvmpCurlError
     /**
      * @param string $error_text
      */
-    public function setErrorText(string $error_text)
+    public function setErrorText(string $error_text) : void
     {
         $this->error_text = $error_text;
     }

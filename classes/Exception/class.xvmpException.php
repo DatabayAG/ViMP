@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpStrictTypeCheckingInspection */
 
 declare(strict_types=1);
 
@@ -40,7 +40,7 @@ class xvmpException extends Exception
      * @param string $code
      * @param string $additional_message
      */
-    public function __construct($code, $additional_message = '')
+    public function __construct(string $code, $additional_message = '')
     {
         $message = ilViMPPlugin::getInstance()->txt("exception_message");
         if ($additional_message) {

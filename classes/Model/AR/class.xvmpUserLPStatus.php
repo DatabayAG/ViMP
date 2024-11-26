@@ -100,7 +100,7 @@ class xvmpUserLPStatus extends ActiveRecord
     /**
      * @param int $id
      */
-    public function setId(int $id)
+    public function setId(int $id) : void
     {
         $this->id = $id;
     }
@@ -118,7 +118,7 @@ class xvmpUserLPStatus extends ActiveRecord
     /**
      * @param int $obj_id
      */
-    public function setObjId(int $obj_id)
+    public function setObjId(int $obj_id) : void
     {
         $this->obj_id = $obj_id;
     }
@@ -136,7 +136,7 @@ class xvmpUserLPStatus extends ActiveRecord
     /**
      * @param int $user_id
      */
-    public function setUserId(int $user_id)
+    public function setUserId(int $user_id) : void
     {
         $this->user_id = $user_id;
     }
@@ -154,7 +154,7 @@ class xvmpUserLPStatus extends ActiveRecord
     /**
      * @param string $created_at
      */
-    public function setCreatedAt(string $created_at)
+    public function setCreatedAt(string $created_at) : void
     {
         $this->created_at = $created_at;
     }
@@ -172,7 +172,7 @@ class xvmpUserLPStatus extends ActiveRecord
     /**
      * @param string $updated_at
      */
-    public function setUpdatedAt(string $updated_at)
+    public function setUpdatedAt(string $updated_at) : void
     {
         $this->updated_at = $updated_at;
     }
@@ -190,7 +190,7 @@ class xvmpUserLPStatus extends ActiveRecord
     /**
      * @param int $status
      */
-    public function setStatus(int $status)
+    public function setStatus(int $status) : void
     {
         if ($status != $this->status) {
             $this->old_status = $this->status;
@@ -212,7 +212,7 @@ class xvmpUserLPStatus extends ActiveRecord
     /**
      * @param bool $status_changed
      */
-    public function setStatusChanged(bool $status_changed)
+    public function setStatusChanged(bool $status_changed) : void
     {
         $this->status_changed = $status_changed;
     }
@@ -230,7 +230,7 @@ class xvmpUserLPStatus extends ActiveRecord
     /**
      * @param int $old_status
      */
-    public function setOldStatus(int $old_status)
+    public function setOldStatus(int $old_status) : void
     {
         $this->old_status = $old_status;
     }
@@ -265,7 +265,7 @@ class xvmpUserLPStatus extends ActiveRecord
      *
      * @return ActiveRecord|xvmpUserLPStatus
      */
-    public static function getInstance(int $user_id, int $obj_id)
+    public static function getInstance(int $user_id, int $obj_id) : xvmpUserLPStatus|ActiveRecord
     {
         $xvmpUserLPStatus = xvmpUserLPStatus::where(array('user_id' => $user_id, 'obj_id' => $obj_id))->first();
         if (!$xvmpUserLPStatus) {
@@ -280,7 +280,7 @@ class xvmpUserLPStatus extends ActiveRecord
     /**
      *
      */
-    public function updateStatus()
+    public function updateStatus() : void
     {
         $progress = false;
         $complete = true;
@@ -310,7 +310,7 @@ class xvmpUserLPStatus extends ActiveRecord
      * @param bool $is_ref_id
      * @param int $user_id
      */
-    public static function updateLPStatuses(int $id = 0, bool $is_ref_id = true, int $user_id = 0)
+    public static function updateLPStatuses(int $id = 0, bool $is_ref_id = true, int $user_id = 0) : void
     {
         if (!$id) {
             $id = (int) $_GET['ref_id'];

@@ -83,7 +83,7 @@ abstract class xvmpTableGUI extends ilTable2GUI
     public function initFilter(): void
     {
         foreach ($this->available_filters as $title => $props) {
-            $filter_item = new $props['input_gui']($this->pl->txt($title), $props['post_var'] ? $props['post_var'] : $title);
+            $filter_item = new $props['input_gui']($this->pl->txt($title), $props['post_var'] ?: $title);
             $this->addAndReadFilterItem($filter_item);
         }
     }

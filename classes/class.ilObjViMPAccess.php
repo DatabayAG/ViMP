@@ -22,15 +22,14 @@ class ilObjViMPAccess extends ilObjectPluginAccess
     public const CONTEXT_PAGE_EDITOR = 'context_page_editor';
 
     /**
-     * @param string $a_cmd
-     * @param string $a_permission
-     * @param int $a_ref_id
-     * @param int|null $a_obj_id
-     * @param int $a_user_id
-     *
+     * @param string   $cmd
+     * @param string   $permission
+     * @param int      $ref_id
+     * @param int|null $obj_id
+     * @param int      $user_id
      * @return bool
      */
-    public function _checkAccess(string $a_cmd, string $a_permission, int $a_ref_id, int $a_obj_id = null, $a_user_id = ''): bool
+    public function _checkAccess(string $cmd, string $permission, int $ref_id, int $obj_id = null, $user_id = ''): bool
     {
         global $DIC;
         $ilUser = $DIC['ilUser'];
@@ -38,21 +37,21 @@ class ilObjViMPAccess extends ilObjectPluginAccess
         /**
          * @var $ilAccess ilAccessHandler
          */
-        if ($a_user_id == '') {
-            $a_user_id = $ilUser->getId();
+        if ($user_id == '') {
+            $user_id = $ilUser->getId();
         }
-        if ($a_obj_id === null) {
-            $a_obj_id = ilObject2::_lookupObjId($a_ref_id);
+        if ($obj_id === null) {
+            $obj_id = ilObject2::_lookupObjId($ref_id);
         }
 
-        switch ($a_permission) {
+        switch ($permission) {
             case 'read':
-                if (!self::checkOnline($a_obj_id) and !$ilAccess->checkAccessOfUser((int) $a_user_id, 'write', '', $a_ref_id)) {
+                if (!self::checkOnline($obj_id) and !$ilAccess->checkAccessOfUser((int) $user_id, 'write', '', $ref_id)) {
                     return false;
                 }
                 break;
             case 'visible':
-                if (!self::checkOnline($a_obj_id) and !$ilAccess->checkAccessOfUser($a_user_id, 'write', '', $a_ref_id)) {
+                if (!self::checkOnline($obj_id) and !$ilAccess->checkAccessOfUser($user_id, 'write', '', $ref_id)) {
                     return false;
                 }
                 break;
@@ -126,7 +125,7 @@ class ilObjViMPAccess extends ilObjectPluginAccess
      * @param xvmpGUI $GUI
      * @param xvmpMedium|NULL $medium
      */
-    public static function checkAction($action, xvmpGUI $GUI, xvmpMedium $medium = null)
+    public static function checkAction($action, xvmpGUI $GUI, xvmpMedium $medium = null) : void
     {
         if (ilObject2::_lookupType((int) $_GET['ref_id'], true) == 'xvmp') {
             $context = self::CONTEXT_OBJECT;

@@ -111,7 +111,7 @@ class xvmpEventLog extends ActiveRecord
     /**
      * @param int $id
      */
-    public function setId(int $id)
+    public function setId(int $id) : void
     {
         $this->id = $id;
     }
@@ -129,7 +129,7 @@ class xvmpEventLog extends ActiveRecord
     /**
      * @param String $login
      */
-    public function setLogin(string $login)
+    public function setLogin(string $login) : void
     {
         $this->login = $login;
     }
@@ -147,7 +147,7 @@ class xvmpEventLog extends ActiveRecord
     /**
      * @param int $action
      */
-    public function setAction(int $action)
+    public function setAction(int $action) : void
     {
         $this->action = $action;
     }
@@ -165,7 +165,7 @@ class xvmpEventLog extends ActiveRecord
     /**
      * @param int $obj_id
      */
-    public function setObjId(int $obj_id)
+    public function setObjId(int $obj_id) : void
     {
         $this->obj_id = $obj_id;
     }
@@ -183,7 +183,7 @@ class xvmpEventLog extends ActiveRecord
     /**
      * @param int $mid
      */
-    public function setMid(int $mid)
+    public function setMid(int $mid) : void
     {
         $this->mid = $mid;
     }
@@ -201,7 +201,7 @@ class xvmpEventLog extends ActiveRecord
     /**
      * @param String $title
      */
-    public function setTitle(?string $title)
+    public function setTitle(?string $title) : void
     {
         $this->title = $title;
     }
@@ -219,7 +219,7 @@ class xvmpEventLog extends ActiveRecord
     /**
      * @param array $data
      */
-    public function setData(array $data)
+    public function setData(array $data) : void
     {
         $this->data = $data;
     }
@@ -237,7 +237,7 @@ class xvmpEventLog extends ActiveRecord
     /**
      * @param int $timestamp
      */
-    public function setTimestamp(int $timestamp)
+    public function setTimestamp(int $timestamp) : void
     {
         $this->timestamp = $timestamp;
     }
@@ -288,7 +288,7 @@ class xvmpEventLog extends ActiveRecord
     }
 
 
-    public function sleep($field_name)
+    public function sleep($field_name) : bool|string|null
     {
         switch ($field_name) {
             case 'data':

@@ -33,7 +33,7 @@ class xvmpUploadFile
     /**
      * @return CURLFile
      */
-    public function getCURLFile()
+    public function getCURLFile() : CURLFile
     {
         $xvmpPlupload = new xvmpPlupload();
         $CURLFile = new CURLFile($xvmpPlupload->getTargetDir() . '/' . $this->getTitle());
@@ -76,7 +76,7 @@ class xvmpUploadFile
     /**
      * @param string $file_path
      */
-    public function setFilePath(string $file_path)
+    public function setFilePath(string $file_path) : void
     {
         $this->file_path = $file_path;
     }
@@ -94,7 +94,7 @@ class xvmpUploadFile
     /**
      * @param string $title
      */
-    public function setTitle(string $title)
+    public function setTitle(string $title) : void
     {
         $this->title = $title;
     }
@@ -112,7 +112,7 @@ class xvmpUploadFile
     /**
      * @param int $file_size
      */
-    public function setFileSize(int $file_size)
+    public function setFileSize(int $file_size) : void
     {
         $this->file_size = $file_size;
     }
@@ -130,7 +130,7 @@ class xvmpUploadFile
     /**
      * @param string $post_var
      */
-    public function setPostVar(string $post_var)
+    public function setPostVar(string $post_var) : void
     {
         $this->post_var = $post_var;
     }
@@ -148,7 +148,7 @@ class xvmpUploadFile
     /**
      * @param string $mime_type
      */
-    public function setMimeType(string $mime_type)
+    public function setMimeType(string $mime_type) : void
     {
         $this->mime_type = $mime_type;
     }

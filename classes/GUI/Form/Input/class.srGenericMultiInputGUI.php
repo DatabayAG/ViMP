@@ -73,7 +73,7 @@ class srGenericMultiInputGUI extends ilFormPropertyGUI
      *
      * @param mixed $limit
      */
-    public function setLimit($limit)
+    public function setLimit($limit) : void
     {
         $this->limit = $limit;
     }
@@ -91,7 +91,7 @@ class srGenericMultiInputGUI extends ilFormPropertyGUI
     /**
      * @param boolean $allow_empty_fields
      */
-    public function setAllowEmptyFields(bool $allow_empty_fields)
+    public function setAllowEmptyFields(bool $allow_empty_fields) : void
     {
         $this->allow_empty_fields = $allow_empty_fields;
     }
@@ -110,11 +110,7 @@ class srGenericMultiInputGUI extends ilFormPropertyGUI
         $this->setMulti(true);
     }
 
-
-    /**
-     * @return string
-     */
-    public function getHook($key)
+    public function getHook($key) : bool|string
     {
         if (isset($this->hooks[$key])) {
             return $this->hooks[$key];
@@ -128,7 +124,7 @@ class srGenericMultiInputGUI extends ilFormPropertyGUI
      * @param $key
      * @param array $options
      */
-    public function addHook($key, array $options)
+    public function addHook($key, array $options) : void
     {
         $this->hooks[$key] = $options;
     }
@@ -151,7 +147,7 @@ class srGenericMultiInputGUI extends ilFormPropertyGUI
     }
 
 
-    public function addInput(ilFormPropertyGUI $input, array $options = [])
+    public function addInput(ilFormPropertyGUI $input, array $options = []) : void
     {
         $input->setRequired(!$this->allow_empty_fields);
         $this->inputs[$input->getPostVar()] = $input;
@@ -293,7 +289,7 @@ class srGenericMultiInputGUI extends ilFormPropertyGUI
      * @param            $value
      * @param bool $override
      */
-    public function addCustomAttribute($key, $value, bool $override = false)
+    public function addCustomAttribute($key, $value, bool $override = false) : void
     {
         if (isset($this->cust_attr[$key]) && ! $override) {
             $this->cust_attr[$key] .= ' ' . $value;

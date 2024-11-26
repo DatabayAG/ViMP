@@ -62,7 +62,6 @@ class xvmpOwnVideosTableGUI extends xvmpTableGUI
 
         parent::__construct($parent_gui, $parent_cmd);
 
-        $this->setDisableFilterHiding(true);
         $this->tpl_global->addOnLoadCode('xoctWaiter.init("waiter");');
         $base_link = $this->ctrl->getLinkTarget($this->parent_obj, '', '', true);
         $this->tpl_global->addOnLoadCode('VimpSearch.base_link = "' . $base_link . '";');
@@ -81,9 +80,9 @@ class xvmpOwnVideosTableGUI extends xvmpTableGUI
     /**
      *
      */
-    protected function initColumns()
+    protected function initColumns() : void
     {
-        $this->addColumn($this->pl->txt('added'), '', "75", false);
+        $this->addColumn($this->pl->txt('added'), '', "75");
         $this->addColumn('', '', "210", true);
 
         parent::initColumns();
@@ -130,7 +129,7 @@ class xvmpOwnVideosTableGUI extends xvmpTableGUI
     /**
      *
      */
-    public function parseData()
+    public function parseData() : void
     {
         $pre_filter = array();
         $post_filter = array();
@@ -174,7 +173,7 @@ class xvmpOwnVideosTableGUI extends xvmpTableGUI
                 try {
                     $data[$uploaded_media->getMid()] = xvmpMedium::getObjectAsArray($uploaded_media->getMid());
                 } catch (xvmpException $e) {
-                    if ($e->getCode() == 404 && strpos($e->getMessage(), "Medium not exist") !== false) {
+                    if ($e->getCode() == 404 && str_contains($e->getMessage(), "Medium not exist")) {
                         $uploaded_media->delete();
                     }
                     continue;
@@ -297,7 +296,7 @@ class xvmpOwnVideosTableGUI extends xvmpTableGUI
     {
         if (!empty($post_filter['title'])) {
             $data = array_filter($data, function ($video) use ($post_filter) {
-                return strpos(strtolower($video['title']), strtolower($post_filter['title'])) !== false;
+                return str_contains(strtolower($video['title']), strtolower($post_filter['title']));
             });
         }
 
@@ -331,7 +330,7 @@ class xvmpOwnVideosTableGUI extends xvmpTableGUI
             $field_id = $custom_filter_field[xvmpConf::F_FILTER_FIELD_ID];
             if ($post_filter[$field_id]) {
                 $data = array_filter($data, function ($video) use ($post_filter, $field_id) {
-                    return strpos(strtolower((string) $video[$field_id]), strtolower($post_filter[$field_id])) !== false;
+                    return str_contains(strtolower((string) $video[$field_id]), strtolower($post_filter[$field_id]));
                 });
             }
         }

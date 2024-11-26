@@ -23,7 +23,7 @@ class xvmpCurl
         global $DIC;
         $lng = $DIC['lng'];
         self::$api_key = xvmpConf::getConfig(xvmpConf::F_API_KEY);
-        $this->url = strpos($url, 'http') !== false ? $url : xvmpConf::getConfig(xvmpConf::F_API_URL) . '/' . $url;
+        $this->url = str_contains($url, 'http') ? $url : xvmpConf::getConfig(xvmpConf::F_API_URL) . '/' . $url;
         $this->addPostField('apikey', xvmpConf::getConfig(xvmpConf::F_API_KEY));
         $this->addPostField('format', self::FORMAT_JSON);
         $this->addPostField('language', $lng->getLangKey());
@@ -33,7 +33,7 @@ class xvmpCurl
     /**
      * init password and username from config
      */
-    public static function init()
+    public static function init() : void
     {
         self::$api_key = xvmpConf::getConfig(xvmpConf::F_API_KEY);
     }
@@ -41,7 +41,7 @@ class xvmpCurl
     /**
      * @throws xvmpException
      */
-    public function get()
+    public function get() : void
     {
         $this->setRequestType(self::REQ_TYPE_GET);
         $this->execute();
@@ -50,7 +50,7 @@ class xvmpCurl
     /**
      * @throws xvmpException
      */
-    public function put()
+    public function put() : void
     {
         $this->setRequestType(self::REQ_TYPE_PUT);
         $this->execute();
@@ -59,7 +59,7 @@ class xvmpCurl
     /**
      * @throws xvmpException
      */
-    public function post()
+    public function post() : void
     {
         $this->setRequestType(self::REQ_TYPE_POST);
         $this->execute();
@@ -68,7 +68,7 @@ class xvmpCurl
     /**
      * @throws xvmpException
      */
-    public function delete()
+    public function delete() : void
     {
         $this->setRequestType(self::REQ_TYPE_DELETE);
         $this->execute();
@@ -77,7 +77,7 @@ class xvmpCurl
     /**
      * @throws xvmpException
      */
-    protected function execute()
+    protected function execute() : void
     {
         static $ch;
         if (!isset($ch)) {
@@ -150,24 +150,24 @@ class xvmpCurl
             $error_msg = is_array($error_msg) ? implode(".\n", $error_msg) : $error_msg;
 
             if ($error_msg == "Medium doesn't exist") {
-                throw new xvmpException(xvmpException::API_CALL_STATUS_404, $error_msg);
+                throw new xvmpException((string) xvmpException::API_CALL_STATUS_404, $error_msg);
             }
 
             switch ($this->getResponseStatus()) {
                 case 403:
-                    throw new xvmpException(xvmpException::API_CALL_STATUS_403, $error_msg);
+                    throw new xvmpException((string) xvmpException::API_CALL_STATUS_403, $error_msg);
                 case 401:
-                    throw new xvmpException(xvmpException::API_CALL_BAD_CREDENTIALS);
+                    throw new xvmpException((string) xvmpException::API_CALL_BAD_CREDENTIALS);
                 case 404:
-                    throw new xvmpException(xvmpException::API_CALL_STATUS_404, $error_msg);
+                    throw new xvmpException((string) xvmpException::API_CALL_STATUS_404, $error_msg);
                 default:
-                    throw new xvmpException(xvmpException::API_CALL_STATUS_500, $error_msg);
+                    throw new xvmpException((string) xvmpException::API_CALL_STATUS_500, $error_msg);
             }
         }
 
         if (($this->getResponseStatus() == 0) && $this->getResponseError()->getErrorNr()) {
             $error = $this->getResponseError();
-            throw new xvmpException(xvmpException::API_CALL_STATUS_500, $error->getMessage());
+            throw new xvmpException((string) xvmpException::API_CALL_STATUS_500, $error->getMessage());
         }
         //		curl_close($ch);
     }
@@ -176,7 +176,7 @@ class xvmpCurl
      * @param $ch
      *
      */
-    protected function preparePut($ch)
+    protected function preparePut($ch) : void
     {
         if ($this->getPostFields()) {
             $this->preparePost($ch);
@@ -187,7 +187,7 @@ class xvmpCurl
     /**
      * @param $ch
      */
-    protected function preparePost($ch)
+    protected function preparePost($ch) : void
     {
         curl_getinfo($ch, CURLINFO_HEADER_OUT);
         if (count($this->getFiles()) > 0) {
@@ -207,7 +207,7 @@ class xvmpCurl
     /**
      * @param $ch
      */
-    protected function debug($ch)
+    protected function debug($ch) : void
     {
         $xvmpCurlLog = xvmpCurlLog::getInstance();
         $xvmpCurlLog->write('execute *************************************************', xvmpCurlLog::DEBUG_LEVEL_1);
@@ -232,7 +232,7 @@ class xvmpCurl
      * @param $ch
      * @throws xvmpException
      */
-    protected function prepare($ch)
+    protected function prepare($ch) : void
     {
         switch ($this->getRequestType()) {
             case self::REQ_TYPE_PUT:
@@ -249,89 +249,26 @@ class xvmpCurl
     public const REQ_TYPE_POST = 'POST';
     public const REQ_TYPE_DELETE = 'DELETE';
     public const REQ_TYPE_PUT = 'PUT';
-    /**
-     * @var array
-     */
     protected array $post_fields = array();
-    /**
-     * @var int
-     */
     protected static int $ssl_version = CURL_SSLVERSION_DEFAULT;
-    /**
-     * @var bool
-     */
     protected static bool $ip_v4 = false;
-    /**
-     * @var string
-     */
     protected string $url = '';
-    /**
-     * @var string
-     */
     protected string $request_type = self::REQ_TYPE_GET;
-    /**
-     * @var array
-     */
     protected array $headers = array();
-    /**
-     * @var string
-     */
     protected string $response_body = '';
-    /**
-     * @var string
-     */
     protected string $response_mime_type = '';
-    /**
-     * @var string
-     */
     protected string $response_content_size = '';
-    /**
-     * @var int
-     */
     protected int $response_status = 200;
-    /**
-     * @var ?xvmpCurlError
-     */
     protected ?xvmpCurlError $response_error = null;
-    /**
-     * @var string
-     */
     protected string $put_file_path = '';
-    /**
-     * @var string
-     */
     protected string $post_body = '';
-    /**
-     * @var string
-     */
-    protected static $api_key = '';
-    /**
-     * @var string
-     */
+    protected static string $api_key = '';
     protected static string $username = '';
-    /**
-     * @var string
-     */
     protected static string $password = '';
-    /**
-     * @var bool
-     */
-    protected static $verify_peer = true;
-    /**
-     * @var bool
-     */
+    protected static bool $verify_peer = true;
     protected static bool $verify_host = true;
-    /**
-     * @var string
-     */
     protected string $request_content_type = '';
-    /**
-     * @var
-     */
     protected array $files = array();
-    /**
-     * @var integer
-     */
     protected int $timeout_MS = 0;
 
 
@@ -365,7 +302,7 @@ class xvmpCurl
     /**
      * @param array $post_fields
      */
-    public function setPostFields(array $post_fields)
+    public function setPostFields(array $post_fields) : void
     {
         $this->post_fields = $post_fields;
     }
@@ -374,7 +311,7 @@ class xvmpCurl
      * @param $key
      * @param $value
      */
-    public function addPostField($key, $value)
+    public function addPostField($key, $value) : void
     {
         $this->post_fields[$key] = $value;
     }
@@ -392,7 +329,7 @@ class xvmpCurl
     /**
      * @param int $ssl_version
      */
-    public static function setSslVersion(int $ssl_version)
+    public static function setSslVersion(int $ssl_version) : void
     {
         self::$ssl_version = $ssl_version;
     }
@@ -410,7 +347,7 @@ class xvmpCurl
     /**
      * @param bool $ip_v4
      */
-    public static function setIpV4(bool $ip_v4)
+    public static function setIpV4(bool $ip_v4) : void
     {
         self::$ip_v4 = $ip_v4;
     }
@@ -428,7 +365,7 @@ class xvmpCurl
     /**
      * @param string $url
      */
-    public function setUrl(string $url)
+    public function setUrl(string $url) : void
     {
         $this->url = $url;
     }
@@ -446,7 +383,7 @@ class xvmpCurl
     /**
      * @param string $request_type
      */
-    public function setRequestType(string $request_type)
+    public function setRequestType(string $request_type) : void
     {
         $this->request_type = $request_type;
     }
@@ -464,7 +401,7 @@ class xvmpCurl
     /**
      * @param array $headers
      */
-    public function setHeaders(array $headers)
+    public function setHeaders(array $headers) : void
     {
         $this->headers = $headers;
     }
@@ -472,7 +409,7 @@ class xvmpCurl
     /**
      * @param $string
      */
-    public function addHeader($string)
+    public function addHeader($string) : void
     {
         $this->headers[] = $string;
     }
@@ -489,7 +426,7 @@ class xvmpCurl
     /**
      * @param string $response_body
      */
-    public function setResponseBody(string $response_body)
+    public function setResponseBody(string $response_body) : void
     {
         $this->response_body = $response_body;
     }
@@ -511,7 +448,7 @@ class xvmpCurl
     /**
      * @param string $response_mime_type
      */
-    public function setResponseMimeType(string $response_mime_type)
+    public function setResponseMimeType(string $response_mime_type) : void
     {
         $this->response_mime_type = $response_mime_type;
     }
@@ -529,7 +466,7 @@ class xvmpCurl
     /**
      * @param string $response_content_size
      */
-    public function setResponseContentSize(string $response_content_size)
+    public function setResponseContentSize(string $response_content_size) : void
     {
         $this->response_content_size = $response_content_size;
     }
@@ -547,15 +484,11 @@ class xvmpCurl
     /**
      * @param int $response_status
      */
-    public function setResponseStatus(int $response_status)
+    public function setResponseStatus(int $response_status) : void
     {
         $this->response_status = $response_status;
     }
-
-
-    /**
-     * @return xvmpCurlError
-     */
+    
     public function getResponseError(): ?xvmpCurlError
     {
         return $this->response_error;
@@ -565,7 +498,7 @@ class xvmpCurl
     /**
      * @param xvmpCurlError $response_error
      */
-    public function setResponseError(xvmpCurlError $response_error)
+    public function setResponseError(xvmpCurlError $response_error) : void
     {
         $this->response_error = $response_error;
     }
@@ -583,7 +516,7 @@ class xvmpCurl
     /**
      * @param string $put_file_path
      */
-    public function setPutFilePath(string $put_file_path)
+    public function setPutFilePath(string $put_file_path) : void
     {
         $this->put_file_path = $put_file_path;
     }
@@ -601,7 +534,7 @@ class xvmpCurl
     /**
      * @param string $post_body
      */
-    public function setPostBody(string $post_body)
+    public function setPostBody(string $post_body) : void
     {
         $this->post_body = $post_body;
     }
@@ -619,7 +552,7 @@ class xvmpCurl
     /**
      * @param string $username
      */
-    public static function setUsername(string $username)
+    public static function setUsername(string $username) : void
     {
         self::$username = $username;
     }
@@ -637,7 +570,7 @@ class xvmpCurl
     /**
      * @param string $password
      */
-    public static function setPassword(string $password)
+    public static function setPassword(string $password) : void
     {
         self::$password = $password;
     }
@@ -664,7 +597,7 @@ class xvmpCurl
     /**
      * @param bool $verify_host
      */
-    public static function setVerifyHost(bool $verify_host)
+    public static function setVerifyHost(bool $verify_host) : void
     {
         self::$verify_host = $verify_host;
     }
@@ -682,7 +615,7 @@ class xvmpCurl
     /**
      * @param string $request_content_type
      */
-    public function setRequestContentType(string $request_content_type)
+    public function setRequestContentType(string $request_content_type) : void
     {
         $this->request_content_type = $request_content_type;
     }
@@ -700,7 +633,7 @@ class xvmpCurl
     /**
      * @param xvmpUploadFile[] $files
      */
-    public function setFiles(array $files)
+    public function setFiles(array $files) : void
     {
         $this->files = $files;
     }

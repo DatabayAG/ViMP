@@ -48,7 +48,7 @@ class xvmpSettingsFormGUI extends xvmpFormGUI
     /**
      *
      */
-    protected function initForm()
+    protected function initForm() : void
     {
         // TITLE
         $input = new ilTextInputGUI($this->pl->txt(self::F_TITLE), self::F_TITLE);
@@ -98,7 +98,7 @@ class xvmpSettingsFormGUI extends xvmpFormGUI
     /**
      *
      */
-    protected function initCommandButtons()
+    protected function initCommandButtons() : void
     {
         $this->addCommandButton(xvmpSettingsGUI::CMD_UPDATE, $this->lng->txt('save'));
         $this->addCommandButton(xvmpGUI::CMD_CANCEL, $this->lng->txt('cancel'));
@@ -108,7 +108,7 @@ class xvmpSettingsFormGUI extends xvmpFormGUI
     /**
      *
      */
-    public function fillForm()
+    public function fillForm() : void
     {
         $values = array(
             self::F_TITLE => $this->parent_gui->getObject()->getTitle(),
@@ -125,7 +125,7 @@ class xvmpSettingsFormGUI extends xvmpFormGUI
     /**
      * @return bool
      */
-    public function saveForm()
+    public function saveForm() : bool
     {
         if (!$this->checkInput()) {
             return false;

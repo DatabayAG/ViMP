@@ -51,7 +51,7 @@ class ilObjViMPListGUI extends ilObjectPluginListGUI
     }
 
 
-    public function initType()
+    public function initType() : void
     {
         $this->setType(ilViMPPlugin::XVMP);
     }
@@ -64,7 +64,7 @@ class ilObjViMPListGUI extends ilObjectPluginListGUI
     public function getAlertProperties(): array
     {
         $alert = [];
-        foreach ((array) $this->getCustomProperties(array()) as $prop) {
+        foreach ($this->getCustomProperties(array()) as $prop) {
             if (isset($prop['alert']) && $prop['alert']) {
                 $alert[] = $prop;
             }
@@ -82,7 +82,7 @@ class ilObjViMPListGUI extends ilObjectPluginListGUI
      *                        'value' (string) => property value
      * @throws arException
      */
-    public function getCustomProperties($a_prop): array
+    public function getCustomProperties($prop): array
     {
         $props = parent::getCustomProperties(array());
 

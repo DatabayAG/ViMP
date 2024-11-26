@@ -38,7 +38,7 @@ class xvmpConfig extends xvmpObject
      * @param       $object
      * @param null  $ttl
      */
-    public static function cache($identifier, $object, $ttl = null)
+    public static function cache($identifier, $object, $ttl = null) : void
     {
         parent::cache($identifier, $object, xvmpConf::getConfig(xvmpConf::F_CACHE_TTL_CONFIG));
     }
@@ -51,7 +51,7 @@ class xvmpConfig extends xvmpObject
     /**
      * @var string
      */
-    protected $value;
+    protected string $value;
 
 
     /**
@@ -62,11 +62,7 @@ class xvmpConfig extends xvmpObject
         return $this->name;
     }
 
-
-    /**
-     * @return string
-     */
-    public function getValue()
+    public function getValue() : string
     {
         return $this->value;
     }

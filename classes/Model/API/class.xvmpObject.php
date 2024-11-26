@@ -11,11 +11,7 @@ declare(strict_types=1);
  */
 class xvmpObject
 {
-    /**
-     * @var int
-     */
-    protected $id;
-
+    protected int $id;
     protected static array $cache_initialized = array();
     protected static array $cache = array();
 
@@ -76,7 +72,7 @@ class xvmpObject
      *
      * @param array $array
      */
-    public function buildObjectFromArray(array $array)
+    public function buildObjectFromArray(array $array) : void
     {
         foreach ($array as $key => $value) {
             $this->{$key} = $value;
@@ -89,7 +85,7 @@ class xvmpObject
      *
      * @param array $array
      */
-    public static function buildAllFromArray(array $array)
+    public static function buildAllFromArray(array $array) : void
     {
         self::buildFromArray($array);
         $class_name = get_called_class();
@@ -101,7 +97,7 @@ class xvmpObject
      *
      * @param array $array
      */
-    public static function buildFromArray(array $array)
+    public static function buildFromArray(array $array) : void
     {
         $class_name = get_called_class();
         self::$cache[$class_name] = array();
@@ -191,7 +187,7 @@ class xvmpObject
      * @param       $object
      * @param null  $ttl
      */
-    public static function cache($identifier, $object, $ttl = null)
+    public static function cache($identifier, $object, $ttl = null) : void
     {
         //		self::$cache[$key] = $object;
         xvmpCurlLog::getInstance()->write('CACHE: added to cache: ' . $identifier, xvmpCurlLog::DEBUG_LEVEL_1);
@@ -271,7 +267,7 @@ class xvmpObject
     /**
      * @param int $id
      */
-    public function setId(int $id)
+    public function setId(int $id) : void
     {
         $this->id = $id;
     }

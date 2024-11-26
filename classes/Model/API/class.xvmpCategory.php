@@ -63,146 +63,70 @@ class xvmpCategory extends xvmpObject
         return $cache_array;
     }
 
-
-    public static function cache($identifier, $object, $ttl = null)
+    public static function cache($identifier, $object, $ttl = null) : void
     {
-        parent::cache($identifier, $object, (int) ($ttl ? $ttl : xvmpConf::getConfig(xvmpConf::F_CACHE_TTL_CATEGORIES)));
+        parent::cache($identifier, $object, (int) ($ttl ?: xvmpConf::getConfig(xvmpConf::F_CACHE_TTL_CATEGORIES)));
     }
 
-
-    /**
-     * @var int
-     */
     protected int $cid;
-    /**
-     * @var int
-     */
     protected int $pid;
-    /**
-     * @var int
-     */
     protected ?int $parent;
-    /**
-     * @var String
-     */
     protected string $culture;
-    /**
-     * @var String
-     */
     protected string $name;
-    /**
-     * @var String
-     */
     protected ?string $description;
-    /**
-     * @var String
-     */
     protected string $categorytype;
-    /**
-     * @var String
-     */
     protected string $status;
-    /**
-     * @var String
-     */
     protected string $picture;
-    /**
-     * @var int
-     */
     protected int $weight;
-    /**
-     * @var String
-     */
     protected string $created_at;
-    /**
-     * @var String
-     */
+
     protected string $updated_at;
 
-
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->cid;
     }
 
-    /**
-     * @return int
-     */
     public function getCid(): int
     {
         return $this->cid;
     }
 
-
-    /**
-     * @param int $cid
-     */
-    public function setCid(int $cid)
+    public function setCid(int $cid) : void
     {
         $this->cid = $cid;
     }
 
-
-    /**
-     * @return int
-     */
     public function getPid(): int
     {
         return $this->pid;
     }
 
-
-    /**
-     * @param int $pid
-     */
-    public function setPid(int $pid)
+    public function setPid(int $pid) : void
     {
         $this->pid = $pid;
     }
 
-
-    /**
-     * @return int
-     */
     public function getParent(): ?int
     {
         return $this->parent;
     }
 
-
-    /**
-     * @param int $parent
-     */
-    public function setParent(int $parent)
+    public function setParent(int $parent) : void
     {
         $this->parent = $parent;
     }
 
-
-    /**
-     * @return String
-     */
     public function getCulture(): string
     {
         return $this->culture;
     }
 
-
-    /**
-     * @param String $culture
-     */
-    public function setCulture(string $culture)
+    public function setCulture(string $culture) : void
     {
         $this->culture = $culture;
     }
 
-
-    /**
-     * @return String
-     */
     public function getName(): string
     {
         return $this->name;
@@ -224,137 +148,77 @@ class xvmpCategory extends xvmpObject
         return implode(' » ', $path);
     }
 
-
-    /**
-     * @param String $name
-     */
-    public function setName(string $name)
+    public function setName(string $name) : void
     {
         $this->name = $name;
     }
 
-
-    /**
-     * @return String
-     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
-
-    /**
-     * @param String $description
-     */
-    public function setDescription(string $description)
+    public function setDescription(string $description) : void
     {
         $this->description = $description;
     }
 
-
-    /**
-     * @return String
-     */
     public function getCategorytype(): string
     {
         return $this->categorytype;
     }
 
-
-    /**
-     * @param String $categorytype
-     */
-    public function setCategorytype(string $categorytype)
+    public function setCategorytype(string $categorytype) : void
     {
         $this->categorytype = $categorytype;
     }
 
-
-    /**
-     * @return String
-     */
     public function getStatus(): string
     {
         return $this->status;
     }
 
-
-    /**
-     * @param String $status
-     */
-    public function setStatus(string $status)
+    public function setStatus(string $status) : void
     {
         $this->status = $status;
     }
 
-
-    /**
-     * @return String
-     */
     public function getPicture(): string
     {
         return $this->picture;
     }
 
-
-    /**
-     * @param String $picture
-     */
-    public function setPicture(string $picture)
+    public function setPicture(string $picture) : void
     {
         $this->picture = $picture;
     }
 
-
-    /**
-     * @return int
-     */
     public function getWeight(): int
     {
         return $this->weight;
     }
 
-
-    /**
-     * @param int $weight
-     */
-    public function setWeight(int $weight)
+    public function setWeight(int $weight) : void
     {
         $this->weight = $weight;
     }
 
-
-    /**
-     * @return String
-     */
     public function getCreatedAt(): string
     {
         return $this->created_at;
     }
 
-
-    /**
-     * @param String $created_at
-     */
-    public function setCreatedAt(string $created_at)
+    public function setCreatedAt(string $created_at) : void
     {
         $this->created_at = $created_at;
     }
 
-
-    /**
-     * @return String
-     */
     public function getUpdatedAt(): string
     {
         return $this->updated_at;
     }
 
-
-    /**
-     * @param String $updated_at
-     */
-    public function setUpdatedAt(string $updated_at)
+    public function setUpdatedAt(string $updated_at) : void
     {
         $this->updated_at = $updated_at;
     }

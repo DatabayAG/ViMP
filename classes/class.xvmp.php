@@ -17,7 +17,7 @@ class xvmp
     /**
      * @return bool|mixed|string|null
      */
-    public static function getViMPVersion()
+    public static function getViMPVersion() : mixed
     {
         $key = 'version';
         $existing = xvmpCacheFactory::getInstance()->get($key);
@@ -38,10 +38,9 @@ class xvmp
 
     /**
      * @param $version
-     *
-     * @return mixed
+     * @return int|bool
      */
-    public static function ViMPVersionEquals($version)
+    public static function ViMPVersionEquals($version) : int|bool
     {
         $vimp_version = self::getViMPVersion();
 
@@ -50,12 +49,10 @@ class xvmp
 
 
     /**
-     *
      * @param $version
-     *
-     * @return mixed
+     * @return int|bool
      */
-    public static function ViMPVersionGreaterEquals($version)
+    public static function ViMPVersionGreaterEquals($version) : int|bool
     {
         $vimp_version = self::getViMPVersion();
 
@@ -66,7 +63,7 @@ class xvmp
     /**
      * @return mixed
      */
-    public static function getToken()
+    public static function getToken() : mixed
     {
         $token = xvmpCacheFactory::getInstance()->get(self::TOKEN);
         if ($token) {
@@ -88,10 +85,9 @@ class xvmp
 
     /**
      * @param $obj_id
-     *
-     * @return mixed
+     * @return string|int|null
      */
-    public static function lookupRefId($obj_id)
+    public static function lookupRefId($obj_id) : string|int|null
     {
         $refs = array_keys(ilObject2::_getAllReferences((int) $obj_id));
         return array_shift($refs);
@@ -124,12 +120,11 @@ class xvmp
 
     /**
      * @param $obj_id
-     * @param $video array|xvmpMedium
-     *
+     * @param $video xvmpMedium|array
      * @return bool
      * @throws xvmpException
      */
-    public static function isUseEmbeddedPlayer($obj_id, $video): bool
+    public static function isUseEmbeddedPlayer($obj_id, xvmpMedium|array $video) : bool
     {
         return (!xvmpSettings::find($obj_id)->getLpActive() && xvmpConf::getConfig(xvmpConf::F_EMBED_PLAYER))
             || xvmpMedium::isVimeoOrYoutube($video);
@@ -155,7 +150,7 @@ class xvmp
      *
      * @return bool|int
      */
-    public static function getParentCourseRefId($ref_id)
+    public static function getParentCourseRefId($ref_id) : bool|int
     {
         global $DIC;
         $tree = $DIC['tree'];
@@ -172,13 +167,12 @@ class xvmp
         return $ref_id;
     }
 
-
     /**
      * @param $id
-     *
+     * @param bool $is_ref_id
      * @return array
      */
-    public static function getCourseMembers($id, $is_ref_id = true)
+    public static function getCourseMembers($id, bool $is_ref_id = true) : array
     {
         $members = array();
         $ref_id = self::getParentCourseRefId($is_ref_id ? $id : self::lookupRefId($id));

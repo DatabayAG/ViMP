@@ -19,7 +19,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
     /**
      * @var xvmpOwnVideosGUI | ilVimpPageComponentPluginGUI
      */
-    protected $parent_gui;
+    protected ilViMPConfigGUI $parent_gui;
     /**
      * @var array
      */
@@ -53,7 +53,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
      * @throws IllegalStateException
      * @throws ilWACException
      */
-    protected function afterStoreVideo(int $mid)
+    protected function afterStoreVideo(int $mid) : void
     {
         $this->processSubtitles($mid);
     }
@@ -64,7 +64,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
      * @throws IllegalStateException
      * @throws ilWACException
      */
-    protected function processSubtitles(int $mid)
+    protected function processSubtitles(int $mid) : void
     {
         $tmp_id = filter_input(INPUT_GET, 'tmp_id', FILTER_SANITIZE_STRING);
         foreach ($this->getSubtitleLanguages() as $lang_key) {
@@ -81,7 +81,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
         }
     }
 
-    protected function removeSubtitle($lang_key)
+    protected function removeSubtitle($lang_key) : void
     {
         $subtitle_url = $this->medium[xvmpMedium::F_SUBTITLES][$lang_key];
         $subtitle_filename = urldecode(substr($subtitle_url, strrpos($subtitle_url, '/') + 1));
@@ -97,7 +97,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
      * @throws IllegalStateException
      * @throws ilWACException
      */
-    protected function uploadSubtitle(int $mid, string $lang_code, string $tmp_name, string $tmp_id)
+    protected function uploadSubtitle(int $mid, string $lang_code, string $tmp_name, string $tmp_id) : void
     {
         $name = $this->upload_service->moveUploadToWebDir($tmp_name, $tmp_id);
         $signed_url = $this->upload_service->getSignedUrl($name, $tmp_id);
@@ -145,7 +145,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
             case xvmpMedium::F_PUBLISHED:
                 return xvmpMedium::$published_id_mapping[$value];
             default:
-                if (strpos($post_var, xvmpMedium::F_SUBTITLES) === 0) {
+                if (str_starts_with($post_var, xvmpMedium::F_SUBTITLES)) {
                     // subtitles are processed separately (different api endpoint)
                     return null;
                 }
@@ -212,7 +212,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
      * @throws ilWACException
      * @throws xvmpException
      */
-    protected function fillVideoByPost()
+    protected function fillVideoByPost() : void
     {
         /** @var ilFormPropertyGUI $item */
         foreach ($this->getInputItemsRecursive() as $item) {
@@ -227,7 +227,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
      * @throws ilWACException
      * @throws xvmpException
      */
-    protected function fillVideoByItem(ilFormPropertyGUI $item)
+    protected function fillVideoByItem(ilFormPropertyGUI $item) : void
     {
         $post_var = rtrim($item->getPostVar(), '[]');
         $field = $this->mapPostVarToMediumField($post_var);
@@ -239,20 +239,20 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
         }
     }
 
-    protected function addFormHeader(string $title)
+    protected function addFormHeader(string $title) : void
     {
         $header = new ilFormSectionHeaderGUI();
         $header->setTitle($this->pl->txt('form_header_' . $title));
         $this->addItem($header);
     }
 
-    protected function addHiddenIdInput()
+    protected function addHiddenIdInput() : void
     {
         $input = new ilHiddenInputGUI(xvmpMedium::F_MID);
         $this->addItem($input);
     }
 
-    protected function addTitleInput()
+    protected function addTitleInput() : void
     {
         $input = new ilTextInputGUI($this->pl->txt(xvmpMedium::F_TITLE), xvmpMedium::F_TITLE);
         $input->setRequired(true);
@@ -260,7 +260,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
         $this->addItem($input);
     }
 
-    protected function addDescriptionInput()
+    protected function addDescriptionInput() : void
     {
         $input = new ilTextAreaInputGUI($this->pl->txt(xvmpMedium::F_DESCRIPTION), xvmpMedium::F_DESCRIPTION);
         $input->setRequired(true);
@@ -270,7 +270,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
     /**
      * @throws ilCtrlException
      */
-    protected function addFileInput(bool $required = true)
+    protected function addFileInput(bool $required = true) : void
     {
         $input = new xvmpFileUploadInputGUI(
             $this,
@@ -324,7 +324,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
         $this->addItem($input);
     }
 
-    protected function addCategoriesInput()
+    protected function addCategoriesInput() : void
     {
         $input = new ilMultiSelectSearchInputGUI($this->lng->txt(xvmpMedium::F_CATEGORIES), xvmpMedium::F_CATEGORIES);
         $categories = xvmpCategory::getAll();
@@ -339,7 +339,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
         $this->addItem($input);
     }
 
-    protected function addTagsInput()
+    protected function addTagsInput() : void
     {
         $input = new ilTextInputGUI($this->pl->txt(xvmpMedium::F_TAGS), xvmpMedium::F_TAGS);
         $input->setInfo($this->pl->txt(xvmpMedium::F_TAGS . '_info'));
@@ -347,7 +347,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
         $this->addItem($input);
     }
 
-    protected function addCustomInputs()
+    protected function addCustomInputs() : void
     {
         foreach (xvmpConf::getConfig(xvmpConf::F_FORM_FIELDS) as $field) {
             if (!$field[xvmpConf::F_FORM_FIELD_ID]) {
@@ -368,7 +368,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
         }
     }
 
-    protected function addPublishedInput()
+    protected function addPublishedInput() : void
     {
         if (xvmp::isAllowedToSetPublic()) {
             $input = new ilRadioGroupInputGUI($this->pl->txt(xvmpMedium::F_PUBLISHED), xvmpMedium::F_PUBLISHED);
@@ -389,7 +389,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
         }
     }
 
-    protected function addMediaPermissionsInput()
+    protected function addMediaPermissionsInput() : void
     {
         $media_permissions = xvmpConf::getConfig(xvmpConf::F_MEDIA_PERMISSIONS);
         if ($media_permissions) {
@@ -426,14 +426,14 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
         return $input;
     }
 
-    protected function addThumbnailInput()
+    protected function addThumbnailInput() : void
     {
         $input = new ilImageFileInputGUI($this->pl->txt(xvmpMedium::F_THUMBNAIL), xvmpMedium::F_THUMBNAIL);
         $input->setALlowDeletion(false);
         $this->addItem($input);
     }
 
-    protected function addSubtitleInput()
+    protected function addSubtitleInput() : void
     {
         foreach ($this->getLanguageOptions() as $lang_key => $text) {
             $input = new xvmpFileInputGUI(
@@ -462,7 +462,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
      * @param $size
      * @return bool|float|int|string
      */
-    protected function getSizeInMB($size)
+    protected function getSizeInMB($size) : float|bool|int|string
     {
         switch (substr($size, -2)) {
             case 'GB':

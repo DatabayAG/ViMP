@@ -12,15 +12,9 @@ class xvmpLog extends ilLog
 {
     public const LOG_TITLE = 'vimp.log';
 
-    /**
-     * @var xvmpLog
-     */
-    protected static $instance;
+    protected static xvmpLog $instance;
 
-    /**
-     * @return xvmpLog
-     */
-    public static function getInstance()
+    public static function getInstance() : xvmpLog
     {
         if (! isset(self::$instance)) {
             if (ILIAS_LOG_DIR === "php:/" && ILIAS_LOG_FILE === "stdout") {
@@ -34,7 +28,7 @@ class xvmpLog extends ilLog
         return self::$instance;
     }
 
-    public function writeTrace()
+    public function writeTrace() : void
     {
         try {
             throw new Exception();
@@ -43,29 +37,19 @@ class xvmpLog extends ilLog
         }
     }
 
-
-    /**
-     * @return mixed
-     */
     public function getLogDir()
     {
         return ILIAS_LOG_DIR;
     }
 
-    /**
-     * @return string
-     */
-    public static function getFullPath()
+    public static function getFullPath() : string
     {
         $log = self::getInstance();
 
         return $log->getLogDir() . '/' . $log->getLogFile();
     }
 
-    /**
-     * @return string
-     */
-    public function getLogFile()
+    public function getLogFile() : string
     {
         if (ILIAS_LOG_DIR === "php:/" && ILIAS_LOG_FILE === "stdout") {
             // Fix Docker-ILIAS log

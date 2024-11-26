@@ -14,22 +14,10 @@ use srag\Plugins\ViMP\Content\MediumMetadataParser;
  */
 class xvmpContentPlayerGUI
 {
-    /**
-     * @var PlayerInSiteRenderer
-     */
-    private $player_renderer;
-    /**
-     * @var ilViMPPlugin
-     */
-    protected $pl;
-    /**
-     * @var xvmpContentGUI
-     */
-    protected $parent_gui;
-    /**
-     * @var Container
-     */
-    protected $dic;
+    private PlayerInSiteRenderer $player_renderer;
+    protected ilViMPPlugin $pl;
+    protected xvmpContentGUI $parent_gui;
+    protected Container $dic;
 
     /**
      * xvmpContentTilesGUI constructor.

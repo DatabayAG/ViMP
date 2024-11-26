@@ -10,6 +10,9 @@ declare(strict_types=1);
  */
 class xvmpCache extends ilGlobalCache
 {
+    public const TYPE_STATIC = 0;
+    public const TYPE_MEMCACHED = 2;
+    public const TYPE_APC = 3;
     public const COMP_PREFIX = 'xvmp';
     /**
      * @var bool
@@ -21,8 +24,6 @@ class xvmpCache extends ilGlobalCache
     protected static array $active_components = array(
         self::COMP_PREFIX,
     );
-
-
     /**
      * @return xvmpCache
      */
@@ -48,7 +49,7 @@ class xvmpCache extends ilGlobalCache
     //		throw new ilException('xvmpCache::getInstance() should not be called. Please call xvmpCache::getCacheInstance() instead.');
     //	}
 
-    public function init()
+    public function init() : void
     {
         $this->initCachingService();
         $this->setActive(true);
@@ -170,7 +171,7 @@ class xvmpCache extends ilGlobalCache
     /**
      * @param boolean $override_active
      */
-    public static function setOverrideActive(bool $override_active)
+    public static function setOverrideActive(bool $override_active) : void
     {
         self::$override_active = $override_active;
     }
@@ -199,7 +200,7 @@ class xvmpCache extends ilGlobalCache
      *
      * @return bool|mixed|null
      */
-    public function get($key)
+    public function get($key) : mixed
     {
         if (!$this->global_cache instanceof ilGlobalCacheService || !$this->isActive()) {
             return false;

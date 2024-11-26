@@ -21,7 +21,7 @@ class xvmpSettingsGUI extends xvmpGUI
     /**
      *
      */
-    public function executeCommand()
+    public function executeCommand() : void
     {
         if (!ilObjViMPAccess::hasWriteAccess()) {
             $this->accessDenied();
@@ -33,7 +33,7 @@ class xvmpSettingsGUI extends xvmpGUI
     /**
      *
      */
-    protected function index()
+    protected function index() : void
     {
         $this->dic->ui()->mainTemplate()->addCss($this->pl->getAssetURL('default/xvmp_settings.css'));
         $xvmpSettingsFormGUI = new xvmpSettingsFormGUI($this);
@@ -44,7 +44,7 @@ class xvmpSettingsGUI extends xvmpGUI
     /**
      *
      */
-    public function update()
+    public function update() : void
     {
         $xvmpSettingsFormGUI = new xvmpSettingsFormGUI($this);
         $xvmpSettingsFormGUI->setValuesByPost();

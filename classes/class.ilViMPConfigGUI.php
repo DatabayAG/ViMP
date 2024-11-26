@@ -17,17 +17,8 @@ class ilViMPConfigGUI extends ilPluginConfigGUI
     public const SUBTAB_SETTINGS = 'settings';
     public const SUBTAB_LOG = 'log';
 
-    /**
-     * @var ilTemplate
-     */
-    protected $tpl;
-    /**
-     * @var ilCtrl
-     */
-    protected $ctrl;
-    /**
-     * @var ilViMPPlugin
-     */
+    protected ilGlobalTemplateInterface $tpl;
+    protected ilCtrlInterface $ctrl;
     protected ilViMPPlugin $pl;
     /**
      * @var ilToolbarGUI
@@ -48,15 +39,11 @@ class ilViMPConfigGUI extends ilPluginConfigGUI
     {
         global $DIC;
         $this->dic = $DIC;
-        $tpl = $DIC['tpl'];
-        $ilCtrl = $DIC['ilCtrl'];
-        $ilToolbar = $DIC['ilToolbar'];
-        $ilTabs = $DIC['ilTabs'];
-        $this->toolbar = $ilToolbar;
-        $this->tpl = $tpl;
-        $this->ctrl = $ilCtrl;
+        $this->toolbar = $DIC['ilToolbar'];
+        $this->tpl = $DIC->ui()->mainTemplate();
+        $this->ctrl =  $DIC->ctrl();
         $this->pl = ilViMPPlugin::getInstance();
-        $this->tabs = $ilTabs;
+        $this->tabs = $DIC['ilTabs'];
     }
 
 
@@ -77,7 +64,7 @@ class ilViMPConfigGUI extends ilPluginConfigGUI
     /**
      * @throws ilCtrlException
      */
-    protected function addSubTabs()
+    protected function addSubTabs() : void
     {
         $this->tabs->addSubTab(self::SUBTAB_SETTINGS, $this->pl->txt(self::SUBTAB_SETTINGS), $this->ctrl->getLinkTarget($this, self::CMD_STANDARD));
         $this->tabs->addSubTab(self::SUBTAB_LOG, $this->pl->txt(self::SUBTAB_LOG), $this->ctrl->getLinkTarget($this, self::CMD_SHOW_LOG));
@@ -87,7 +74,7 @@ class ilViMPConfigGUI extends ilPluginConfigGUI
      * @throws arException
      * @throws Exception
      */
-    protected function showLog()
+    protected function showLog() : void
     {
         $this->tabs->activateSubTab(self::SUBTAB_LOG);
         $xvmpEventLogTableGUI = new xvmpEventLogTableGUI($this, self::CMD_SHOW_LOG);
@@ -100,7 +87,7 @@ class ilViMPConfigGUI extends ilPluginConfigGUI
      * @throws JsonException
      * @throws Exception
      */
-    protected function applyFilter()
+    protected function applyFilter() : void
     {
         $xvmpEventLogTableGUI = new xvmpEventLogTableGUI($this, self::CMD_SHOW_LOG);
         $xvmpEventLogTableGUI->writeFilterToSession();
@@ -113,7 +100,7 @@ class ilViMPConfigGUI extends ilPluginConfigGUI
      * @throws JsonException
      * @throws Exception
      */
-    protected function resetFilter()
+    protected function resetFilter() : void
     {
         $xvmpEventLogTableGUI = new xvmpEventLogTableGUI($this, self::CMD_SHOW_LOG);
         $xvmpEventLogTableGUI->resetFilter();
@@ -124,7 +111,7 @@ class ilViMPConfigGUI extends ilPluginConfigGUI
     /**
      * @throws ilCtrlException
      */
-    public function addFlushCacheButton()
+    public function addFlushCacheButton() : void
     {
         $button = ilLinkButton::getInstance();
         $button->setUrl($this->ctrl->getLinkTarget($this, self::CMD_FLUSH_CACHE));
@@ -135,7 +122,7 @@ class ilViMPConfigGUI extends ilPluginConfigGUI
     /**
      *
      */
-    public function flushCache()
+    public function flushCache() : void
     {
         xvmpCacheFactory::getInstance()->flush();
 
@@ -146,7 +133,7 @@ class ilViMPConfigGUI extends ilPluginConfigGUI
      *
      * @throws ilCtrlException
      */
-    protected function configure()
+    protected function configure() : void
     {
         $this->tabs->activateSubTab(self::SUBTAB_SETTINGS);
         $this->addFlushCacheButton();
@@ -160,7 +147,7 @@ class ilViMPConfigGUI extends ilPluginConfigGUI
      *
      * @throws ilCtrlException|JsonException
      */
-    protected function update()
+    protected function update() : void
     {
         $xvmpConfFormGUI = new xvmpConfFormGUI($this);
         $xvmpConfFormGUI->setValuesByPost();

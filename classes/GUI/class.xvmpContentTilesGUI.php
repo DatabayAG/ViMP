@@ -13,14 +13,8 @@ use ILIAS\DI\Container;
  */
 class xvmpContentTilesGUI
 {
-    /**
-     * @var xvmpContentGUI
-     */
     protected xvmpContentGUI $parent_gui;
-    /**
-     * @var Container
-     */
-    protected $dic;
+    protected Container $dic;
     private ilViMPPlugin $pl;
 
     /**

@@ -104,12 +104,7 @@ class xvmpConf extends ActiveRecord
         return self::DB_TABLE_NAME;
     }
 
-    /**
-     * @param $name
-     *
-     * @return mixed
-     */
-    public static function getConfig($name)
+    public static function getConfig($name) : mixed
     {
         if (!isset(self::$cache_loaded[$name])) {
             try {
@@ -128,12 +123,7 @@ class xvmpConf extends ActiveRecord
         return self::$cache[$name] ?? null;
     }
 
-
-    /**
-     * @param $name
-     * @param $value
-     */
-    public static function set($name, $value)
+    public static function set($name, $value) : void
     {
         try {
             $obj = new self($name);
@@ -145,28 +135,17 @@ class xvmpConf extends ActiveRecord
         $obj->store();
     }
 
-    /**
-     * @param string $name
-     */
-    public function setName(string $name)
+    public function setName(string $name) : void
     {
         $this->name = $name;
     }
 
-
-    /**
-     * @return ?string
-     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
-
-    /**
-     * @param string $value
-     */
-    public function setValue(string $value)
+    public function setValue(string $value) : void
     {
         $this->value = $value;
     }

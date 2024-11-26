@@ -16,7 +16,7 @@ class xvmpConfFormGUI extends xvmpFormGUI
     /**
      * @var ilViMPConfigGUI
      */
-    protected $parent_gui;
+    protected ilViMPConfigGUI $parent_gui;
     /**
      * @var ilDB
      */
@@ -47,7 +47,7 @@ class xvmpConfFormGUI extends xvmpFormGUI
      *
      * @throws ilCtrlException
      */
-    protected function initForm()
+    protected function initForm() : void
     {
         $this->setFormAction($this->ctrl->getFormAction($this->parent_gui));
 
@@ -307,7 +307,7 @@ class xvmpConfFormGUI extends xvmpFormGUI
     /**
      *
      */
-    public function fillForm()
+    public function fillForm() : void
     {
         $array = array();
         foreach ($this->getItems() as $item) {
@@ -323,7 +323,7 @@ class xvmpConfFormGUI extends xvmpFormGUI
      *
      * @internal param $key
      */
-    private function getValuesForItem($item, &$array)
+    private function getValuesForItem($item, &$array) : void
     {
         if (self::checkItem($item)) {
             $key = rtrim($item->getPostVar(), '[]');
@@ -353,7 +353,7 @@ class xvmpConfFormGUI extends xvmpFormGUI
     /**
      * @param $item
      */
-    private function saveValueForItem($item)
+    private function saveValueForItem($item) : void
     {
         if (self::checkItem($item)) {
             $key = rtrim($item->getPostVar(), '[]');

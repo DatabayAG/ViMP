@@ -82,7 +82,7 @@ class xvmpUploadService
      * @param string $dir
      * @throws IOException
      */
-    protected function createDirIfNotExists(string $dir)
+    protected function createDirIfNotExists(string $dir) : void
     {
         if (!$this->file_system->web()->hasDir($dir)) {
             $this->file_system->web()->createDir($dir);
@@ -102,7 +102,7 @@ class xvmpUploadService
         return $thumbnail_path;
     }
 
-    public function cleanUp()
+    public function cleanUp() : void
     {
         foreach ($this->temp_directories as $temp_directory) {
             ilFileUtils::delDir(ilFileUtils::getWebspaceDir() . $temp_directory);

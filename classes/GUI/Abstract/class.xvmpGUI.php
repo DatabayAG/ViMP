@@ -21,28 +21,12 @@ abstract class xvmpGUI
     public const CMD_CANCEL = 'cancel';
     public const CMD_FLUSH_CACHE = 'flushCache';
     public const CMD_FILL_MODAL = 'fillModalPlayer';
-
     public const TAB_ACTIVE = ''; // overwrite in subclass
     public const CMD_DOWNLOAD_MEDIUM = 'downloadMedium';
-    /**
-     * @var ilObjViMPGUI
-     */
     protected ilObjViMPGUI $parent_gui;
-    /**
-     * @var ilViMPPlugin
-     */
     protected ilViMPPlugin $pl;
-    /**
-     * @var Container
-     */
-    protected $dic;
-    /**
-     * @var Factory
-     */
+    protected Container $dic;
     protected Factory $renderer_factory;
-    /**
-     * @var MediumMetadataDTOBuilder
-     */
     protected MediumMetadataDTOBuilder $metadata_builder;
 
 
@@ -62,7 +46,7 @@ abstract class xvmpGUI
         $this->addJavaScript();
     }
 
-    protected function addJavaScript()
+    protected function addJavaScript() : void
     {
         $this->dic->ui()->mainTemplate()->addJavaScript('./libs/bower/bower_components/webui-popover/dist/jquery.webui-popover.js');
         $this->dic->ui()->mainTemplate()->addJavaScript('./src/UI/templates/js/Popover/popover.js');
@@ -160,7 +144,7 @@ abstract class xvmpGUI
      *
      * @throws ilCtrlException
      */
-    public function executeCommand()
+    public function executeCommand() : void
     {
         if (!$this->dic->ctrl()->isAsynch()) {
             $this->dic->tabs()->activateTab(static::TAB_ACTIVE);
@@ -178,7 +162,7 @@ abstract class xvmpGUI
     /**
      * @param $cmd
      */
-    protected function performCommand($cmd)
+    protected function performCommand($cmd) : void
     {
         switch ($cmd) {
             case self::CMD_FILL_MODAL:
@@ -195,7 +179,7 @@ abstract class xvmpGUI
     /**
      *
      */
-    public function addFlushCacheButton()
+    public function addFlushCacheButton() : void
     {
         $button = ilLinkButton::getInstance();
         $button->setUrl($this->dic->ctrl()->getLinkTarget($this, self::CMD_FLUSH_CACHE));
@@ -210,7 +194,7 @@ abstract class xvmpGUI
      *
      * @throws ilCtrlException
      */
-    public function flushCache()
+    public function flushCache() : void
     {
         //		xvmpCacheFactory::getInstance()->flush();
         foreach (xvmpSelectedMedia::getSelected($this->getObjId()) as $selected) {
@@ -230,7 +214,7 @@ abstract class xvmpGUI
      *
      * @throws ilCtrlException
      */
-    protected function cancel()
+    protected function cancel() : void
     {
         $this->dic->ctrl()->redirect($this, self::CMD_STANDARD);
     }
@@ -258,7 +242,7 @@ abstract class xvmpGUI
      * called by ilObjViMPAccess
      * @throws ilCtrlException
      */
-    public function accessDenied()
+    public function accessDenied() : void
     {
         $this->dic->ui()->mainTemplate()->setOnScreenMessage('failure', $this->pl->txt('access_denied'), true);
         $this->dic->ctrl()->redirect($this->parent_gui, ilObjViMPGUI::CMD_SHOW_CONTENT);
@@ -353,7 +337,7 @@ abstract class xvmpGUI
     /**
      * @throws xvmpException
      */
-    protected function downloadMedium()
+    protected function downloadMedium() : void
     {
         $mid = filter_input(INPUT_GET, 'mid', FILTER_VALIDATE_INT);
         $video = xvmpMedium::find($mid);

@@ -164,12 +164,11 @@ class xvmpMedium extends xvmpObject
 
 
     /**
-     * @param $video array|xvmpMedium
-     *
+     * @param $video xvmpMedium|array
      * @return bool
      * @throws xvmpException
      */
-    public static function isVimeoOrYoutube($video): bool
+    public static function isVimeoOrYoutube(xvmpMedium|array $video) : bool
     {
         if (is_array($video)) {
             return in_array($video['mediasubtype'] ?? array(), ['youtube', 'vimeo']);
@@ -179,7 +178,7 @@ class xvmpMedium extends xvmpObject
             }
             return false;
         } else {
-            throw new xvmpException(xvmpException::INTERNAL_ERROR, '$video must be of type array or xvmpMedium: ' . print_r($video, true));
+            throw new xvmpException((string) xvmpException::INTERNAL_ERROR, '$video must be of type array or xvmpMedium: ' . print_r($video, true));
         }
     }
 
@@ -303,11 +302,7 @@ class xvmpMedium extends xvmpObject
         return $medium;
     }
 
-
-    /**
-     * @param int $mid
-     */
-    public static function deleteObject(int $mid)
+    public static function deleteObject(int $mid) : void
     {
         try {
             xvmpCacheFactory::getInstance()->delete(self::class . '-' . $mid);
@@ -371,166 +366,49 @@ class xvmpMedium extends xvmpObject
      * @param       $object
      * @param null $ttl
      */
-    public static function cache($identifier, $object, $ttl = null)
+    public static function cache($identifier, $object, $ttl = null) : void
     {
-        parent::cache($identifier, $object, (int) ($ttl ? $ttl : xvmpConf::getConfig(xvmpConf::F_CACHE_TTL_VIDEOS)));
+        parent::cache($identifier, $object, (int) ($ttl ?: xvmpConf::getConfig(xvmpConf::F_CACHE_TTL_VIDEOS)));
     }
 
-    /**
-     * @var int
-     */
     protected int $mid;
-    /**
-     * @var int
-     */
     protected int $uid;
-    /**
-     * @var String
-     */
     protected string $username;
-    /**
-     * @var String
-     */
     protected string $mediakey;
-    /**
-     * @var array
-     */
     protected array $mediapermissions;
-    /**
-     * @var String
-     */
     protected string $mediatype;
-    /**
-     * @var String
-     */
     protected string $mediasubtype;
-    /**
-     * @var String
-     */
     protected string $published;
-    /**
-     * @var String
-     */
     protected string $status;
-    /**
-     * @var bool
-     */
     protected bool $featured;
-    /**
-     * @var String
-     */
     protected string $culture;
-    /**
-     * @var array
-     */
     protected ?array $properties = [];
-    /**
-     * @var String
-     */
     protected string $title;
-    /**
-     * @var String
-     */
     protected ?string $description;
-    /**
-     * @var ?int
-     */
     protected ?int $duration;
-    /**
-     * @var String
-     */
     protected ?string $duration_formatted;
-    /**
-     * @var String
-     */
     protected ?string $thumbnail;
-    /**
-     * @var String
-     */
     protected ?string $embed_code;
-    /**
-     * @var array|string
-     */
-    protected $medium;
-    /**
-     * @var String
-     */
+    protected string|array $medium;
     protected ?string $source;
-    /**
-     * @var String
-     */
     protected ?string $meta_title;
-    /**
-     * @var String
-     */
     protected ?string $meta_description;
-    /**
-     * @var String
-     */
     protected ?string $meta_keywords;
-    /**
-     * @var String
-     */
     protected ?string $meta_author;
-    /**
-     * @var String
-     */
     protected ?string $meta_copyright;
-    /**
-     * @var int
-     */
     protected int $sum_rating;
-    /**
-     * @var int
-     */
     protected int $count_views;
-    /**
-     * @var int
-     */
     protected int $count_rating;
-    /**
-     * @var int
-     */
     protected int $count_favorites;
-    /**
-     * @var int
-     */
     protected int $count_comments;
-    /**
-     * @var int
-     */
     protected int $count_flags;
-    /**
-     * @var String
-     */
     protected string $created_at;
-    /**
-     * @var String
-     */
     protected string $updated_at;
-    /**
-     * @var array
-     */
     protected array $categories;
-    /**
-     * @var string
-     */
     protected string $tags;
-    /**
-     * @var array
-     */
     protected ?array $subtitles = [];
-    /**
-     * @var bool
-     */
     protected bool $download_allowed = false;
-    /**
-     * @var DateTime
-     */
     protected ?DateTime $startdate;
-    /**
-     * @var DateTime
-     */
     protected ?DateTime $enddate;
 
     /**
@@ -544,7 +422,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param array $subtitles
      */
-    public function setSubtitles(array $subtitles)
+    public function setSubtitles(array $subtitles) : void
     {
         $this->subtitles = $subtitles;
     }
@@ -562,7 +440,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param array $mediapermissions
      */
-    public function setMediapermissions(array $mediapermissions)
+    public function setMediapermissions(array $mediapermissions) : void
     {
         $this->mediapermissions = $mediapermissions;
     }
@@ -586,7 +464,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param DateTime $startdate
      */
-    public function setStartdate(DateTime $startdate)
+    public function setStartdate(DateTime $startdate) : void
     {
         $this->startdate = $startdate;
     }
@@ -602,7 +480,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param DateTime $enddate
      */
-    public function setEnddate(DateTime $enddate)
+    public function setEnddate(DateTime $enddate) : void
     {
         $this->enddate = $enddate;
     }
@@ -625,7 +503,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param int $id
      */
-    public function setId(int $id)
+    public function setId(int $id) : void
     {
         $this->setMid($id);
     }
@@ -642,7 +520,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param int $mid
      */
-    public function setMid(int $mid)
+    public function setMid(int $mid) : void
     {
         $this->mid = $mid;
     }
@@ -668,7 +546,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param int $uid
      */
-    public function setUid(int $uid)
+    public function setUid(int $uid) : void
     {
         $this->uid = $uid;
     }
@@ -686,7 +564,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param String $username
      */
-    public function setUsername(string $username)
+    public function setUsername(string $username) : void
     {
         $this->username = $username;
     }
@@ -704,7 +582,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param String $mediakey
      */
-    public function setMediakey(string $mediakey)
+    public function setMediakey(string $mediakey) : void
     {
         $this->mediakey = $mediakey;
     }
@@ -722,7 +600,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param String $mediatype
      */
-    public function setMediatype(string $mediatype)
+    public function setMediatype(string $mediatype) : void
     {
         $this->mediatype = $mediatype;
     }
@@ -740,7 +618,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param String $mediasubtype
      */
-    public function setMediasubtype(string $mediasubtype)
+    public function setMediasubtype(string $mediasubtype) : void
     {
         $this->mediasubtype = $mediasubtype;
     }
@@ -774,7 +652,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param String $published
      */
-    public function setPublished(string $published)
+    public function setPublished(string $published) : void
     {
         $this->published = $published;
     }
@@ -792,7 +670,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param String $status
      */
-    public function setStatus(string $status)
+    public function setStatus(string $status) : void
     {
         $this->status = $status;
     }
@@ -810,7 +688,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param bool $featured
      */
-    public function setFeatured(bool $featured)
+    public function setFeatured(bool $featured) : void
     {
         $this->featured = $featured;
     }
@@ -828,7 +706,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param String $culture
      */
-    public function setCulture(string $culture)
+    public function setCulture(string $culture) : void
     {
         $this->culture = $culture;
     }
@@ -846,7 +724,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param array $properties
      */
-    public function setProperties(array $properties)
+    public function setProperties(array $properties) : void
     {
         $this->properties = $properties;
     }
@@ -886,7 +764,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param String $description
      */
-    public function setDescription(string $description)
+    public function setDescription(string $description) : void
     {
         $this->description = $description;
     }
@@ -913,7 +791,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param String $duration_formatted
      */
-    public function setDurationFormatted(string $duration_formatted)
+    public function setDurationFormatted(string $duration_formatted) : void
     {
         $this->duration_formatted = $duration_formatted;
     }
@@ -922,7 +800,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param int $duration
      */
-    public function setDuration(int $duration)
+    public function setDuration(int $duration) : void
     {
         $this->duration = $duration;
     }
@@ -945,7 +823,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param String $thumbnail
      */
-    public function setThumbnail(string $thumbnail)
+    public function setThumbnail(string $thumbnail) : void
     {
         $this->thumbnail = $thumbnail;
     }
@@ -969,7 +847,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param String $embed_code
      */
-    public function setEmbedCode(string $embed_code)
+    public function setEmbedCode(string $embed_code) : void
     {
         $this->embed_code = $embed_code;
     }
@@ -978,7 +856,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @return array|string
      */
-    public function getMedium()
+    public function getMedium() : array|string
     {
         return $this->medium;
     }
@@ -987,7 +865,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param array|string $medium
      */
-    public function setMedium($medium)
+    public function setMedium(array|string $medium) : void
     {
         $this->medium = $medium;
     }
@@ -1005,7 +883,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param String $source
      */
-    public function setSource(string $source)
+    public function setSource(string $source) : void
     {
         $this->source = $source;
     }
@@ -1023,7 +901,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param String $meta_title
      */
-    public function setMetaTitle(string $meta_title)
+    public function setMetaTitle(string $meta_title) : void
     {
         $this->meta_title = $meta_title;
     }
@@ -1041,7 +919,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param String $meta_description
      */
-    public function setMetaDescription(string $meta_description)
+    public function setMetaDescription(string $meta_description) : void
     {
         $this->meta_description = $meta_description;
     }
@@ -1059,7 +937,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param String $meta_keywords
      */
-    public function setMetaKeywords(string $meta_keywords)
+    public function setMetaKeywords(string $meta_keywords) : void
     {
         $this->meta_keywords = $meta_keywords;
     }
@@ -1077,7 +955,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param String $meta_author
      */
-    public function setMetaAuthor(string $meta_author)
+    public function setMetaAuthor(string $meta_author) : void
     {
         $this->meta_author = $meta_author;
     }
@@ -1095,7 +973,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param String $meta_copyright
      */
-    public function setMetaCopyright(string $meta_copyright)
+    public function setMetaCopyright(string $meta_copyright) : void
     {
         $this->meta_copyright = $meta_copyright;
     }
@@ -1113,7 +991,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param int $sum_rating
      */
-    public function setSumRating(int $sum_rating)
+    public function setSumRating(int $sum_rating) : void
     {
         $this->sum_rating = $sum_rating;
     }
@@ -1131,7 +1009,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param int $count_views
      */
-    public function setCountViews(int $count_views)
+    public function setCountViews(int $count_views) : void
     {
         $this->count_views = $count_views;
     }
@@ -1149,7 +1027,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param int $count_rating
      */
-    public function setCountRating(int $count_rating)
+    public function setCountRating(int $count_rating) : void
     {
         $this->count_rating = $count_rating;
     }
@@ -1167,7 +1045,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param int $count_favorites
      */
-    public function setCountFavorites(int $count_favorites)
+    public function setCountFavorites(int $count_favorites) : void
     {
         $this->count_favorites = $count_favorites;
     }
@@ -1185,7 +1063,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param int $count_comments
      */
-    public function setCountComments(int $count_comments)
+    public function setCountComments(int $count_comments) : void
     {
         $this->count_comments = $count_comments;
     }
@@ -1203,7 +1081,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param int $count_flags
      */
-    public function setCountFlags(int $count_flags)
+    public function setCountFlags(int $count_flags) : void
     {
         $this->count_flags = $count_flags;
     }
@@ -1226,7 +1104,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param String $created_at
      */
-    public function setCreatedAt(string $created_at)
+    public function setCreatedAt(string $created_at) : void
     {
         $this->created_at = $created_at;
     }
@@ -1244,7 +1122,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param String $updated_at
      */
-    public function setUpdatedAt(string $updated_at)
+    public function setUpdatedAt(string $updated_at) : void
     {
         $this->updated_at = $updated_at;
     }
@@ -1262,7 +1140,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param array $categories
      */
-    public function setCategories(array $categories)
+    public function setCategories(array $categories) : void
     {
         $this->categories = $categories;
     }
@@ -1280,7 +1158,7 @@ class xvmpMedium extends xvmpObject
     /**
      * @param string $tags
      */
-    public function setTags(string $tags)
+    public function setTags(string $tags) : void
     {
         $this->tags = $tags;
     }

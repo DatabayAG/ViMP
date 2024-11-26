@@ -61,7 +61,7 @@ class xvmpUserRoles extends xvmpObject
     /**
      * @var int
      */
-    protected $id;
+    protected int $id;
     /**
      * @var String
      */
@@ -104,7 +104,7 @@ class xvmpUserRoles extends xvmpObject
     /**
      * @param String $status
      */
-    public function setStatus(string $status)
+    public function setStatus(string $status) : void
     {
         $this->status = $status;
     }
@@ -122,7 +122,7 @@ class xvmpUserRoles extends xvmpObject
     /**
      * @param String $name
      */
-    public function setName(string $name)
+    public function setName(string $name) : void
     {
         $this->name = $name;
     }
@@ -140,7 +140,7 @@ class xvmpUserRoles extends xvmpObject
     /**
      * @param String $description
      */
-    public function setDescription(string $description)
+    public function setDescription(string $description) : void
     {
         $this->description = $description;
     }
@@ -158,7 +158,7 @@ class xvmpUserRoles extends xvmpObject
     /**
      * @param bool $visible
      */
-    public function setVisible(bool $visible)
+    public function setVisible(bool $visible) : void
     {
         $this->visible = $visible;
     }
@@ -176,7 +176,7 @@ class xvmpUserRoles extends xvmpObject
     /**
      * @param bool $default
      */
-    public function setDefault(bool $default)
+    public function setDefault(bool $default) : void
     {
         $this->default = $default;
     }
@@ -194,7 +194,7 @@ class xvmpUserRoles extends xvmpObject
     /**
      * @param String $created_at
      */
-    public function setCreatedAt(string $created_at)
+    public function setCreatedAt(string $created_at) : void
     {
         $this->created_at = $created_at;
     }
@@ -212,7 +212,7 @@ class xvmpUserRoles extends xvmpObject
     /**
      * @param String $updated_at
      */
-    public function setUpdatedAt(string $updated_at)
+    public function setUpdatedAt(string $updated_at) : void
     {
         $this->updated_at = $updated_at;
     }

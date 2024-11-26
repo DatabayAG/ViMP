@@ -67,7 +67,6 @@ class xvmpSearchVideosTableGUI extends xvmpTableGUI
         $this->setFilterCols(4);
 
         $this->lng->loadLanguageModule('form'); // some lang vars from the form module are used
-        $this->setDisableFilterHiding(true);
         $this->tpl_global->addOnLoadCode('xoctWaiter.init("waiter");');
         //		$this->tpl_global->addOnLoadCode('VimpSearch.initEmptyFilterCheck();');
     }
@@ -76,9 +75,9 @@ class xvmpSearchVideosTableGUI extends xvmpTableGUI
     /**
      *
      */
-    protected function initColumns()
+    protected function initColumns() : void
     {
-        $this->addColumn($this->pl->txt('added'), '', "75", false);
+        $this->addColumn($this->pl->txt('added'), '', "75");
         $this->addColumn('', '', "210", true);
 
         parent::initColumns();
@@ -88,7 +87,7 @@ class xvmpSearchVideosTableGUI extends xvmpTableGUI
     /**
      *
      */
-    public function parseData()
+    public function parseData() : void
     {
         foreach ($this->filters as $filter_item) {
             $value = $filter_item->getValue();
@@ -98,7 +97,7 @@ class xvmpSearchVideosTableGUI extends xvmpTableGUI
             }
             switch ($postvar) {
                 case 'username':
-                    if (ilObjUser::_loginExists($value)) {
+                    if (ilObjUser::_loginExists((string) $value)) {
                         $ilObjUser = new ilObjUser(ilObjUser::_lookupId($value));
                         $xvmpUser = xvmpUser::getVimpUser($ilObjUser);
                         if (!$xvmpUser) {
@@ -254,7 +253,7 @@ class xvmpSearchVideosTableGUI extends xvmpTableGUI
      *
      * @throws ilCtrlException
      */
-    protected function redirectToParent()
+    protected function redirectToParent() : void
     {
         $this->ctrl->redirect($this->parent_obj, xvmpGUI::CMD_STANDARD);
     }

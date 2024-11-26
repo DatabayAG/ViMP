@@ -49,7 +49,7 @@ class xvmpProgressBarUI
     /**
      * @throws ilCtrlException
      */
-    protected function addJS()
+    protected function addJS() : void
     {
         if (!self::$js_loaded) {
             $this->dic->ui()->mainTemplate()->addJavaScript(

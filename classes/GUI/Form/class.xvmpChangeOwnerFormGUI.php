@@ -22,7 +22,7 @@ class xvmpChangeOwnerFormGUI extends xvmpFormGUI
     /**
      * @var xvmpOwnVideosGUI
      */
-    protected $parent_gui;
+    protected ilViMPConfigGUI $parent_gui;
 
 
     /**
@@ -52,7 +52,7 @@ class xvmpChangeOwnerFormGUI extends xvmpFormGUI
      *
      * @throws ilCtrlException
      */
-    protected function initForm()
+    protected function initForm() : void
     {
         $input = new ilTextInputGUI($this->pl->txt('username'), 'login');
         $input->setRequired(true);

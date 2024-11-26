@@ -66,7 +66,6 @@ class xvmpSelectedVideosTableGUI extends xvmpTableGUI
 
         $this->setExternalSorting(true);
         $this->setEnableNumInfo(false);
-        $this->setLimit(0);
         $this->setShowRowsSelector(false);
 
         $base_link = $this->ctrl->getLinkTarget($this->parent_obj, '', '', true);
@@ -77,7 +76,7 @@ class xvmpSelectedVideosTableGUI extends xvmpTableGUI
         $this->parseData();
     }
 
-    protected function initColumns()
+    protected function initColumns() : void
     {
         $this->addColumn('', '', "75", true);
         $this->addColumn('', '', "210", true);
@@ -88,7 +87,7 @@ class xvmpSelectedVideosTableGUI extends xvmpTableGUI
     }
 
 
-    public function parseData()
+    public function parseData() : void
     {
         $this->setData(xvmpMedium::getSelectedAsArray($this->parent_obj->getObjId()));
     }
@@ -139,7 +138,7 @@ class xvmpSelectedVideosTableGUI extends xvmpTableGUI
     /**
      * @param $number
      */
-    protected function addRepositoryPreviewCss($number)
+    protected function addRepositoryPreviewCss($number) : void
     {
         $css = "
 		div.ilTableOuter table {

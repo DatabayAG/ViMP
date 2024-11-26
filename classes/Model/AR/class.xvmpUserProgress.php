@@ -92,7 +92,7 @@ class xvmpUserProgress extends ActiveRecord
     /**
      * @param int $id
      */
-    public function setId(int $id)
+    public function setId(int $id) : void
     {
         $this->id = $id;
     }
@@ -110,7 +110,7 @@ class xvmpUserProgress extends ActiveRecord
     /**
      * @param int $usr_id
      */
-    public function setUsrId(int $usr_id)
+    public function setUsrId(int $usr_id) : void
     {
         $this->usr_id = $usr_id;
     }
@@ -128,7 +128,7 @@ class xvmpUserProgress extends ActiveRecord
     /**
      * @param int $mid
      */
-    public function setMid(int $mid)
+    public function setMid(int $mid) : void
     {
         $this->mid = $mid;
     }
@@ -146,7 +146,7 @@ class xvmpUserProgress extends ActiveRecord
     /**
      * @param String $ranges
      */
-    public function setRanges(string $ranges)
+    public function setRanges(string $ranges) : void
     {
         $this->ranges = $ranges;
     }
@@ -164,7 +164,7 @@ class xvmpUserProgress extends ActiveRecord
     /**
      * @param int $video_duration
      */
-    public function setVideoDuration(int $video_duration)
+    public function setVideoDuration(int $video_duration) : void
     {
         $this->video_duration = $video_duration;
     }
@@ -182,7 +182,7 @@ class xvmpUserProgress extends ActiveRecord
     /**
      * @param int $total_watched
      */
-    public function setTotalWatched(int $total_watched)
+    public function setTotalWatched(int $total_watched) : void
     {
         $this->total_watched = $total_watched;
     }
@@ -194,7 +194,7 @@ class xvmpUserProgress extends ActiveRecord
      * @param string $ranges
      * @throws xvmpException
      */
-    public static function storeProgress(int $usr_id, int $mid, string $ranges)
+    public static function storeProgress(int $usr_id, int $mid, string $ranges) : void
     {
         $progress = self::where(array('usr_id' => $usr_id, 'mid' => $mid))->first();
         if (!$progress) {
@@ -223,7 +223,7 @@ class xvmpUserProgress extends ActiveRecord
     /**
      *
      */
-    protected function calcTotalWatched()
+    protected function calcTotalWatched() : void
     {
         $ranges = json_decode($this->getRanges());
         $watched_seconds = 0;
@@ -239,7 +239,7 @@ class xvmpUserProgress extends ActiveRecord
      *
      * @return float|int
      */
-    public static function calcPercentage($usr_id, $mid)
+    public static function calcPercentage($usr_id, $mid) : float|int
     {
         /** @var self $progress */
         $progress = self::where(array('usr_id' => $usr_id, 'mid' => $mid))->first();

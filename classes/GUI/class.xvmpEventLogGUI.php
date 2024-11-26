@@ -18,7 +18,7 @@ class xvmpEventLogGUI extends xvmpGUI
     /**
      *
      */
-    public function executeCommand()
+    public function executeCommand() : void
     {
         if (!ilObjViMPAccess::hasWriteAccess()) {
             $this->accessDenied();
@@ -26,14 +26,14 @@ class xvmpEventLogGUI extends xvmpGUI
         parent::executeCommand();
     }
 
-    protected function index()
+    protected function index() : void
     {
         $xvmpEventLogTableGUI = new xvmpEventLogTableGUI($this, self::CMD_STANDARD);
         $xvmpEventLogTableGUI->parseData();
         $this->dic->ui()->mainTemplate()->setContent($xvmpEventLogTableGUI->getHTML());
     }
 
-    protected function applyFilter()
+    protected function applyFilter() : void
     {
         $xvmpEventLogTableGUI = new xvmpEventLogTableGUI($this, self::CMD_STANDARD);
         $xvmpEventLogTableGUI->writeFilterToSession();
@@ -41,7 +41,7 @@ class xvmpEventLogGUI extends xvmpGUI
         $this->dic->ctrl()->redirect($this, self::CMD_STANDARD);
     }
 
-    protected function resetFilter()
+    protected function resetFilter() : void
     {
         $xvmpEventLogTableGUI = new xvmpEventLogTableGUI($this, self::CMD_STANDARD);
         $xvmpEventLogTableGUI->resetFilter();

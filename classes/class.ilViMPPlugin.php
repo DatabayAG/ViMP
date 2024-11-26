@@ -46,7 +46,7 @@ class ilViMPPlugin extends ilRepositoryObjectPlugin implements ilCronJobProvider
     /**
      *
      */
-    public function executeCommand()
+    public function executeCommand() : void
     {
         global $ilCtrl;
         $cmd = $ilCtrl->getCmd();

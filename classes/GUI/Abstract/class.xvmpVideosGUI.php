@@ -36,7 +36,7 @@ abstract class xvmpVideosGUI extends xvmpGUI
      * @param $cmd
      * @throws xvmpException|ilCtrlException
      */
-    protected function performCommand($cmd)
+    protected function performCommand($cmd) : void
     {
         VideoPlayer::loadVideoJSAndCSS(false);
 
@@ -68,7 +68,7 @@ abstract class xvmpVideosGUI extends xvmpGUI
      *
      * @throws ilCtrlException
      */
-    protected function setSubTabs()
+    protected function setSubTabs() : void
     {
         if (ilObjViMPAccess::hasWriteAccess()) {
             $this->dic->tabs()->addSubTab(self::SUBTAB_SEARCH, $this->pl->txt(self::SUBTAB_SEARCH), $this->dic->ctrl()->getLinkTargetByClass(xvmpSearchVideosGUI::class, xvmpGUI::CMD_STANDARD));
@@ -81,7 +81,7 @@ abstract class xvmpVideosGUI extends xvmpGUI
     /**
      *
      */
-    protected function index()
+    protected function index() : void
     {
         $class_name = static::TABLE_CLASS;
         /** @var xvmpTableGUI $table_gui */
@@ -93,7 +93,7 @@ abstract class xvmpVideosGUI extends xvmpGUI
     /**
      *
      */
-    protected function show()
+    protected function show() : void
     {
         $class_name = static::TABLE_CLASS;
         /** @var xvmpTableGUI $table_gui */
@@ -106,7 +106,7 @@ abstract class xvmpVideosGUI extends xvmpGUI
     /**
      *
      */
-    protected function showFiltered()
+    protected function showFiltered() : void
     {
         $class_name = static::TABLE_CLASS;
         /** @var xvmpTableGUI $table_gui */
@@ -121,7 +121,7 @@ abstract class xvmpVideosGUI extends xvmpGUI
      *
      * @throws ilCtrlException
      */
-    public function applyFilter()
+    public function applyFilter() : void
     {
         $class_name = static::TABLE_CLASS;
         /** @var xvmpTableGUI $table_gui */
@@ -136,7 +136,7 @@ abstract class xvmpVideosGUI extends xvmpGUI
      *
      * @throws ilCtrlException
      */
-    public function resetFilter()
+    public function resetFilter() : void
     {
         $class_name = static::TABLE_CLASS;
         /** @var xvmpTableGUI $table_gui */
@@ -188,7 +188,7 @@ abstract class xvmpVideosGUI extends xvmpGUI
      *
      * @throws ilCtrlException
      */
-    protected function initUploadButton()
+    protected function initUploadButton() : void
     {
         $upload_button = ilLinkButton::getInstance();
         $upload_button->setCaption($this->pl->txt('upload_video'), false);

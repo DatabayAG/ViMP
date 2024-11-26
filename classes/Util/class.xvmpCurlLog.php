@@ -46,7 +46,7 @@ class xvmpCurlLog extends ilLog
     /**
      * @param $log_level
      */
-    public static function init($log_level)
+    public static function init($log_level) : void
     {
         self::$log_level = $log_level;
     }
@@ -64,17 +64,17 @@ class xvmpCurlLog extends ilLog
 
     /**
      * @param      $a_msg
-     * @param null $log_level
+     * @param null $a_log_level
      */
-    public function write($a_msg, $log_level = null): void
+    public function write($a_msg, $a_log_level = null): void
     {
-        if (self::relevant($log_level)) {
+        if (self::relevant($a_log_level)) {
             parent::write($a_msg);
         }
     }
 
 
-    public function writeTrace()
+    public function writeTrace() : void
     {
         try {
             throw new Exception();

@@ -38,7 +38,7 @@ class xvmpUploadedMedia extends ActiveRecord
      * @db_fieldtype        text
      * @db_length           256
      */
-    protected $tmp_id = 0;
+    protected string|int $tmp_id = 0;
     /**
      * @var int
      *
@@ -86,7 +86,7 @@ class xvmpUploadedMedia extends ActiveRecord
     /**
      * @param int $mid
      */
-    public function setMid(int $mid)
+    public function setMid(int $mid) : void
     {
         $this->mid = $mid;
     }
@@ -95,7 +95,7 @@ class xvmpUploadedMedia extends ActiveRecord
     /**
      * @return String
      */
-    public function getTmpId()
+    public function getTmpId() : int|string
     {
         return $this->tmp_id;
     }
@@ -104,7 +104,7 @@ class xvmpUploadedMedia extends ActiveRecord
     /**
      * @param String $tmp_id
      */
-    public function setTmpId(string $tmp_id)
+    public function setTmpId(string $tmp_id) : void
     {
         $this->tmp_id = $tmp_id;
     }
@@ -122,7 +122,7 @@ class xvmpUploadedMedia extends ActiveRecord
     /**
      * @param int $ref_id
      */
-    public function setRefId(int $ref_id)
+    public function setRefId(int $ref_id) : void
     {
         $this->ref_id = $ref_id;
     }
@@ -140,7 +140,7 @@ class xvmpUploadedMedia extends ActiveRecord
     /**
      * @param int $user_id
      */
-    public function setUserId(int $user_id)
+    public function setUserId(int $user_id) : void
     {
         $this->user_id = $user_id;
     }
@@ -158,7 +158,7 @@ class xvmpUploadedMedia extends ActiveRecord
     /**
      * @param string $email
      */
-    public function setEmail(string $email)
+    public function setEmail(string $email) : void
     {
         $this->email = $email;
     }
@@ -175,7 +175,7 @@ class xvmpUploadedMedia extends ActiveRecord
     /**
      * @param int $notification
      */
-    public function setNotification(int $notification)
+    public function setNotification(int $notification) : void
     {
         $this->notification = $notification;
     }

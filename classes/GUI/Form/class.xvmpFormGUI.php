@@ -13,26 +13,11 @@ use ILIAS\DI\Container;
  */
 abstract class xvmpFormGUI extends ilPropertyFormGUI
 {
-    /**
-     * @var ilViMPConfigGUI
-     */
-    protected $parent_gui;
-    /**
-     * @var ilViMPPlugin
-     */
+    protected ilViMPConfigGUI $parent_gui;
     protected ilViMPPlugin $pl;
-    /**
-     * @var ilCtrl
-     */
     protected ilCtrl $ctrl;
-    /**
-     * @var ilLanguage
-     */
     protected ilLanguage $lng;
-    /**
-     * @var Container
-     */
-    protected $dic;
+    protected Container $dic;
 
     /**
      * xvmpFormGUI constructor.

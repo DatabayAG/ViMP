@@ -13,14 +13,9 @@ use ILIAS\DI\Container;
  */
 class xvmpContentListGUI
 {
-    /**
-     * @var xvmpContentGUI
-     */
-    protected $parent_gui;
-    /**
-     * @var Container
-     */
-    protected $dic;
+    private ilViMPPlugin $pl;
+    protected xvmpContentGUI $parent_gui;
+    protected Container $dic;
 
     /**
      * xvmpContentTilesGUI constructor.

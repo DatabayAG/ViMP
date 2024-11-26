@@ -18,7 +18,7 @@ class xvmpSearchVideosGUI extends xvmpVideosGUI
     public const TABLE_CLASS = 'xvmpSearchVideosTableGUI';
 
 
-    public function executeCommand()
+    public function executeCommand() : void
     {
         if (!ilObjViMPAccess::hasWriteAccess()) {
             $this->accessDenied();

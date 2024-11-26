@@ -50,7 +50,7 @@ class xvmpCron
     /**
      *
      */
-    public function run()
+    public function run() : void
     {
         // notifications
         /** @var xvmpUploadedMedia $uploaded_medium */
@@ -58,7 +58,7 @@ class xvmpCron
             try {
                 $medium = xvmpMedium::find($uploaded_medium->getMid());
                 if ($medium instanceof xvmpDeletedMedium) {
-                    throw new xvmpException(xvmpException::API_CALL_STATUS_404, 'Medium not exist');
+                    throw new xvmpException((string) xvmpException::API_CALL_STATUS_404, 'Medium not exist');
                 }
                 switch ($medium->getStatus()) {
                     case "legal":
@@ -86,7 +86,7 @@ class xvmpCron
                 }
 
             } catch (xvmpException $e) {
-                if ($e->getCode() == 404 && strpos($e->getMessage(), "Medium not exist") !== false) {
+                if ($e->getCode() == 404 && str_contains($e->getMessage(), "Medium not exist")) {
                     $uploaded_medium->delete();
                 }
                 continue;
@@ -112,7 +112,7 @@ class xvmpCron
      * @param xvmpUploadedMedia $uploaded_medium
      * @param $transcoding_succeeded
      */
-    protected function sendNotification(xvmpMedium $medium, xvmpUploadedMedia $uploaded_medium, $transcoding_succeeded)
+    protected function sendNotification(xvmpMedium $medium, xvmpUploadedMedia $uploaded_medium, $transcoding_succeeded) : void
     {
         $subject = xvmpConf::getConfig($transcoding_succeeded ? xvmpConf::F_NOTIFICATION_SUBJECT_SUCCESSFULL : xvmpConf::F_NOTIFICATION_SUBJECT_FAILED);
         $body = xvmpConf::getConfig($transcoding_succeeded ? xvmpConf::F_NOTIFICATION_BODY_SUCCESSFULL : xvmpConf::F_NOTIFICATION_BODY_FAILED);
@@ -137,13 +137,15 @@ class xvmpCron
         // send mail
         $notification = new ilMail(ANONYMOUS_USER_ID);
         $notification->sendMail(
-            $ilObjUser->getLogin(),
-            '',
-            '',
-            $subject,
-            $body,
-            array(),
-            true
+            new MailDeliveryData(
+                $ilObjUser->getLogin(),
+                '',
+                '',
+                $subject,
+                $body,
+                array(),
+                true
+            )
         );
         //		xvmpLog::getInstance()->write('Notification sent to user: ' . ilObjUser::_lookupLogin($uploaded_medium->getUserId()) . ' (' . $uploaded_medium->getUserId() . ')');
     }

@@ -23,7 +23,7 @@ class xvmpLearningProgressGUI extends xvmpGUI
     /**
      *
      */
-    public function executeCommand()
+    public function executeCommand() : void
     {
         VideoPlayer::loadVideoJSAndCSS(false);
         if (!ilObjViMPAccess::hasWriteAccess()) {
@@ -33,14 +33,14 @@ class xvmpLearningProgressGUI extends xvmpGUI
     }
 
 
-    protected function index()
+    protected function index() : void
     {
         $this->dic->ui()->mainTemplate()->setOnScreenMessage('info', $this->pl->txt('hint_learning_progress_gui'));
         $xvmpLearningProgressTableGUI = new xvmpLearningProgressTableGUI($this, self::CMD_STANDARD);
         $this->dic->ui()->mainTemplate()->setContent($xvmpLearningProgressTableGUI->getHTML() . $this->getModalPlayer()->getHTML());
     }
 
-    protected function save()
+    protected function save() : void
     {
         foreach (filter_input(INPUT_POST, 'lp_required_percentage', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY) as $mid => $percentage) {
             /** @var xvmpSelectedMedia $selected_medium */

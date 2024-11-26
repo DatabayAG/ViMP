@@ -73,7 +73,7 @@ class xvmpSettings extends ActiveRecord
     /**
      * @param int $obj_id
      */
-    public function setObjId(int $obj_id)
+    public function setObjId(int $obj_id) : void
     {
         $this->obj_id = $obj_id;
     }
@@ -91,7 +91,7 @@ class xvmpSettings extends ActiveRecord
     /**
      * @param int $is_online
      */
-    public function setIsOnline(int $is_online)
+    public function setIsOnline(int $is_online) : void
     {
         $this->is_online = $is_online;
     }
@@ -110,7 +110,7 @@ class xvmpSettings extends ActiveRecord
     /**
      * @param int $layout_type
      */
-    public function setLayoutType(int $layout_type)
+    public function setLayoutType(int $layout_type) : void
     {
         $this->layout_type = $layout_type;
     }
@@ -128,7 +128,7 @@ class xvmpSettings extends ActiveRecord
     /**
      * @param int $repository_preview
      */
-    public function setRepositoryPreview(int $repository_preview)
+    public function setRepositoryPreview(int $repository_preview) : void
     {
         $this->repository_preview = $repository_preview;
     }
@@ -146,7 +146,7 @@ class xvmpSettings extends ActiveRecord
     /**
      * @param int $lp_active
      */
-    public function setLpActive(int $lp_active)
+    public function setLpActive(int $lp_active) : void
     {
         $this->lp_active = $lp_active;
     }

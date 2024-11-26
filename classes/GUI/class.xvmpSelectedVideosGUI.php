@@ -21,7 +21,7 @@ class xvmpSelectedVideosGUI extends xvmpVideosGUI
     public const CMD_MOVE_DOWN = 'moveDown';
     public const CMD_SET_VISIBILITY = 'setVisibility';
 
-    public function executeCommand()
+    public function executeCommand() : void
     {
         if (!ilObjViMPAccess::hasWriteAccess()) {
             $this->accessDenied();

@@ -5,6 +5,7 @@ declare(strict_types=1);
 /* Copyright (c) 1998-2009 ILIAS open source, Extended GPL, see docs/LICENSE */
 
 use ILIAS\DI\Container;
+use JetBrains\PhpStorm\NoReturn;
 
 /**
  * Class ilObjViMPGUI
@@ -43,7 +44,7 @@ class ilObjViMPGUI extends ilObjectPluginGUI
     /**
      * @var Container
      */
-    protected $dic;
+    protected Container $dic;
 
     /**
      * ilObjViMPGUI constructor.
@@ -192,15 +193,14 @@ class ilObjViMPGUI extends ilObjectPluginGUI
     }
 
     /**
-     * @param string $a_new_type
-     *
+     * @param string $new_type
      * @return ilPropertyFormGUI
      */
-    public function initCreateForm($a_new_type): ilPropertyFormGUI
+    public function initCreateForm(string $new_type): ilPropertyFormGUI
     {
         $this->tpl->addCss($this->pl->getAssetURL('default/xvmp_settings.css'));
 
-        $form = parent::initCreateForm($a_new_type);
+        $form = parent::initCreateForm($new_type);
 
         // ONLINE
         $input = new ilCheckboxInputGUI($this->lng->txt(xvmpSettingsFormGUI::F_ONLINE), xvmpSettingsFormGUI::F_ONLINE);
@@ -229,22 +229,22 @@ class ilObjViMPGUI extends ilObjectPluginGUI
         return $form;
     }
 
-    public function afterSave(ilObject $newObj): void
+    public function afterSave(ilObject $new_object): void
     {
         if ($_POST[xvmpSettingsFormGUI::F_ONLINE] || $_POST[xvmpSettingsFormGUI::F_LAYOUT]) {
             /** @var xvmpSettings $settings */
-            $settings = xvmpSettings::find($newObj->getId());
+            $settings = xvmpSettings::find($new_object->getId());
             $settings->setIsOnline((int) $_POST[xvmpSettingsFormGUI::F_ONLINE]);
             $settings->setLayoutType((int) $_POST[xvmpSettingsFormGUI::F_LAYOUT]);
             $settings->update();
         }
-        parent::afterSave($newObj);
+        parent::afterSave($new_object);
     }
 
     /**
      * @param bool $render_locator
      */
-    protected function initHeader($render_locator = true)
+    protected function initHeader(bool $render_locator = true) : void
     {
         if ($render_locator) {
             $this->setLocator();
@@ -266,15 +266,12 @@ class ilObjViMPGUI extends ilObjectPluginGUI
         $this->tpl->setPermanentLink('xvmp', (int) $_GET['ref_id']);
     }
 
-    /**
-     * @return bool
-     */
     protected function setTabs(): void
     {
         $this->tabs_gui->addTab(
             self::TAB_CONTENT,
             $this->pl->txt(self::TAB_CONTENT),
-            $this->ctrl->getLinkTargetByClass(xvmpContentGUI::class, xvmpContentGUI::CMD_STANDARD)
+            $this->ctrl->getLinkTargetByClass(xvmpContentGUI::class, xvmpGUI::CMD_STANDARD)
         );
         $this->tabs_gui->addTab(
             self::TAB_INFO,
@@ -286,14 +283,14 @@ class ilObjViMPGUI extends ilObjectPluginGUI
             $this->tabs_gui->addTab(
                 self::TAB_VIDEOS,
                 $this->pl->txt(self::TAB_VIDEOS),
-                $this->ctrl->getLinkTargetByClass(xvmpSearchVideosGUI::class, xvmpSearchVideosGUI::CMD_STANDARD)
+                $this->ctrl->getLinkTargetByClass(xvmpSearchVideosGUI::class, xvmpGUI::CMD_STANDARD)
             );
         } else {
             if (ilObjViMPAccess::hasUploadPermission()) {
                 $this->tabs_gui->addTab(
                     self::TAB_VIDEOS,
                     $this->pl->txt(self::TAB_VIDEOS),
-                    $this->ctrl->getLinkTargetByClass(xvmpOwnVideosGUI::class, xvmpOwnVideosGUI::CMD_STANDARD)
+                    $this->ctrl->getLinkTargetByClass(xvmpOwnVideosGUI::class, xvmpGUI::CMD_STANDARD)
                 );
             }
         }
@@ -304,7 +301,7 @@ class ilObjViMPGUI extends ilObjectPluginGUI
                 $this->lng->txt(self::TAB_LEARNING_PROGRESS),
                 $this->ctrl->getLinkTargetByClass(
                     xvmpLearningProgressGUI::class,
-                    xvmpLearningProgressGUI::CMD_STANDARD
+                    xvmpGUI::CMD_STANDARD
                 )
             );
 
@@ -314,7 +311,7 @@ class ilObjViMPGUI extends ilObjectPluginGUI
             $this->tabs_gui->addTab(
                 self::TAB_LOG,
                 $this->pl->txt(self::TAB_LOG),
-                $this->ctrl->getLinkTargetByClass(xvmpEventLogGUI::class, xvmpEventLogGUI::CMD_STANDARD)
+                $this->ctrl->getLinkTargetByClass(xvmpEventLogGUI::class, xvmpGUI::CMD_STANDARD)
             );
         }
 
@@ -322,7 +319,7 @@ class ilObjViMPGUI extends ilObjectPluginGUI
             $this->tabs_gui->addTab(
                 self::TAB_SETTINGS,
                 $this->pl->txt(self::TAB_SETTINGS),
-                $this->ctrl->getLinkTargetByClass(xvmpSettingsGUI::class, xvmpSettingsGUI::CMD_STANDARD)
+                $this->ctrl->getLinkTargetByClass(xvmpSettingsGUI::class, xvmpGUI::CMD_STANDARD)
             );
         }
 
@@ -366,7 +363,7 @@ class ilObjViMPGUI extends ilObjectPluginGUI
     /**
      * called by the button to test connection inside the plugin config
      */
-    public function testConnectionAjax()
+    public function testConnectionAjax() : void
     {
         $apikey = $_POST['apikey'];
         $apiurl = $_POST['apiurl'];
@@ -422,17 +419,17 @@ class ilObjViMPGUI extends ilObjectPluginGUI
     /**
      *
      */
-    public function showContent()
+    public function showContent() : void
     {
-        $this->ctrl->redirectByClass(xvmpContentGUI::class, xvmpContentGUI::CMD_STANDARD);
+        $this->ctrl->redirectByClass(xvmpContentGUI::class, xvmpGUI::CMD_STANDARD);
     }
 
     /**
      *
      */
-    public function searchVideos()
+    public function searchVideos() : void
     {
-        $this->ctrl->redirectByClass(xvmpSearchVideosGUI::class, xvmpSearchVideosGUI::CMD_STANDARD);
+        $this->ctrl->redirectByClass(xvmpSearchVideosGUI::class, xvmpGUI::CMD_STANDARD);
     }
 
     /**
@@ -452,7 +449,7 @@ class ilObjViMPGUI extends ilObjectPluginGUI
     /**
      * AJAX call
      */
-    protected function getTranscodingProgress()
+    protected function getTranscodingProgress() : void
     {
         try {
             $transcodingProgress = xvmpRequest::getTranscodingProgress(filter_input(
@@ -470,7 +467,7 @@ class ilObjViMPGUI extends ilObjectPluginGUI
     /**
      *
      */
-    public function getPicture()
+    public function getPicture() : void
     {
         $key = $_GET['key'];
         // TODO: implement picture wrapper, if api action is implemented

@@ -11,35 +11,12 @@ declare(strict_types=1);
  */
 class ilMultiSelectSearchInputGUI extends ilMultiSelectInputGUI
 {
-    /**
-     * @var string
-     */
     protected int $width;
-
-    /**
-     * @var string
-     */
     protected int $height;
-
-    /**
-     * @var string
-     */
-    protected $css_class;
-
-    /**
-     * @var int
-     */
-    protected $minimum_input_length = 0;
-
-    /**
-     * @var string
-     */
-    protected $ajax_link;
-
-    /**
-     * @var ilTemplate
-     */
-    protected $input_template;
+    protected string $css_class;
+    protected int $minimum_input_length = 0;
+    protected string $ajax_link;
+    protected ilTemplate $input_template;
 
     public function __construct($title, $post_var)
     {
@@ -48,7 +25,7 @@ class ilMultiSelectSearchInputGUI extends ilMultiSelectInputGUI
         $ilUser = $DIC['ilUser'];
         $lng = $DIC['lng'];
 
-        if (substr($post_var, -2) != "[]") {
+        if (!str_ends_with($post_var, "[]")) {
             $post_var = $post_var . "[]";
         }
         parent::__construct($title, $post_var);
@@ -109,7 +86,7 @@ class ilMultiSelectSearchInputGUI extends ilMultiSelectInputGUI
 
         $tpl->setVariable("WIDTH", $this->getWidth());
         $tpl->setVariable("HEIGHT", $this->getHeight());
-        $tpl->setVariable("PLACEHOLDER", "");
+        $tpl->setVariable("PLACEHOLDER");
         $tpl->setVariable("MINIMUM_INPUT_LENGTH", $this->getMinimumInputLength());
         $tpl->setVariable("Class", $this->getCssClass());
 
@@ -154,9 +131,6 @@ class ilMultiSelectSearchInputGUI extends ilMultiSelectInputGUI
         $this->height = $a_height;
     }
 
-    /**
-     * @return string
-     */
     public function getHeight(): int
     {
         return $this->height;
@@ -182,14 +156,11 @@ class ilMultiSelectSearchInputGUI extends ilMultiSelectInputGUI
     /**
      * @param string $css_class
      */
-    public function setCssClass(string $css_class)
+    public function setCssClass(string $css_class) : void
     {
         $this->css_class = $css_class;
     }
 
-    /**
-     * @return string
-     */
     public function getCssClass(): ?string
     {
         return $this->css_class;
@@ -198,7 +169,7 @@ class ilMultiSelectSearchInputGUI extends ilMultiSelectInputGUI
     /**
      * @param int $minimum_input_length
      */
-    public function setMinimumInputLength(int $minimum_input_length)
+    public function setMinimumInputLength(int $minimum_input_length) : void
     {
         $this->minimum_input_length = $minimum_input_length;
     }
@@ -214,7 +185,7 @@ class ilMultiSelectSearchInputGUI extends ilMultiSelectInputGUI
     /**
      * @param string $ajax_link setting the ajax link will lead to ignoration of the "setOptions" function as the link given will be used to get the
      */
-    public function setAjaxLink(string $ajax_link)
+    public function setAjaxLink(string $ajax_link) : void
     {
         $this->ajax_link = $ajax_link;
     }
@@ -228,13 +199,13 @@ class ilMultiSelectSearchInputGUI extends ilMultiSelectInputGUI
     }
 
     /**
-     * @param \srDefaultAccessChecker $access_checker
+     * @param srDefaultAccessChecker $access_checker
      */
-    public function setAccessChecker($access_checker)
+    public function setAccessChecker($access_checker) : void
     {
         $this->access_checker = $access_checker;
     }/**
-     * @return \srDefaultAccessChecker
+     * @return srDefaultAccessChecker
      */
     public function getAccessChecker()
     {
@@ -242,17 +213,17 @@ class ilMultiSelectSearchInputGUI extends ilMultiSelectInputGUI
     }
 
     /**
-     * @param \ilTemplate $input_template
+     * @param ilTemplate $input_template
      */
-    public function setInputTemplate(ilTemplate $input_template)
+    public function setInputTemplate(ilTemplate $input_template) : void
     {
         $this->input_template = $input_template;
     }
 
     /**
-     * @return \ilTemplate
+     * @return ilTemplate
      */
-    public function getInputTemplate()
+    public function getInputTemplate() : ilTemplate
     {
         return $this->input_template;
     }
@@ -265,7 +236,7 @@ class ilMultiSelectSearchInputGUI extends ilMultiSelectInputGUI
     protected function searchPostVar(): string
     {
         $postVar = $this->getPostVar();
-        if (substr($postVar, -2) === "[]") {
+        if (str_ends_with($postVar, "[]")) {
             $postVar = substr($postVar, 0, -2);
             return $postVar;
         }
@@ -273,9 +244,9 @@ class ilMultiSelectSearchInputGUI extends ilMultiSelectInputGUI
         return $postVar;
     }
 
-    public function setValueByArray($array): void
+    public function setValueByArray(array $a_values): void
     {
-        $val = isset($array[$this->searchPostVar()]) ? $array[$this->searchPostVar()] : array();
+        $val = isset($a_values[$this->searchPostVar()]) ? $a_values[$this->searchPostVar()] : array();
         if (!is_array($val)) {
             $val = explode(",", $val);
         }
