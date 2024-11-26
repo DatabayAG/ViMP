@@ -487,7 +487,7 @@ class xvmpRequest
         $xvmpCurl->post();
         $response = $xvmpCurl->getResponseArray();
         if (!isset($response['progress']) || !preg_match('/^\d+(\.\d+)?%$/', $response['progress'])) {
-            throw new xvmpException('could not read progress of medium with id ' . $mid .
+            throw new xvmpException(0,'could not read progress of medium with id ' . $mid .
                 ' - ' . (isset($response['progress']) ? "wrong format: {$response['progress']}" : "no response from server"));
         }
         return round((float) $response['progress'], $decimals);

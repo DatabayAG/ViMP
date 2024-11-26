@@ -13,9 +13,9 @@ class ilMultiSelectSearchInputGUI extends ilMultiSelectInputGUI
 {
     protected int $width;
     protected int $height;
-    protected string $css_class;
+    protected string $css_class = '';
     protected int $minimum_input_length = 0;
-    protected string $ajax_link;
+    protected string $ajax_link = '';
     protected ilTemplate $input_template;
 
     public function __construct($title, $post_var)

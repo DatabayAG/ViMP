@@ -150,24 +150,24 @@ class xvmpCurl
             $error_msg = is_array($error_msg) ? implode(".\n", $error_msg) : $error_msg;
 
             if ($error_msg == "Medium doesn't exist") {
-                throw new xvmpException((string) xvmpException::API_CALL_STATUS_404, $error_msg);
+                throw new xvmpException(xvmpException::API_CALL_STATUS_404, $error_msg);
             }
 
             switch ($this->getResponseStatus()) {
                 case 403:
-                    throw new xvmpException((string) xvmpException::API_CALL_STATUS_403, $error_msg);
+                    throw new xvmpException(xvmpException::API_CALL_STATUS_403, $error_msg);
                 case 401:
-                    throw new xvmpException((string) xvmpException::API_CALL_BAD_CREDENTIALS);
+                    throw new xvmpException(xvmpException::API_CALL_BAD_CREDENTIALS);
                 case 404:
-                    throw new xvmpException((string) xvmpException::API_CALL_STATUS_404, $error_msg);
+                    throw new xvmpException(xvmpException::API_CALL_STATUS_404, $error_msg);
                 default:
-                    throw new xvmpException((string) xvmpException::API_CALL_STATUS_500, $error_msg);
+                    throw new xvmpException(xvmpException::API_CALL_STATUS_500, $error_msg);
             }
         }
 
         if (($this->getResponseStatus() == 0) && $this->getResponseError()->getErrorNr()) {
             $error = $this->getResponseError();
-            throw new xvmpException((string) xvmpException::API_CALL_STATUS_500, $error->getMessage());
+            throw new xvmpException(xvmpException::API_CALL_STATUS_500, $error->getMessage());
         }
         //		curl_close($ch);
     }
@@ -262,7 +262,7 @@ class xvmpCurl
     protected ?xvmpCurlError $response_error = null;
     protected string $put_file_path = '';
     protected string $post_body = '';
-    protected static string $api_key = '';
+    protected static ?string $api_key = '';
     protected static string $username = '';
     protected static string $password = '';
     protected static bool $verify_peer = true;
@@ -488,7 +488,7 @@ class xvmpCurl
     {
         $this->response_status = $response_status;
     }
-    
+
     public function getResponseError(): ?xvmpCurlError
     {
         return $this->response_error;
