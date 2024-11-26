@@ -4,18 +4,25 @@ declare(strict_types=1);
 
 /**
  * Class xvmpConfig
- *
  * @author Theodor Truffer <tt@studer-raimann.ch>
  */
 class xvmpConfig extends xvmpObject
 {
     /**
+     * @var string
+     */
+    protected string $name;
+    /**
+     * @var string
+     */
+    protected string $value;
+
+    /**
      * @param $id
-     *
      * @return array
      * @throws xvmpException
      */
-    public static function getObjectAsArray($id): array
+    public static function getObjectAsArray($id) : array
     {
         $key = self::class . '-' . $id;
         $existing = xvmpCacheFactory::getInstance()->get($key);
@@ -32,7 +39,6 @@ class xvmpConfig extends xvmpObject
         return $array;
     }
 
-
     /**
      * @param       $identifier
      * @param       $object
@@ -43,21 +49,10 @@ class xvmpConfig extends xvmpObject
         parent::cache($identifier, $object, xvmpConf::getConfig(xvmpConf::F_CACHE_TTL_CONFIG));
     }
 
-
-    /**
-     * @var string
-     */
-    protected string $name;
-    /**
-     * @var string
-     */
-    protected string $value;
-
-
     /**
      * @return string
      */
-    public function getName(): string
+    public function getName() : string
     {
         return $this->name;
     }

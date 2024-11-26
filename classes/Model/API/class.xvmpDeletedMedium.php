@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 /**
  * Class xvmpDeletedMedium
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class xvmpDeletedMedium extends xvmpMedium
@@ -26,74 +25,67 @@ class xvmpDeletedMedium extends xvmpMedium
         $this->created_at = $this->getCreatedAt();
     }
 
-
     /**
      * @return String
      */
-    public function getTitle(): string
+    public function getTitle() : string
     {
         return ilViMPPlugin::getInstance()->txt('not_available');
     }
-
 
     /**
      * @param int $max_length
      * @return String
      */
-    public function getDescription(int $max_length = 0): string
+    public function getDescription(int $max_length = 0) : string
     {
         return ilViMPPlugin::getInstance()->txt('not_available_description');
     }
-
-
-    /**
-     * @return int
-     */
-    public function getDuration(): int
-    {
-        return 0;
-    }
-
-
-    /**
-     * @return String
-     */
-    public function getDurationFormatted(): string
-    {
-        return '';
-    }
-
 
     /**
      * @param int $width
      * @param int $height
      * @return String
      */
-    public function getThumbnail(int $width = 0, int $height = 0): string
+    public function getThumbnail(int $width = 0, int $height = 0) : string
     {
         return ilViMPPlugin::getInstance()->getDirectory() . '/templates/images/not_available.png';
     }
 
-
     /**
      * @return string
      */
-    public function getMedium(): string
+    public function getMedium() : string
     {
         return '';
     }
-
 
     /**
      * @param string $format
      * @return String
      */
-    public function getCreatedAt(string $format = ''): string
+    public function getCreatedAt(string $format = '') : string
     {
         return '';
     }
 
-    public function __toArray(): array
+    /**
+     * @return int
+     */
+    public function getDuration() : int
+    {
+        return 0;
+    }
+
+    /**
+     * @return String
+     */
+    public function getDurationFormatted() : string
+    {
+        return '';
+    }
+
+    public function __toArray() : array
     {
         return [
             'title' => $this->getTitle(),

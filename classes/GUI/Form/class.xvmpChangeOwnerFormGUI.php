@@ -7,7 +7,7 @@ declare(strict_types=1);
 /**
  * Class xvmpChangeOwnerFormGUI
  * @ilCtrl_isCalledBy xvmpChangeOwnerFormGUI: ilObjViMPGUI
- * @author  Theodor Truffer <tt@studer-raimann.ch>
+ * @author            Theodor Truffer <tt@studer-raimann.ch>
  */
 class xvmpChangeOwnerFormGUI extends xvmpFormGUI
 {
@@ -24,10 +24,8 @@ class xvmpChangeOwnerFormGUI extends xvmpFormGUI
      */
     protected ilViMPConfigGUI $parent_gui;
 
-
     /**
      * xvmpChangeOwnerFormGUI constructor.
-     *
      * @param $parent_gui xvmpOwnVideosGUI
      * @param $mid
      * @throws ilCtrlException
@@ -47,9 +45,7 @@ class xvmpChangeOwnerFormGUI extends xvmpFormGUI
         $this->addCommandButton(xvmpGUI::CMD_STANDARD, $this->lng->txt('cancel'));
     }
 
-
     /**
-     *
      * @throws ilCtrlException
      */
     protected function initForm() : void

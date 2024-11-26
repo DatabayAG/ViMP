@@ -6,9 +6,7 @@ declare(strict_types=1);
 
 /**
  * Class xvmpOwnVideosGUI
- *
- * @author  Theodor Truffer <tt@studer-raimann.ch>
- *
+ * @author            Theodor Truffer <tt@studer-raimann.ch>
  * @ilCtrl_isCalledBy xvmpOwnVideosGUI: ilObjViMPGUI
  */
 class xvmpOwnVideosGUI extends xvmpVideosGUI
@@ -26,7 +24,6 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
     public const CMD_CREATE = 'create';
     public const CMD_CONFIRMED_DELETE_VIDEO = 'confirmedDeleteVideo';
     public const CMD_UPLOAD_CHUNKS = 'uploadChunks';
-
 
     protected function performCommand($cmd) : void
     {
@@ -63,9 +60,24 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
         parent::performCommand($cmd);
     }
 
-
     /**
      *
+     */
+    protected function uploadChunks() : void
+    {
+        $xoctPlupload = new xoctPlupload();
+        $tmp_id = filter_input(INPUT_GET, 'tmp_id', FILTER_SANITIZE_STRING);
+
+        $dir = ILIAS_ABSOLUTE_PATH . ltrim(ilFileUtils::getWebspaceDir(), '.') . '/vimp/' . $tmp_id;
+        if (!is_dir($dir)) {
+            ilFileUtils::makeDir($dir);
+        }
+
+        $xoctPlupload->setTargetDir($dir);
+        $xoctPlupload->handleUpload();
+    }
+
+    /**
      * @throws ilCtrlException
      */
     public function editVideo() : void
@@ -76,9 +88,7 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
         $this->dic->ui()->mainTemplate()->setContent($xvmpEditVideoFormGUI->getHTML());
     }
 
-
     /**
-     *
      * @throws ilCtrlException
      * @throws xvmpException
      */
@@ -102,13 +112,13 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
             $this->dic->ui()->mainTemplate()->setContent($ilConfirmationGUI->getHTML());
         } else {
             if ($login && !$login_exists) {
-                $this->dic->ui()->mainTemplate()->setOnScreenMessage('failure', $this->pl->txt('msg_error_login_not_found'), true);
+                $this->dic->ui()->mainTemplate()->setOnScreenMessage('failure',
+                    $this->pl->txt('msg_error_login_not_found'), true);
             }
             $xvmpChangeOwnerFormGUI = new xvmpChangeOwnerFormGUI($this, $mid);
             $this->dic->ui()->mainTemplate()->setContent($xvmpChangeOwnerFormGUI->getHTML());
         }
     }
-
 
     /**
      *
@@ -164,7 +174,9 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
                 'title' => $medium['title']
             ));
             /** @var xvmpUploadedMedia $xvmpUploadedMedia */
-            foreach (xvmpUploadedMedia::where(['mid' => $mid, 'user_id' => $this->dic->user()->getId()])->get() as $xvmpUploadedMedia) {
+            foreach (xvmpUploadedMedia::where(['mid' => $mid,
+                                               'user_id' => $this->dic->user()->getId()
+            ])->get() as $xvmpUploadedMedia) {
                 $new_user_id = ilObjUser::_lookupId($login);
                 $xvmpUploadedMedia->setUserId($new_user_id);
                 $xvmpUploadedMedia->setEmail(ilObjUser::_lookupEmail($new_user_id));
@@ -202,7 +214,6 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
         $this->dic->ui()->mainTemplate()->setContent($xvmpUploadVideoFormGUI->getHTML());
     }
 
-
     /**
      *
      */
@@ -220,7 +231,6 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
         $this->dic->ui()->mainTemplate()->setContent($xvmpEditVideoFormGUI->getHTML());
     }
 
-
     /**
      *
      */
@@ -236,7 +246,6 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
         $confirmation_gui->setCancel($this->dic->language()->txt('cancel'), self::CMD_STANDARD);
         $this->dic->ui()->mainTemplate()->setContent($confirmation_gui->getHTML());
     }
-
 
     /**
      *
@@ -254,24 +263,6 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
 
         $this->dic->ui()->mainTemplate()->setOnScreenMessage('success', $this->pl->txt('video_deleted'), true);
         $this->dic->ctrl()->redirect($this, self::CMD_STANDARD);
-    }
-
-
-    /**
-     *
-     */
-    protected function uploadChunks() : void
-    {
-        $xoctPlupload = new xoctPlupload();
-        $tmp_id = filter_input(INPUT_GET, 'tmp_id', FILTER_SANITIZE_STRING);
-
-        $dir = ILIAS_ABSOLUTE_PATH . ltrim(ilFileUtils::getWebspaceDir(), '.') . '/vimp/' . $tmp_id;
-        if (!is_dir($dir)) {
-            ilFileUtils::makeDir($dir);
-        }
-
-        $xoctPlupload->setTargetDir($dir);
-        $xoctPlupload->handleUpload();
     }
 
 }

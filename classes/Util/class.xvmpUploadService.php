@@ -46,7 +46,7 @@ class xvmpUploadService
      * @throws IOException
      * @throws IllegalStateException
      */
-    public function moveUploadToWebDir(string $tmp_name, string $tmp_id): string
+    public function moveUploadToWebDir(string $tmp_name, string $tmp_id) : string
     {
         $dir = '/vimp/' . $tmp_id;
         $this->createDirIfNotExists($dir);
@@ -64,21 +64,6 @@ class xvmpUploadService
     }
 
     /**
-     * @param string $tmp_name
-     * @param string $tmp_id
-     * @return string
-     * @throws ilWACException
-     */
-    public function getSignedUrl(string $tmp_name, string $tmp_id): string
-    {
-        $dir = '/vimp/' . $tmp_id;
-        $path = $dir . '/' . rawurlencode($tmp_name);
-        $this->temp_directories[] = $dir;
-        $path = $this->signWithWAC($path);
-        return ILIAS_HTTP_PATH . ltrim($path, '.');
-    }
-
-    /**
      * @param string $dir
      * @throws IOException
      */
@@ -90,11 +75,26 @@ class xvmpUploadService
     }
 
     /**
+     * @param string $tmp_name
+     * @param string $tmp_id
+     * @return string
+     * @throws ilWACException
+     */
+    public function getSignedUrl(string $tmp_name, string $tmp_id) : string
+    {
+        $dir = '/vimp/' . $tmp_id;
+        $path = $dir . '/' . rawurlencode($tmp_name);
+        $this->temp_directories[] = $dir;
+        $path = $this->signWithWAC($path);
+        return ILIAS_HTTP_PATH . ltrim($path, '.');
+    }
+
+    /**
      * @param string $path
      * @return string
      * @throws ilWACException
      */
-    protected function signWithWAC(string $path): string
+    protected function signWithWAC(string $path) : string
     {
         ilWACSignedPath::setTokenMaxLifetimeInSeconds(ilWACSignedPath::MAX_LIFETIME);
         $thumbnail_path = ilWACSignedPath::signFile(ilFileUtils::getWebspaceDir() . $path);

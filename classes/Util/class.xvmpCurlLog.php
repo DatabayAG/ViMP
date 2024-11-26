@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 /**
  * Class xvmpCurlLog
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class xvmpCurlLog extends ilLog
@@ -27,11 +26,29 @@ class xvmpCurlLog extends ilLog
     protected static int $log_level = self::DEBUG_LEVEL_2;
 
     /**
+     * @param $log_level
+     */
+    public static function init($log_level) : void
+    {
+        self::$log_level = $log_level;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getFullPath() : string
+    {
+        $log = self::getInstance();
+
+        return $log->getLogDir() . '/' . $log->getLogFile();
+    }
+
+    /**
      * @return xvmpCurlLog
      */
-    public static function getInstance(): xvmpCurlLog
+    public static function getInstance() : xvmpCurlLog
     {
-        if (! isset(self::$instance)) {
+        if (!isset(self::$instance)) {
             if (ILIAS_LOG_DIR === "php:/" && ILIAS_LOG_FILE === "stdout") {
                 // Fix Docker-ILIAS log
                 self::$instance = new self(ILIAS_LOG_DIR, ILIAS_LOG_FILE);
@@ -44,35 +61,33 @@ class xvmpCurlLog extends ilLog
     }
 
     /**
-     * @param $log_level
+     * @return string
      */
-    public static function init($log_level) : void
+    public function getLogDir() : string
     {
-        self::$log_level = $log_level;
-    }
-
-
-    /**
-     * @param $log_level
-     *
-     * @return bool
-     */
-    public static function relevant($log_level): bool
-    {
-        return $log_level <= self::$log_level;
+        return ILIAS_LOG_DIR;
     }
 
     /**
-     * @param      $a_msg
-     * @param null $a_log_level
+     * @return string
      */
-    public function write($a_msg, $a_log_level = null): void
+    public function getLogFile() : string
     {
-        if (self::relevant($a_log_level)) {
-            parent::write($a_msg);
+        if (ILIAS_LOG_DIR === "php:/" && ILIAS_LOG_FILE === "stdout") {
+            // Fix Docker-ILIAS log
+            return ILIAS_LOG_FILE;
+        } else {
+            return self::LOG_TITLE;
         }
     }
 
+    /**
+     * @return int
+     */
+    public static function getLogLevel() : int
+    {
+        return self::$log_level;
+    }
 
     public function writeTrace() : void
     {
@@ -83,44 +98,23 @@ class xvmpCurlLog extends ilLog
         }
     }
 
-
     /**
-     * @return string
+     * @param      $a_msg
+     * @param null $a_log_level
      */
-    public function getLogDir(): string
+    public function write($a_msg, $a_log_level = null) : void
     {
-        return ILIAS_LOG_DIR;
-    }
-
-    /**
-     * @return string
-     */
-    public static function getFullPath(): string
-    {
-        $log = self::getInstance();
-
-        return $log->getLogDir() . '/' . $log->getLogFile();
-    }
-
-    /**
-     * @return string
-     */
-    public function getLogFile(): string
-    {
-        if (ILIAS_LOG_DIR === "php:/" && ILIAS_LOG_FILE === "stdout") {
-            // Fix Docker-ILIAS log
-            return ILIAS_LOG_FILE;
-        } else {
-            return self::LOG_TITLE;
+        if (self::relevant($a_log_level)) {
+            parent::write($a_msg);
         }
     }
 
-
     /**
-     * @return int
+     * @param $log_level
+     * @return bool
      */
-    public static function getLogLevel(): int
+    public static function relevant($log_level) : bool
     {
-        return self::$log_level;
+        return $log_level <= self::$log_level;
     }
 }

@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 /**
  * Class xvmpCron
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class xvmpCron
@@ -20,7 +19,6 @@ class xvmpCron
      * @var ilViMPPlugin
      */
     protected ilViMPPlugin $pl;
-
 
     /**
      *
@@ -45,7 +43,6 @@ class xvmpCron
         $this->ilias = $ilias;
         $this->pl = ilViMPPlugin::getInstance();
     }
-
 
     /**
      *
@@ -106,14 +103,16 @@ class xvmpCron
         }
     }
 
-
     /**
      * @param xvmpMedium $medium
      * @param xvmpUploadedMedia $uploaded_medium
-     * @param $transcoding_succeeded
+     * @param                   $transcoding_succeeded
      */
-    protected function sendNotification(xvmpMedium $medium, xvmpUploadedMedia $uploaded_medium, $transcoding_succeeded) : void
-    {
+    protected function sendNotification(
+        xvmpMedium $medium,
+        xvmpUploadedMedia $uploaded_medium,
+        $transcoding_succeeded
+    ) : void {
         $subject = xvmpConf::getConfig($transcoding_succeeded ? xvmpConf::F_NOTIFICATION_SUBJECT_SUCCESSFULL : xvmpConf::F_NOTIFICATION_SUBJECT_FAILED);
         $body = xvmpConf::getConfig($transcoding_succeeded ? xvmpConf::F_NOTIFICATION_BODY_SUCCESSFULL : xvmpConf::F_NOTIFICATION_BODY_FAILED);
 
@@ -124,7 +123,6 @@ class xvmpCron
 
         $body = str_replace('{TITLE}', $medium->getTitle(), $body);
         $body = str_replace('{DESCRIPTION}', $medium->getDescription(), $body);
-
 
         $deep_link = ilLink::_getStaticLink(
             $uploaded_medium->getRefId(),

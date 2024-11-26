@@ -101,11 +101,11 @@ class xvmpContentPlayerGUI
         }
         $this->dic->ui()->mainTemplate()->addOnLoadCode('VimpContent.selected_media = ' . json_encode($json_array) . ';');
         $this->dic->ui()->mainTemplate()->addOnLoadCode("VimpContent.ajax_base_url = '" . $this->dic->ctrl()->getLinkTarget(
-            $this->parent_gui,
-            '',
-            '',
-            true
-        ) . "';");
+                $this->parent_gui,
+                '',
+                '',
+                true
+            ) . "';");
         $this->dic->ui()->mainTemplate()->addOnLoadCode("VimpContent.template = 'TileSmall';");
         $this->dic->ui()->mainTemplate()->addOnLoadCode('VimpContent.loadTilesInOrder(0);');
 

@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 /**
  * Class xvmpSettingsFormGUI
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class xvmpSettingsFormGUI extends xvmpFormGUI
@@ -29,7 +28,6 @@ class xvmpSettingsFormGUI extends xvmpFormGUI
 
     /**
      * xvmpSettingsFormGUI constructor.
-     *
      * @param $parent_gui
      * @throws ilCtrlException
      */
@@ -44,6 +42,21 @@ class xvmpSettingsFormGUI extends xvmpFormGUI
         $this->fillForm();
     }
 
+    /**
+     *
+     */
+    public function fillForm() : void
+    {
+        $values = array(
+            self::F_TITLE => $this->parent_gui->getObject()->getTitle(),
+            self::F_DESCRIPTION => $this->parent_gui->getObject()->getDescription(),
+            self::F_ONLINE => $this->setting->getIsOnline(),
+            self::F_LAYOUT => $this->setting->getLayoutType(),
+            self::F_REPOSITORY_PREVIEW => $this->setting->getRepositoryPreview(),
+            self::F_LEARNING_PROGRESS => $this->setting->getLpActive()
+        );
+        $this->setValuesByArray($values);
+    }
 
     /**
      *
@@ -65,11 +78,14 @@ class xvmpSettingsFormGUI extends xvmpFormGUI
 
         // LAYOUT
         $input = new ilRadioGroupInputGUI($this->pl->txt(self::F_LAYOUT), self::F_LAYOUT);
-        $option = new ilRadioOption(ilUtil::img($this->pl->getImagePath(self::F_LAYOUT . '_' . xvmpSettings::LAYOUT_TYPE_LIST . '.png')), (string) xvmpSettings::LAYOUT_TYPE_LIST);
+        $option = new ilRadioOption(ilUtil::img($this->pl->getImagePath(self::F_LAYOUT . '_' . xvmpSettings::LAYOUT_TYPE_LIST . '.png')),
+            (string) xvmpSettings::LAYOUT_TYPE_LIST);
         $input->addOption($option);
-        $option = new ilRadioOption(ilUtil::img($this->pl->getImagePath(self::F_LAYOUT . '_' . xvmpSettings::LAYOUT_TYPE_TILES . '.png')), (string) xvmpSettings::LAYOUT_TYPE_TILES);
+        $option = new ilRadioOption(ilUtil::img($this->pl->getImagePath(self::F_LAYOUT . '_' . xvmpSettings::LAYOUT_TYPE_TILES . '.png')),
+            (string) xvmpSettings::LAYOUT_TYPE_TILES);
         $input->addOption($option);
-        $option = new ilRadioOption(ilUtil::img($this->pl->getImagePath(self::F_LAYOUT . '_' . xvmpSettings::LAYOUT_TYPE_PLAYER . '.png')), (string) xvmpSettings::LAYOUT_TYPE_PLAYER);
+        $option = new ilRadioOption(ilUtil::img($this->pl->getImagePath(self::F_LAYOUT . '_' . xvmpSettings::LAYOUT_TYPE_PLAYER . '.png')),
+            (string) xvmpSettings::LAYOUT_TYPE_PLAYER);
         $input->addOption($option);
         $this->addItem($input);
 
@@ -94,7 +110,6 @@ class xvmpSettingsFormGUI extends xvmpFormGUI
         $this->initCommandButtons();
     }
 
-
     /**
      *
      */
@@ -103,24 +118,6 @@ class xvmpSettingsFormGUI extends xvmpFormGUI
         $this->addCommandButton(xvmpSettingsGUI::CMD_UPDATE, $this->lng->txt('save'));
         $this->addCommandButton(xvmpGUI::CMD_CANCEL, $this->lng->txt('cancel'));
     }
-
-
-    /**
-     *
-     */
-    public function fillForm() : void
-    {
-        $values = array(
-            self::F_TITLE => $this->parent_gui->getObject()->getTitle(),
-            self::F_DESCRIPTION => $this->parent_gui->getObject()->getDescription(),
-            self::F_ONLINE => $this->setting->getIsOnline(),
-            self::F_LAYOUT => $this->setting->getLayoutType(),
-            self::F_REPOSITORY_PREVIEW => $this->setting->getRepositoryPreview(),
-            self::F_LEARNING_PROGRESS => $this->setting->getLpActive()
-        );
-        $this->setValuesByArray($values);
-    }
-
 
     /**
      * @return bool

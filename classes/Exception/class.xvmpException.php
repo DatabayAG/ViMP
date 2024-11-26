@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 /**
  * Class xvmpException
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class xvmpException extends Exception
@@ -34,7 +33,6 @@ class xvmpException extends Exception
         self::INTERNAL_ERROR => 'An Internal Error occured.',
 
     );
-
 
     public function __construct(int $code, string $additional_message = '')
     {

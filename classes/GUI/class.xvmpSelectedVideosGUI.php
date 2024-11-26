@@ -6,9 +6,7 @@ declare(strict_types=1);
 
 /**
  * Class xvmpSelectedVideosGUI
- *
  * @author            Theodor Truffer <tt@studer-raimann.ch>
- *
  * @ilCtrl_isCalledBy xvmpSelectedVideosGUI: ilObjViMPGUI
  */
 class xvmpSelectedVideosGUI extends xvmpVideosGUI

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use ILIAS\DI\Container;
 use ILIAS\Filesystem\Exception\IOException;
 use ILIAS\FileUpload\Exception\IllegalStateException;
 
@@ -47,197 +46,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
         $this->addCommandButtons();
     }
 
-    /**
-     * @param int $mid
-     * @throws IOException
-     * @throws IllegalStateException
-     * @throws ilWACException
-     */
-    protected function afterStoreVideo(int $mid) : void
-    {
-        $this->processSubtitles($mid);
-    }
-
-    /**
-     * @param int $mid
-     * @throws IOException
-     * @throws IllegalStateException
-     * @throws ilWACException
-     */
-    protected function processSubtitles(int $mid) : void
-    {
-        $tmp_id = filter_input(INPUT_GET, 'tmp_id', FILTER_SANITIZE_STRING);
-        foreach ($this->getSubtitleLanguages() as $lang_key) {
-            $input = $this->getInput(xvmpMedium::F_SUBTITLES . '_' . $lang_key);
-            if (is_array($input) && $input['error'] === 0) {
-                if (isset($this->medium[xvmpMedium::F_SUBTITLES][$lang_key])) {
-                    // always remove subtitle first, because vimp doesn't correctly replace it
-                    $this->removeSubtitle($lang_key);
-                }
-                $this->uploadSubtitle($mid, $lang_key, $input['tmp_name'], $tmp_id);
-            } elseif (filter_input(INPUT_POST, xvmpMedium::F_SUBTITLES . '_' . $lang_key . '_delete') == 1) {
-                $this->removeSubtitle($lang_key);
-            }
-        }
-    }
-
-    protected function removeSubtitle($lang_key) : void
-    {
-        $subtitle_url = $this->medium[xvmpMedium::F_SUBTITLES][$lang_key];
-        $subtitle_filename = urldecode(substr($subtitle_url, strrpos($subtitle_url, '/') + 1));
-        xvmpRequest::removeSubtitle($this->medium[xvmpMedium::F_MID], $lang_key, $subtitle_filename);
-    }
-
-    /**
-     * @param int    $mid
-     * @param string $lang_code
-     * @param string $tmp_name
-     * @param string $tmp_id
-     * @throws IOException
-     * @throws IllegalStateException
-     * @throws ilWACException
-     */
-    protected function uploadSubtitle(int $mid, string $lang_code, string $tmp_name, string $tmp_id) : void
-    {
-        $name = $this->upload_service->moveUploadToWebDir($tmp_name, $tmp_id);
-        $signed_url = $this->upload_service->getSignedUrl($name, $tmp_id);
-        xvmpRequest::addSubtitle($mid, [
-            'subtitlefile' => $signed_url,
-            'subtitlelanguage' => $lang_code
-        ]);
-    }
-
-    /**
-     * @param string $post_var
-     * @return string|null
-     * @throws IllegalStateException
-     * @throws IOException
-     * @throws ilWACException
-     * @throws xvmpException
-     */
-    protected function formatInput(string $post_var): ?string
-    {
-        $value = $this->getInput($post_var);
-        $tmp_id = filter_input(INPUT_GET, 'tmp_id', FILTER_SANITIZE_STRING);
-        switch ($post_var) {
-            case self::F_SOURCE_URL:
-                /** @var array $value */
-                if (!$value['name']) {
-                    return null;
-                }
-                return $this->upload_service->getSignedUrl($value['name'], $tmp_id);
-            case xvmpMedium::F_THUMBNAIL:
-                if (!$_FILES[$post_var]['tmp_name']) {
-                    return null;
-                }
-                $name = $this->upload_service->moveUploadToWebDir($_FILES[$post_var]['tmp_name'], $tmp_id);
-                return $this->upload_service->getSignedUrl($name, $tmp_id);
-            case xvmpMedium::F_MEDIAPERMISSIONS:
-                /** @var array $media_permissions */
-                $media_permissions = $value;
-                foreach (xvmpUserRoles::getAll() as $role) {
-                    if ($role->isInvisibleDefault() && !in_array($role->getId(), $media_permissions)) {
-                        $media_permissions[] = $role->getId();
-                    }
-                }
-
-                return implode(',', $media_permissions);
-            case xvmpMedium::F_PUBLISHED:
-                return xvmpMedium::$published_id_mapping[$value];
-            default:
-                if (str_starts_with($post_var, xvmpMedium::F_SUBTITLES)) {
-                    // subtitles are processed separately (different api endpoint)
-                    return null;
-                }
-                return is_array($value) ? implode(',', $value) : $value;
-        }
-    }
-
-    /**
-     * @param string $post_var
-     * @return string|null
-     */
-    protected function mapPostVarToMediumField(string $post_var): ?string
-    {
-        switch ($post_var) {
-            case xvmpMedium::F_PUBLISHED:
-                return xvmpMedium::PUBLISHED_HIDDEN;
-            case self::F_SOURCE_URL:
-            case xvmpMedium::F_MID:
-            case xvmpMedium::F_TITLE:
-            case xvmpMedium::F_DESCRIPTION:
-            case xvmpMedium::F_CATEGORIES:
-            case xvmpMedium::F_TAGS:
-            case xvmpMedium::F_MEDIAPERMISSIONS:
-            case xvmpMedium::F_THUMBNAIL:
-                return $post_var;
-            default:
-                if (in_array($post_var, array_map(function (array $field) {
-                    return $field[xvmpConf::F_FORM_FIELD_ID];
-                }, xvmpConf::getConfig(xvmpConf::F_FORM_FIELDS)))) {
-                    return $post_var;
-                }
-                return null;
-        }
-    }
-
-    /**
-     * @return bool
-     */
-    public function saveForm(): bool
-    {
-        if (!$this->checkInput()) {
-            return false;
-        }
-
-        try {
-            /** @var ilFormPropertyGUI $item */
-            $this->fillVideoByPost();
-            $mid = $this->storeVideo();
-            $this->afterStoreVideo($mid);
-            $this->upload_service->cleanUp();
-        } catch (Exception $e) {
-            $this->dic->logger()->root()->logStack(ilLogLevel::ERROR, $e->getMessage());
-            $this->dic->ui()->mainTemplate()->setOnScreenMessage('failure', $e->getMessage());
-            $this->upload_service->cleanUp();
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * @throws IOException
-     * @throws IllegalStateException
-     * @throws ilWACException
-     * @throws xvmpException
-     */
-    protected function fillVideoByPost() : void
-    {
-        /** @var ilFormPropertyGUI $item */
-        foreach ($this->getInputItemsRecursive() as $item) {
-            $this->fillVideoByItem($item);
-        }
-    }
-
-    /**
-     * @param ilFormPropertyGUI $item
-     * @throws IOException
-     * @throws IllegalStateException
-     * @throws ilWACException
-     * @throws xvmpException
-     */
-    protected function fillVideoByItem(ilFormPropertyGUI $item) : void
-    {
-        $post_var = rtrim($item->getPostVar(), '[]');
-        $field = $this->mapPostVarToMediumField($post_var);
-        if (!is_null($field)) {
-            $input = $this->formatInput($post_var);
-            if (!is_null($input)) {
-                $this->data[$field] = $input;
-            }
-        }
-    }
+    abstract protected function addCommandButtons();
 
     protected function addFormHeader(string $title) : void
     {
@@ -324,6 +133,24 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
         $this->addItem($input);
     }
 
+    /**
+     * @param $size
+     * @return bool|float|int|string
+     */
+    protected function getSizeInMB($size) : float|bool|int|string
+    {
+        switch (substr($size, -2)) {
+            case 'GB':
+                return substr($size, 0, (strlen($size) - 2)) * 1024;
+            case 'MB':
+                return substr($size, 0, (strlen($size) - 2));
+            case 'KB':
+                return substr($size, 0, (strlen($size) - 2)) / 1024;
+            default:
+                return 0;
+        }
+    }
+
     protected function addCategoriesInput() : void
     {
         $input = new ilMultiSelectSearchInputGUI($this->lng->txt(xvmpMedium::F_CATEGORIES), xvmpMedium::F_CATEGORIES);
@@ -400,7 +227,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
         }
     }
 
-    protected function getMediaPermissionsInput(int $media_permissions): ilMultiSelectSearchInputGUI
+    protected function getMediaPermissionsInput(int $media_permissions) : ilMultiSelectSearchInputGUI
     {
         $input = new ilMultiSelectSearchInputGUI(
             $this->pl->txt(xvmpConf::F_MEDIA_PERMISSIONS),
@@ -415,9 +242,9 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
         }
         foreach (xvmpUserRoles::getAll() as $role) {
             if (!$role->getField('visible') || ($selectable_roles && !in_array(
-                (string) $role->getId(),
-                $selectable_roles
-            ))) {
+                        (string) $role->getId(),
+                        $selectable_roles
+                    ))) {
                 continue;
             }
             $options[$role->getId()] = $role->getName();
@@ -448,7 +275,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
         }
     }
 
-    protected function getLanguageOptions(): array
+    protected function getLanguageOptions() : array
     {
         $options = [];
         $this->dic->language()->loadLanguageModule('meta');
@@ -459,34 +286,206 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
     }
 
     /**
-     * @param $size
-     * @return bool|float|int|string
+     * @return bool
      */
-    protected function getSizeInMB($size) : float|bool|int|string
+    public function saveForm() : bool
     {
-        switch (substr($size, -2)) {
-            case 'GB':
-                return substr($size, 0, (strlen($size) - 2)) * 1024;
-            case 'MB':
-                return substr($size, 0, (strlen($size) - 2));
-            case 'KB':
-                return substr($size, 0, (strlen($size) - 2)) / 1024;
-            default:
-                return 0;
+        if (!$this->checkInput()) {
+            return false;
+        }
+
+        try {
+            /** @var ilFormPropertyGUI $item */
+            $this->fillVideoByPost();
+            $mid = $this->storeVideo();
+            $this->afterStoreVideo($mid);
+            $this->upload_service->cleanUp();
+        } catch (Exception $e) {
+            $this->dic->logger()->root()->logStack(ilLogLevel::ERROR, $e->getMessage());
+            $this->dic->ui()->mainTemplate()->setOnScreenMessage('failure', $e->getMessage());
+            $this->upload_service->cleanUp();
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @throws IOException
+     * @throws IllegalStateException
+     * @throws ilWACException
+     * @throws xvmpException
+     */
+    protected function fillVideoByPost() : void
+    {
+        /** @var ilFormPropertyGUI $item */
+        foreach ($this->getInputItemsRecursive() as $item) {
+            $this->fillVideoByItem($item);
         }
     }
 
-    private function getSubtitleLanguages(): array
+    /**
+     * @param ilFormPropertyGUI $item
+     * @throws IOException
+     * @throws IllegalStateException
+     * @throws ilWACException
+     * @throws xvmpException
+     */
+    protected function fillVideoByItem(ilFormPropertyGUI $item) : void
     {
-        return $this->dic->language()->getInstalledLanguages();
+        $post_var = rtrim($item->getPostVar(), '[]');
+        $field = $this->mapPostVarToMediumField($post_var);
+        if (!is_null($field)) {
+            $input = $this->formatInput($post_var);
+            if (!is_null($input)) {
+                $this->data[$field] = $input;
+            }
+        }
+    }
+
+    /**
+     * @param string $post_var
+     * @return string|null
+     */
+    protected function mapPostVarToMediumField(string $post_var) : ?string
+    {
+        switch ($post_var) {
+            case xvmpMedium::F_PUBLISHED:
+                return xvmpMedium::PUBLISHED_HIDDEN;
+            case self::F_SOURCE_URL:
+            case xvmpMedium::F_MID:
+            case xvmpMedium::F_TITLE:
+            case xvmpMedium::F_DESCRIPTION:
+            case xvmpMedium::F_CATEGORIES:
+            case xvmpMedium::F_TAGS:
+            case xvmpMedium::F_MEDIAPERMISSIONS:
+            case xvmpMedium::F_THUMBNAIL:
+                return $post_var;
+            default:
+                if (in_array($post_var, array_map(function (array $field) {
+                    return $field[xvmpConf::F_FORM_FIELD_ID];
+                }, xvmpConf::getConfig(xvmpConf::F_FORM_FIELDS)))) {
+                    return $post_var;
+                }
+                return null;
+        }
+    }
+
+    /**
+     * @param string $post_var
+     * @return string|null
+     * @throws IllegalStateException
+     * @throws IOException
+     * @throws ilWACException
+     * @throws xvmpException
+     */
+    protected function formatInput(string $post_var) : ?string
+    {
+        $value = $this->getInput($post_var);
+        $tmp_id = filter_input(INPUT_GET, 'tmp_id', FILTER_SANITIZE_STRING);
+        switch ($post_var) {
+            case self::F_SOURCE_URL:
+                /** @var array $value */
+                if (!$value['name']) {
+                    return null;
+                }
+                return $this->upload_service->getSignedUrl($value['name'], $tmp_id);
+            case xvmpMedium::F_THUMBNAIL:
+                if (!$_FILES[$post_var]['tmp_name']) {
+                    return null;
+                }
+                $name = $this->upload_service->moveUploadToWebDir($_FILES[$post_var]['tmp_name'], $tmp_id);
+                return $this->upload_service->getSignedUrl($name, $tmp_id);
+            case xvmpMedium::F_MEDIAPERMISSIONS:
+                /** @var array $media_permissions */
+                $media_permissions = $value;
+                foreach (xvmpUserRoles::getAll() as $role) {
+                    if ($role->isInvisibleDefault() && !in_array($role->getId(), $media_permissions)) {
+                        $media_permissions[] = $role->getId();
+                    }
+                }
+
+                return implode(',', $media_permissions);
+            case xvmpMedium::F_PUBLISHED:
+                return xvmpMedium::$published_id_mapping[$value];
+            default:
+                if (str_starts_with($post_var, xvmpMedium::F_SUBTITLES)) {
+                    // subtitles are processed separately (different api endpoint)
+                    return null;
+                }
+                return is_array($value) ? implode(',', $value) : $value;
+        }
     }
 
     /**
      * @return int mediumid
      */
-    abstract protected function storeVideo(): int;
+    abstract protected function storeVideo() : int;
+
+    /**
+     * @param int $mid
+     * @throws IOException
+     * @throws IllegalStateException
+     * @throws ilWACException
+     */
+    protected function afterStoreVideo(int $mid) : void
+    {
+        $this->processSubtitles($mid);
+    }
+
+    /**
+     * @param int $mid
+     * @throws IOException
+     * @throws IllegalStateException
+     * @throws ilWACException
+     */
+    protected function processSubtitles(int $mid) : void
+    {
+        $tmp_id = filter_input(INPUT_GET, 'tmp_id', FILTER_SANITIZE_STRING);
+        foreach ($this->getSubtitleLanguages() as $lang_key) {
+            $input = $this->getInput(xvmpMedium::F_SUBTITLES . '_' . $lang_key);
+            if (is_array($input) && $input['error'] === 0) {
+                if (isset($this->medium[xvmpMedium::F_SUBTITLES][$lang_key])) {
+                    // always remove subtitle first, because vimp doesn't correctly replace it
+                    $this->removeSubtitle($lang_key);
+                }
+                $this->uploadSubtitle($mid, $lang_key, $input['tmp_name'], $tmp_id);
+            } elseif (filter_input(INPUT_POST, xvmpMedium::F_SUBTITLES . '_' . $lang_key . '_delete') == 1) {
+                $this->removeSubtitle($lang_key);
+            }
+        }
+    }
+
+    private function getSubtitleLanguages() : array
+    {
+        return $this->dic->language()->getInstalledLanguages();
+    }
+
+    protected function removeSubtitle($lang_key) : void
+    {
+        $subtitle_url = $this->medium[xvmpMedium::F_SUBTITLES][$lang_key];
+        $subtitle_filename = urldecode(substr($subtitle_url, strrpos($subtitle_url, '/') + 1));
+        xvmpRequest::removeSubtitle($this->medium[xvmpMedium::F_MID], $lang_key, $subtitle_filename);
+    }
+
+    /**
+     * @param int    $mid
+     * @param string $lang_code
+     * @param string $tmp_name
+     * @param string $tmp_id
+     * @throws IOException
+     * @throws IllegalStateException
+     * @throws ilWACException
+     */
+    protected function uploadSubtitle(int $mid, string $lang_code, string $tmp_name, string $tmp_id) : void
+    {
+        $name = $this->upload_service->moveUploadToWebDir($tmp_name, $tmp_id);
+        $signed_url = $this->upload_service->getSignedUrl($name, $tmp_id);
+        xvmpRequest::addSubtitle($mid, [
+            'subtitlefile' => $signed_url,
+            'subtitlelanguage' => $lang_code
+        ]);
+    }
 
     abstract public function fillForm();
-
-    abstract protected function addCommandButtons();
 }

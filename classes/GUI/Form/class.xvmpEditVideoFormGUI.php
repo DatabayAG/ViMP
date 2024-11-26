@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 /**
  * Class xvmpEditVideoFormGUI
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class xvmpEditVideoFormGUI extends xvmpVideoFormGUI
@@ -16,7 +15,6 @@ class xvmpEditVideoFormGUI extends xvmpVideoFormGUI
      */
     protected ilViMPConfigGUI $parent_gui;
     protected array $medium;
-
 
     /**
      * @throws ilCtrlException
@@ -32,8 +30,6 @@ class xvmpEditVideoFormGUI extends xvmpVideoFormGUI
         $this->ctrl->setParameter($this->parent_gui, xvmpMedium::F_MID, $mid);
         $this->setTitle($this->pl->txt('edit_video'));
     }
-
-
 
     protected function initForm() : void
     {
@@ -63,6 +59,24 @@ class xvmpEditVideoFormGUI extends xvmpVideoFormGUI
         }
     }
 
+    protected function storeVideo() : int
+    {
+        xvmpMedium::update($this->data);
+        $this->upload_service->cleanUp();
+        return (int) $this->data['mid'];
+    }
+
+    protected function addCommandButtons() : void
+    {
+        if ($this->parent_gui instanceof xvmpOwnVideosGUI) {
+            $this->addCommandButton(xvmpOwnVideosGUI::CMD_UPDATE_VIDEO, $this->lng->txt('save'));
+            $this->addCommandButton(xvmpGUI::CMD_CANCEL, $this->lng->txt(xvmpGUI::CMD_CANCEL));
+        } else {
+            $this->addCommandButton(ilVimpPageComponentPluginGUI::CMD_STANDARD, $this->lng->txt('save'));
+            $this->addCommandButton(ilVimpPageComponentPluginGUI::CMD_OWN_VIDEOS, $this->lng->txt(xvmpGUI::CMD_CANCEL));
+        }
+    }
+
     public function fillForm() : void
     {
         $array = $this->medium;
@@ -82,8 +96,7 @@ class xvmpEditVideoFormGUI extends xvmpVideoFormGUI
         }
     }
 
-
-    public function saveForm(): bool
+    public function saveForm() : bool
     {
         if (parent::saveForm()) {
             // changelog entry
@@ -95,23 +108,5 @@ class xvmpEditVideoFormGUI extends xvmpVideoFormGUI
         }
 
         return false;
-    }
-
-    protected function storeVideo(): int
-    {
-        xvmpMedium::update($this->data);
-        $this->upload_service->cleanUp();
-        return (int) $this->data['mid'];
-    }
-
-    protected function addCommandButtons() : void
-    {
-        if ($this->parent_gui instanceof xvmpOwnVideosGUI) {
-            $this->addCommandButton(xvmpOwnVideosGUI::CMD_UPDATE_VIDEO, $this->lng->txt('save'));
-            $this->addCommandButton(xvmpGUI::CMD_CANCEL, $this->lng->txt(xvmpGUI::CMD_CANCEL));
-        } else {
-            $this->addCommandButton(ilVimpPageComponentPluginGUI::CMD_STANDARD, $this->lng->txt('save'));
-            $this->addCommandButton(ilVimpPageComponentPluginGUI::CMD_OWN_VIDEOS, $this->lng->txt(xvmpGUI::CMD_CANCEL));
-        }
     }
 }

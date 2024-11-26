@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 /**
  * Class xvmpSettings
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class xvmpSettings extends ActiveRecord
@@ -19,7 +18,6 @@ class xvmpSettings extends ActiveRecord
 
     /**
      * @var int
-     *
      * @db_has_field        true
      * @db_is_unique        true
      * @db_is_primary       true
@@ -29,7 +27,6 @@ class xvmpSettings extends ActiveRecord
     protected ?int $obj_id;
     /**
      * @var int
-     *
      * @db_has_field        true
      * @db_fieldtype        integer
      * @db_length           1
@@ -37,7 +34,6 @@ class xvmpSettings extends ActiveRecord
     protected int $is_online = 0;
     /**
      * @var int
-     *
      * @db_has_field        true
      * @db_fieldtype        integer
      * @db_length           2
@@ -45,7 +41,6 @@ class xvmpSettings extends ActiveRecord
     protected int $layout_type = self::LAYOUT_TYPE_LIST;
     /**
      * @var int
-     *
      * @db_has_field        true
      * @db_fieldtype        integer
      * @db_length           2
@@ -53,40 +48,24 @@ class xvmpSettings extends ActiveRecord
     protected int $repository_preview = 0;
     /**
      * @var int
-     *
      * @db_has_field        true
      * @db_fieldtype        integer
      * @db_length           1
      */
     protected int $lp_active = 0;
 
+    public static function returnDbTableName() : string
+    {
+        return self::DB_TABLE_NAME;
+    }
 
     /**
      * @return int
      */
-    public function getObjId(): int
-    {
-        return $this->obj_id;
-    }
-
-
-    /**
-     * @param int $obj_id
-     */
-    public function setObjId(int $obj_id) : void
-    {
-        $this->obj_id = $obj_id;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getIsOnline(): int
+    public function getIsOnline() : int
     {
         return $this->is_online;
     }
-
 
     /**
      * @param int $is_online
@@ -96,16 +75,13 @@ class xvmpSettings extends ActiveRecord
         $this->is_online = $is_online;
     }
 
-
-
     /**
      * @return int
      */
-    public function getLayoutType(): int
+    public function getLayoutType() : int
     {
         return $this->layout_type;
     }
-
 
     /**
      * @param int $layout_type
@@ -115,15 +91,13 @@ class xvmpSettings extends ActiveRecord
         $this->layout_type = $layout_type;
     }
 
-
     /**
      * @return int
      */
-    public function getRepositoryPreview(): int
+    public function getRepositoryPreview() : int
     {
         return $this->repository_preview;
     }
-
 
     /**
      * @param int $repository_preview
@@ -133,15 +107,13 @@ class xvmpSettings extends ActiveRecord
         $this->repository_preview = $repository_preview;
     }
 
-
     /**
      * @return bool
      */
-    public function getLpActive(): bool
+    public function getLpActive() : bool
     {
         return $this->lp_active && xvmp::isLearningProgressPossible($this->getObjId());
     }
-
 
     /**
      * @param int $lp_active
@@ -151,14 +123,20 @@ class xvmpSettings extends ActiveRecord
         $this->lp_active = $lp_active;
     }
 
-
-    public static function returnDbTableName(): string
+    /**
+     * @return int
+     */
+    public function getObjId() : int
     {
-        return self::DB_TABLE_NAME;
+        return $this->obj_id;
     }
 
-
-
-
+    /**
+     * @param int $obj_id
+     */
+    public function setObjId(int $obj_id) : void
+    {
+        $this->obj_id = $obj_id;
+    }
 
 }

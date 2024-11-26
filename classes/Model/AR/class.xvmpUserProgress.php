@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 /**
  * Class xvmpUserProgress
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class xvmpUserProgress extends ActiveRecord
@@ -18,20 +17,8 @@ class xvmpUserProgress extends ActiveRecord
     public const F_RANGES = 'ranges';
     public const F_TOTAL_WATCHED = 'total_watched';
     public const F_VIDEO_DURATION = 'video_duration';
-
-
-    /**
-     * @return string
-     */
-    public static function returnDbTableName(): string
-    {
-        return self::DB_TABLE_NAME;
-    }
-
-
     /**
      * @var ?int
-     *
      * @db_has_field        true
      * @db_is_unique        true
      * @db_is_primary       true
@@ -42,7 +29,6 @@ class xvmpUserProgress extends ActiveRecord
     protected ?int $id = 0;
     /**
      * @var ?int
-     *
      * @db_has_field        true
      * @db_fieldtype        integer
      * @db_length           8
@@ -50,7 +36,6 @@ class xvmpUserProgress extends ActiveRecord
     protected ?int $usr_id;
     /**
      * @var ?int
-     *
      * @db_has_field        true
      * @db_fieldtype        integer
      * @db_length           8
@@ -58,14 +43,12 @@ class xvmpUserProgress extends ActiveRecord
     protected ?int $mid;
     /**
      * @var String
-     *
      * @db_has_field        true
      * @db_fieldtype        clob
      */
     protected string $ranges = '[]';
     /**
      * @var int
-     *
      * @db_has_field        true
      * @db_fieldtype        integer
      * @db_length           8
@@ -73,124 +56,22 @@ class xvmpUserProgress extends ActiveRecord
     protected int $total_watched;
     /**
      * @var int
-     *
      * @db_has_field        true
      * @db_fieldtype        integer
      */
     protected int $video_duration;
 
-
     /**
-     * @return int
+     * @return string
      */
-    public function getId(): ?int
+    public static function returnDbTableName() : string
     {
-        return $this->id;
+        return self::DB_TABLE_NAME;
     }
 
-
     /**
-     * @param int $id
-     */
-    public function setId(int $id) : void
-    {
-        $this->id = $id;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getUsrId(): int
-    {
-        return $this->usr_id;
-    }
-
-
-    /**
-     * @param int $usr_id
-     */
-    public function setUsrId(int $usr_id) : void
-    {
-        $this->usr_id = $usr_id;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getMid(): int
-    {
-        return $this->mid;
-    }
-
-
-    /**
-     * @param int $mid
-     */
-    public function setMid(int $mid) : void
-    {
-        $this->mid = $mid;
-    }
-
-
-    /**
-     * @return String
-     */
-    public function getRanges(): string
-    {
-        return $this->ranges;
-    }
-
-
-    /**
-     * @param String $ranges
-     */
-    public function setRanges(string $ranges) : void
-    {
-        $this->ranges = $ranges;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getVideoDuration(): int
-    {
-        return $this->video_duration;
-    }
-
-
-    /**
-     * @param int $video_duration
-     */
-    public function setVideoDuration(int $video_duration) : void
-    {
-        $this->video_duration = $video_duration;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getTotalWatched(): int
-    {
-        return $this->total_watched;
-    }
-
-
-    /**
-     * @param int $total_watched
-     */
-    public function setTotalWatched(int $total_watched) : void
-    {
-        $this->total_watched = $total_watched;
-    }
-
-
-    /**
-     * @param int $usr_id
-     * @param int $mid
+     * @param int    $usr_id
+     * @param int    $mid
      * @param string $ranges
      * @throws xvmpException
      */
@@ -207,11 +88,10 @@ class xvmpUserProgress extends ActiveRecord
         $progress->store();
     }
 
-
     /**
      *
      */
-    public function store(): void
+    public function store() : void
     {
         $this->calcTotalWatched();
         parent::store();
@@ -234,9 +114,56 @@ class xvmpUserProgress extends ActiveRecord
     }
 
     /**
+     * @return String
+     */
+    public function getRanges() : string
+    {
+        return $this->ranges;
+    }
+
+    /**
+     * @param String $ranges
+     */
+    public function setRanges(string $ranges) : void
+    {
+        $this->ranges = $ranges;
+    }
+
+    /**
+     * @return int
+     */
+    public function getVideoDuration() : int
+    {
+        return $this->video_duration;
+    }
+
+    /**
+     * @param int $video_duration
+     */
+    public function setVideoDuration(int $video_duration) : void
+    {
+        $this->video_duration = $video_duration;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUsrId() : int
+    {
+        return $this->usr_id;
+    }
+
+    /**
+     * @param int $usr_id
+     */
+    public function setUsrId(int $usr_id) : void
+    {
+        $this->usr_id = $usr_id;
+    }
+
+    /**
      * @param $usr_id
      * @param $mid
-     *
      * @return float|int
      */
     public static function calcPercentage($usr_id, $mid) : float|int
@@ -249,5 +176,52 @@ class xvmpUserProgress extends ActiveRecord
         return ceil(($progress->getTotalWatched() / $progress->getVideoDuration()) * 100);
     }
 
+    /**
+     * @return int
+     */
+    public function getTotalWatched() : int
+    {
+        return $this->total_watched;
+    }
+
+    /**
+     * @param int $total_watched
+     */
+    public function setTotalWatched(int $total_watched) : void
+    {
+        $this->total_watched = $total_watched;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId() : ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id) : void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMid() : int
+    {
+        return $this->mid;
+    }
+
+    /**
+     * @param int $mid
+     */
+    public function setMid(int $mid) : void
+    {
+        $this->mid = $mid;
+    }
 
 }

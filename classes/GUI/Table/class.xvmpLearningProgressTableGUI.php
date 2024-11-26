@@ -6,19 +6,14 @@ declare(strict_types=1);
 
 /**
  * Class xvmpLearningProgressTableGUI
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class xvmpLearningProgressTableGUI extends xvmpTableGUI
 {
     public const ROW_TEMPLATE = 'tpl.learning_progress_row.html';
-
-
+    public const THUMBSIZE = '170x108';
     protected array $js_files = array('xvmp_lp_table.js');
     protected array $css_files = array('xvmp_video_table.css');
-
-    public const THUMBSIZE = '170x108';
-
     protected array $available_columns = array(
         'thumbnail' => array(
             'no_header' => true
@@ -55,8 +50,7 @@ class xvmpLearningProgressTableGUI extends xvmpTableGUI
 
     /**
      * xvmpSelectedVideosTableGUI constructor.
-     *
-     * @param $parent_gui
+     * @param        $parent_gui
      * @param string $parent_cmd
      * @throws ilCtrlException|xvmpException
      * @throws xvmpException
@@ -79,15 +73,6 @@ class xvmpLearningProgressTableGUI extends xvmpTableGUI
         $this->addCommandButton(xvmpLearningProgressGUI::CMD_SAVE, $this->pl->txt('save_settings'));
     }
 
-    protected function initColumns() : void
-    {
-
-        $this->addColumn('', '', "210", true);
-        parent::initColumns();
-
-    }
-
-
     /**
      * @throws xvmpException
      */
@@ -96,11 +81,19 @@ class xvmpLearningProgressTableGUI extends xvmpTableGUI
         $this->setData(xvmpMedium::getAvailableForLP($this->parent_obj->getObjId()));
     }
 
+    protected function initColumns() : void
+    {
+
+        $this->addColumn('', '', "210", true);
+        parent::initColumns();
+
+    }
+
     /**
      * @param xvmpObject $a_set
      * @throws ilTemplateException
      */
-    protected function fillRow($a_set): void
+    protected function fillRow($a_set) : void
     {
         $transcoded = ($a_set['status'] == 'legal');
         if ($transcoded) {
@@ -112,13 +105,15 @@ class xvmpLearningProgressTableGUI extends xvmpTableGUI
         $this->tpl->setVariable('VAL_MID', $a_set['mid']);
 
         /** @var xvmpSelectedMedia $selected_medium */
-        $selected_medium = xvmpSelectedMedia::where(array('obj_id' => $this->parent_obj->getObjId(), 'mid' => $a_set['mid']))->first();
-
+        $selected_medium = xvmpSelectedMedia::where(array('obj_id' => $this->parent_obj->getObjId(),
+                                                          'mid' => $a_set['mid']
+        ))->first();
 
         foreach ($this->available_columns as $title => $props) {
 
             if ($title == 'required') {
-                $this->tpl->setVariable('VAL_' . strtoupper($title), $selected_medium->getLpIsRequired() == 1 ? 'checked' : '');
+                $this->tpl->setVariable('VAL_' . strtoupper($title),
+                    $selected_medium->getLpIsRequired() == 1 ? 'checked' : '');
                 //			} elseif ($title == 'thumbnail' && $transcoding) {
                 //				$this->tpl->setVariable('VAL_' . strtoupper($title), $a_set[$title]);
             } elseif ($title == 'required_percentage') {

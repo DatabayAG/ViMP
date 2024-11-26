@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 /**
  * Class xvmpEventLogTableGUI
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class xvmpEventLogTableGUI extends xvmpTableGUI
@@ -39,6 +38,78 @@ class xvmpEventLogTableGUI extends xvmpTableGUI
         $this->setShowRowsSelector(true);
     }
 
+    /**
+     * @throws ilCtrlException
+     * @throws ilTemplateException
+     */
+    protected function fillRow($a_set) : void
+    {
+        foreach ($a_set as $key => $value) {
+            switch ($key) {
+                case 'timestamp':
+                    $this->tpl->setVariable("VAL_DATETIME", date('d.m.Y, H:i', (int) $value));
+                    break;
+                case 'action':
+                    $this->tpl->setVariable("VAL_ACTION", $this->pl->txt('log_action_' . $value));
+                    break;
+                case 'login':
+                    $user = new ilObjUser(ilObjUser::getUserIdByLogin($value));
+                    $this->tpl->setVariable("VAL_USER",
+                        $user->getFirstname() . ' ' . $user->getLastname() . ' [' . $value . ']');
+                    break;
+                case 'data':
+                    $this->tpl->setVariable("VAL_DATA", $this->formatData($a_set['action'], $value));
+                    break;
+                case 'obj_id':
+                    if ($this->is_global_log) {
+                        $this->tpl->setCurrentBlock('block_object_title');
+                        $this->tpl->setVariable('VAL_OBJECT_TITLE', ilObject2::_lookupTitle((int) $value));
+
+                        $ref_ids = ilObject2::_getAllReferences((int) $value);
+                        $this->ctrl->setParameterByClass(ilObjViMPGUI::class, 'ref_id', array_shift($ref_ids));
+                        $link = $this->ctrl->getLinkTargetByClass(array(ilObjPluginDispatchGUI::class,
+                                                                        ilObjViMPGUI::class
+                        ), ilObjViMPGUI::CMD_SHOW_CONTENT);
+                        $this->tpl->setVariable('VAL_OBJECT_LINK', $link);
+
+                        $this->tpl->parseCurrentBlock();
+                    }
+                    break;
+                default:
+                    $this->tpl->setVariable("VAL_" . strtoupper($key), $value);
+                    break;
+            }
+        }
+    }
+
+    protected function formatData($action, $data) : string
+    {
+        $string = '';
+        switch ($action) {
+            case xvmpEventLog::ACTION_ADD:
+            case xvmpEventLog::ACTION_REMOVE:
+            case xvmpEventLog::ACTION_DELETE:
+            case xvmpEventLog::ACTION_UPLOAD:
+                foreach ($data as $key => $value) {
+                    $string .= $this->pl->txt($key) . ': "' . (is_array($value) ? implode(', ',
+                            $value) : $value) . '"<br>';
+                }
+                break;
+            case xvmpEventLog::ACTION_EDIT:
+                foreach ($data as $key => $value) {
+                    $old = array_shift($value);
+                    $new = array_shift($value);
+                    $string .= $this->pl->txt($key) . ': "' . (is_array($old) ? implode(', ',
+                            $old) : $old) . '" -> "' . (is_array($new) ? implode(', ', $new) : $new) . '"<br>';
+                }
+                break;
+            case xvmpEventLog::ACTION_CHANGE_OWNER:
+                $new_owner = $data['owner'];
+                $string .= $this->pl->txt('new_owner') . ': ' . $new_owner;
+        }
+
+        return $string;
+    }
 
     /**
      * @throws arException
@@ -68,85 +139,21 @@ class xvmpEventLogTableGUI extends xvmpTableGUI
         }
     }
 
-
-    /**
-     * @throws ilCtrlException
-     * @throws ilTemplateException
-     */
-    protected function fillRow($a_set): void
-    {
-        foreach ($a_set as $key => $value) {
-            switch ($key) {
-                case 'timestamp':
-                    $this->tpl->setVariable("VAL_DATETIME", date('d.m.Y, H:i', (int) $value));
-                    break;
-                case 'action':
-                    $this->tpl->setVariable("VAL_ACTION", $this->pl->txt('log_action_' . $value));
-                    break;
-                case 'login':
-                    $user = new ilObjUser(ilObjUser::getUserIdByLogin($value));
-                    $this->tpl->setVariable("VAL_USER", $user->getFirstname() . ' ' . $user->getLastname() . ' [' . $value . ']');
-                    break;
-                case 'data':
-                    $this->tpl->setVariable("VAL_DATA", $this->formatData($a_set['action'], $value));
-                    break;
-                case 'obj_id':
-                    if ($this->is_global_log) {
-                        $this->tpl->setCurrentBlock('block_object_title');
-                        $this->tpl->setVariable('VAL_OBJECT_TITLE', ilObject2::_lookupTitle((int) $value));
-
-                        $ref_ids = ilObject2::_getAllReferences((int) $value);
-                        $this->ctrl->setParameterByClass(ilObjViMPGUI::class, 'ref_id', array_shift($ref_ids));
-                        $link = $this->ctrl->getLinkTargetByClass(array(ilObjPluginDispatchGUI::class, ilObjViMPGUI::class), ilObjViMPGUI::CMD_SHOW_CONTENT);
-                        $this->tpl->setVariable('VAL_OBJECT_LINK', $link);
-
-                        $this->tpl->parseCurrentBlock();
-                    }
-                    break;
-                default:
-                    $this->tpl->setVariable("VAL_" . strtoupper($key), $value);
-                    break;
-            }
-        }
-    }
-
-    protected function formatData($action, $data): string
-    {
-        $string = '';
-        switch ($action) {
-            case xvmpEventLog::ACTION_ADD:
-            case xvmpEventLog::ACTION_REMOVE:
-            case xvmpEventLog::ACTION_DELETE:
-            case xvmpEventLog::ACTION_UPLOAD:
-                foreach ($data as $key => $value) {
-                    $string .= $this->pl->txt($key) . ': "' . (is_array($value) ? implode(', ', $value) : $value) . '"<br>';
-                }
-                break;
-            case xvmpEventLog::ACTION_EDIT:
-                foreach ($data as $key => $value) {
-                    $old = array_shift($value);
-                    $new = array_shift($value);
-                    $string .= $this->pl->txt($key) . ': "' . (is_array($old) ? implode(', ', $old) : $old) . '" -> "' . (is_array($new) ? implode(', ', $new) : $new) . '"<br>';
-                }
-                break;
-            case xvmpEventLog::ACTION_CHANGE_OWNER:
-                $new_owner = $data['owner'];
-                $string .= $this->pl->txt('new_owner') . ': ' . $new_owner;
-        }
-
-        return $string;
-    }
-
     /**
      * Init filter items
-     *
      * @throws Exception
      */
-    public function initFilter(): void
+    public function initFilter() : void
     {
         $item = new ilMultiSelectInputGUI($this->pl->txt('action'), 'action');
         $options = array();
-        foreach (array(xvmpEventLog::ACTION_UPLOAD, xvmpEventLog::ACTION_EDIT, xvmpEventLog::ACTION_DELETE, xvmpEventLog::ACTION_ADD, xvmpEventLog::ACTION_REMOVE, xvmpEventLog::ACTION_CHANGE_OWNER) as $action_id) {
+        foreach (array(xvmpEventLog::ACTION_UPLOAD,
+                       xvmpEventLog::ACTION_EDIT,
+                       xvmpEventLog::ACTION_DELETE,
+                       xvmpEventLog::ACTION_ADD,
+                       xvmpEventLog::ACTION_REMOVE,
+                       xvmpEventLog::ACTION_CHANGE_OWNER
+                 ) as $action_id) {
             $options[$action_id] = $this->pl->txt('log_action_' . $action_id);
         }
         $item->setOptions($options);

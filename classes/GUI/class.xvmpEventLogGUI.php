@@ -6,25 +6,12 @@ declare(strict_types=1);
 
 /**
  * Class xvmpEventLogGUI
- *
  * @ilCtrl_isCalledBy xvmpEventLogGUI: ilObjViMPGUI
- *
- * @author  Theodor Truffer <tt@studer-raimann.ch>
+ * @author            Theodor Truffer <tt@studer-raimann.ch>
  */
 class xvmpEventLogGUI extends xvmpGUI
 {
     public const TAB_ACTIVE = ilObjViMPGUI::TAB_LOG;
-
-    /**
-     *
-     */
-    public function executeCommand() : void
-    {
-        if (!ilObjViMPAccess::hasWriteAccess()) {
-            $this->accessDenied();
-        }
-        parent::executeCommand();
-    }
 
     protected function index() : void
     {
@@ -47,5 +34,16 @@ class xvmpEventLogGUI extends xvmpGUI
         $xvmpEventLogTableGUI->resetFilter();
         $xvmpEventLogTableGUI->resetOffset();
         $this->dic->ctrl()->redirect($this, self::CMD_STANDARD);
+    }
+
+    /**
+     *
+     */
+    public function executeCommand() : void
+    {
+        if (!ilObjViMPAccess::hasWriteAccess()) {
+            $this->accessDenied();
+        }
+        parent::executeCommand();
     }
 }

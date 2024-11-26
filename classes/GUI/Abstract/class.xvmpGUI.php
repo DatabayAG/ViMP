@@ -12,7 +12,6 @@ use srag\Plugins\ViMP\UIComponents\Player\VideoPlayer;
 
 /**
  * Class xvmpGUI
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 abstract class xvmpGUI
@@ -29,10 +28,8 @@ abstract class xvmpGUI
     protected Factory $renderer_factory;
     protected MediumMetadataDTOBuilder $metadata_builder;
 
-
     /**
      * xvmpGUI constructor.
-     *
      * @param ilObjViMPGUI $parent_gui
      */
     public function __construct(ilObjViMPGUI $parent_gui)
@@ -55,93 +52,42 @@ abstract class xvmpGUI
     /**
      * @return ilModalGUI
      */
-    protected function getAccessDeniedModal(): ilModalGUI
+    public static function getModalPlayer() : ilModalGUI
     {
+        global $tpl;
+        $tpl->addCss(ilViMPPlugin::getInstance()->getAssetURL('default/modal.css'));
         $modal = ilModalGUI::getInstance();
         $modal->setId('xvmp_modal_player');
         $modal->setType(ilModalGUI::TYPE_LARGE);
-        $modal->setBody($this->dic->ui()->renderer()->render($this->dic->ui()->factory()->messageBox()->failure($this->pl->txt('access_denied'))));
+        $modal->setBody('<section><div id="xvmp_video_container"></div></section>');
         return $modal;
     }
 
     /**
-     * @param xvmpMedium $medium
-     * @return PlayerContainerDTO
-     * @throws xvmpException|ilCtrlException
+     * @return mixed
      */
-    public function buildPlayerContainerDTO(xvmpMedium $medium): PlayerContainerDTO
+    abstract protected function index();
+
+    /**
+     * @throws ilCtrlException
+     */
+    protected function cancel() : void
     {
-        $playerContainerDTO = new PlayerContainerDTO(
-            $this->getVideoPlayer($medium, $this->getObjId()),
-            $this->metadata_builder->buildFromVimpMedium($medium, false, false)
-        );
-
-        $buttons = [];
-        if (!is_null($this->getObject())) {
-            $buttons[] = $this->buildPermLinkUI($medium);
-        }
-
-        if ($medium->isDownloadAllowed()) {
-            $this->dic->ctrl()->setParameter($this, 'mid', $medium->getMid());
-            $buttons[] = $this->dic->ui()->factory()->button()->standard(
-                $this->pl->txt('btn_download'),
-                $this->dic->ctrl()->getLinkTarget($this, self::CMD_DOWNLOAD_MEDIUM)
-            );
-        }
-
-        if (!empty($buttons)) {
-            $playerContainerDTO = $playerContainerDTO->withButtons($buttons);
-        }
-
-        return $playerContainerDTO;
+        $this->dic->ctrl()->redirect($this, self::CMD_STANDARD);
     }
 
     /**
      * @throws xvmpException
      */
-    protected function getVideoPlayer($video, int $obj_id): VideoPlayer
+    protected function downloadMedium() : void
     {
-        return (new VideoPlayer($video, xvmp::isUseEmbeddedPlayer($obj_id, $video), false));
+        $mid = filter_input(INPUT_GET, 'mid', FILTER_VALIDATE_INT);
+        $video = xvmpMedium::find($mid);
+        ilObjViMPAccess::checkAction(ilObjViMPAccess::ACTION_DOWNLOAD_VIDEO, $this, $video);
+        xvmp::deliverMedium($video);
     }
 
     /**
-     * @param xvmpMedium $video
-     * @return ILIAS\UI\Component\Component[]
-     */
-    public function buildPermLinkUI(xvmpMedium $video): array
-    {
-        $link_tpl = ilLink::_getStaticLink(
-            $this->parent_gui->getRefId(),
-            $this->parent_gui->getType(),
-            true,
-            '_' . $video->getMid() . '_0'
-        );
-
-        $popover = $this->dic->ui()->factory()->popover()->standard(
-            $this->dic->ui()->factory()->legacy($this->pl->txt('popover_link_copied'))
-        );
-
-        if (!xvmpConf::getConfig(xvmpConf::F_EMBED_PLAYER)) {
-            $items[] = $this->dic->ui()->factory()->button()->shy(
-                $this->pl->txt('btn_copy_link_w_time'),
-                ''
-            )->withOnClick($popover->getShowSignal())->withOnLoadCode(function ($id) use ($link_tpl) {
-                return "document.getElementById('$id').addEventListener('click', () => VimpContent.copyDirectLinkWithTime('$link_tpl'));";
-            });
-        }
-        return [
-            $popover,
-            $this->dic->ui()->factory()->legacy('
-                <div class="ilPermalinkContainer input-group">
-                    <input class="form-control" id="current_perma_link" type="text" value="' . $link_tpl . '" readonly="readonly" onclick="this.focus();this.select();return false;" />
-                    <span class="input-group-btn">'),
-            $this->dic->ui()->factory()->dropdown()->standard($items)->withLabel(''),
-            $this->dic->ui()->factory()->legacy('</span></div>'),
-        ];
-    }
-
-    /**
-     *
      * @throws ilCtrlException
      */
     public function executeCommand() : void
@@ -175,7 +121,6 @@ abstract class xvmpGUI
         $this->{$cmd}();
     }
 
-
     /**
      *
      */
@@ -191,7 +136,6 @@ abstract class xvmpGUI
     }
 
     /**
-     *
      * @throws ilCtrlException
      */
     public function flushCache() : void
@@ -202,41 +146,6 @@ abstract class xvmpGUI
         }
         $this->dic->ctrl()->redirect($this, self::CMD_STANDARD);
     }
-
-
-    /**
-     * @return mixed
-     */
-    abstract protected function index();
-
-
-    /**
-     *
-     * @throws ilCtrlException
-     */
-    protected function cancel() : void
-    {
-        $this->dic->ctrl()->redirect($this, self::CMD_STANDARD);
-    }
-
-
-    /**
-     * @return ?ilObject
-     */
-    public function getObject(): ?ilObject
-    {
-        return $this->parent_gui->getObject();
-    }
-
-    /**
-     * @return int
-     */
-    public function getObjId(): int
-    {
-        $obj = $this->parent_gui->getObject();
-        return $obj ? $obj->getId() : 0;
-    }
-
 
     /**
      * called by ilObjViMPAccess
@@ -249,28 +158,12 @@ abstract class xvmpGUI
     }
 
     /**
-     * @return ilModalGUI
-     */
-    public static function getModalPlayer(): ilModalGUI
-    {
-        global $tpl;
-        $tpl->addCss(ilViMPPlugin::getInstance()->getAssetURL('default/modal.css'));
-        $modal = ilModalGUI::getInstance();
-        $modal->setId('xvmp_modal_player');
-        $modal->setType(ilModalGUI::TYPE_LARGE);
-        $modal->setBody('<section><div id="xvmp_video_container"></div></section>');
-        return $modal;
-    }
-
-
-    /**
      * @param $video_mid
-     *
      * @return ilModalGUI
      * @throws ilTemplateException
      * @throws xvmpException
      */
-    public function getFilledModalPlayer($video_mid): ilModalGUI
+    public function getFilledModalPlayer($video_mid) : ilModalGUI
     {
         $selected_medium = xvmpSelectedMedia::where(array('obj_id' => $this->getObjId(), 'mid' => $video_mid));
         if (!ilObjViMPAccess::hasWriteAccess()) {
@@ -298,6 +191,17 @@ abstract class xvmpGUI
         return $modal;
     }
 
+    /**
+     * @return ilModalGUI
+     */
+    protected function getAccessDeniedModal() : ilModalGUI
+    {
+        $modal = ilModalGUI::getInstance();
+        $modal->setId('xvmp_modal_player');
+        $modal->setType(ilModalGUI::TYPE_LARGE);
+        $modal->setBody($this->dic->ui()->renderer()->render($this->dic->ui()->factory()->messageBox()->failure($this->pl->txt('access_denied'))));
+        return $modal;
+    }
 
     /**
      * @param null $play_video_id
@@ -306,7 +210,7 @@ abstract class xvmpGUI
      * @throws ilTemplateException
      * @throws xvmpException
      */
-    public function fillModalPlayer($play_video_id = null, bool $async = true): stdClass
+    public function fillModalPlayer($play_video_id = null, bool $async = true) : stdClass
     {
         $mid = $play_video_id ?? $_GET['mid'];
         $video = xvmpMedium::find($mid);
@@ -320,7 +224,9 @@ abstract class xvmpGUI
 
         $response->video_title = $video->getTitle();
         /** @var xvmpUserProgress $progress */
-        $progress = xvmpUserProgress::where(array(xvmpUserProgress::F_USR_ID => $this->dic->user()->getId(), xvmpMedium::F_MID => $mid))->first();
+        $progress = xvmpUserProgress::where(array(xvmpUserProgress::F_USR_ID => $this->dic->user()->getId(),
+                                                  xvmpMedium::F_MID => $mid
+        ))->first();
         if ($progress) {
             $response->time_ranges = json_decode($progress->getRanges());
         } else {
@@ -335,16 +241,97 @@ abstract class xvmpGUI
     }
 
     /**
-     * @throws xvmpException
+     * @param xvmpMedium $medium
+     * @return PlayerContainerDTO
+     * @throws xvmpException|ilCtrlException
      */
-    protected function downloadMedium() : void
+    public function buildPlayerContainerDTO(xvmpMedium $medium) : PlayerContainerDTO
     {
-        $mid = filter_input(INPUT_GET, 'mid', FILTER_VALIDATE_INT);
-        $video = xvmpMedium::find($mid);
-        ilObjViMPAccess::checkAction(ilObjViMPAccess::ACTION_DOWNLOAD_VIDEO, $this, $video);
-        xvmp::deliverMedium($video);
+        $playerContainerDTO = new PlayerContainerDTO(
+            $this->getVideoPlayer($medium, $this->getObjId()),
+            $this->metadata_builder->buildFromVimpMedium($medium, false, false)
+        );
+
+        $buttons = [];
+        if (!is_null($this->getObject())) {
+            $buttons[] = $this->buildPermLinkUI($medium);
+        }
+
+        if ($medium->isDownloadAllowed()) {
+            $this->dic->ctrl()->setParameter($this, 'mid', $medium->getMid());
+            $buttons[] = $this->dic->ui()->factory()->button()->standard(
+                $this->pl->txt('btn_download'),
+                $this->dic->ctrl()->getLinkTarget($this, self::CMD_DOWNLOAD_MEDIUM)
+            );
+        }
+
+        if (!empty($buttons)) {
+            $playerContainerDTO = $playerContainerDTO->withButtons($buttons);
+        }
+
+        return $playerContainerDTO;
     }
 
+    /**
+     * @throws xvmpException
+     */
+    protected function getVideoPlayer($video, int $obj_id) : VideoPlayer
+    {
+        return (new VideoPlayer($video, xvmp::isUseEmbeddedPlayer($obj_id, $video), false));
+    }
+
+    /**
+     * @return int
+     */
+    public function getObjId() : int
+    {
+        $obj = $this->parent_gui->getObject();
+        return $obj ? $obj->getId() : 0;
+    }
+
+    /**
+     * @return ?ilObject
+     */
+    public function getObject() : ?ilObject
+    {
+        return $this->parent_gui->getObject();
+    }
+
+    /**
+     * @param xvmpMedium $video
+     * @return ILIAS\UI\Component\Component[]
+     */
+    public function buildPermLinkUI(xvmpMedium $video) : array
+    {
+        $link_tpl = ilLink::_getStaticLink(
+            $this->parent_gui->getRefId(),
+            $this->parent_gui->getType(),
+            true,
+            '_' . $video->getMid() . '_0'
+        );
+
+        $popover = $this->dic->ui()->factory()->popover()->standard(
+            $this->dic->ui()->factory()->legacy($this->pl->txt('popover_link_copied'))
+        );
+
+        if (!xvmpConf::getConfig(xvmpConf::F_EMBED_PLAYER)) {
+            $items[] = $this->dic->ui()->factory()->button()->shy(
+                $this->pl->txt('btn_copy_link_w_time'),
+                ''
+            )->withOnClick($popover->getShowSignal())->withOnLoadCode(function ($id) use ($link_tpl) {
+                return "document.getElementById('$id').addEventListener('click', () => VimpContent.copyDirectLinkWithTime('$link_tpl'));";
+            });
+        }
+        return [
+            $popover,
+            $this->dic->ui()->factory()->legacy('
+                <div class="ilPermalinkContainer input-group">
+                    <input class="form-control" id="current_perma_link" type="text" value="' . $link_tpl . '" readonly="readonly" onclick="this.focus();this.select();return false;" />
+                    <span class="input-group-btn">'),
+            $this->dic->ui()->factory()->dropdown()->standard($items)->withLabel(''),
+            $this->dic->ui()->factory()->legacy('</span></div>'),
+        ];
+    }
 
     /**
      * ajax

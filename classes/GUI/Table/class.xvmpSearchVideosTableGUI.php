@@ -3,21 +3,17 @@
 declare(strict_types=1);
 
 /* Copyright (c) 1998-2009 ILIAS open source, Extended GPL, see docs/LICENSE */
+
 /**
  * Class xvmpSearchVideosTableGUI
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class xvmpSearchVideosTableGUI extends xvmpTableGUI
 {
     public const ROW_TEMPLATE = 'tpl.search_videos_row.html';
-
+    public const THUMBSIZE = '170x108';
     protected array $js_files = array('xvmp_search_videos.js', 'xvmp_content.js');
     protected array $css_files = array('xvmp_video_table.css');
-
-
-    public const THUMBSIZE = '170x108';
-
     protected array $available_columns = array(
         'thumbnail' => array(
             'no_header' => true
@@ -37,14 +33,11 @@ class xvmpSearchVideosTableGUI extends xvmpTableGUI
         )
     );
 
-
     protected ?object $parent_obj;
-
 
     /**
      * xvmpSearchVideosTableGUI constructor.
-     *
-     * @param int $parent_gui
+     * @param int    $parent_gui
      * @param string $parent_cmd
      * @throws ilException
      * @throws Exception
@@ -71,7 +64,6 @@ class xvmpSearchVideosTableGUI extends xvmpTableGUI
         //		$this->tpl_global->addOnLoadCode('VimpSearch.initEmptyFilterCheck();');
     }
 
-
     /**
      *
      */
@@ -83,6 +75,67 @@ class xvmpSearchVideosTableGUI extends xvmpTableGUI
         parent::initColumns();
     }
 
+    /**
+     * @param xvmpObject $a_set
+     * @throws ilTemplateException
+     */
+    protected function fillRow($a_set) : void
+    {
+        $transcoded = ($a_set['status'] === 'legal');
+        $transcoding = ($a_set['status'] === 'converting');
+
+        if ($transcoded) {
+            $this->tpl->touchBlock('transcoded');
+        } else {
+            $this->tpl->touchBlock('transcoding');
+            $this->tpl->setVariable('PLAY_OVERLAY_ATTRIBUTES', 'hidden');
+            if ($transcoding) {
+                $this->tpl->setVariable(
+                    'PROGRESS_BAR',
+                    (new xvmpProgressBarUI($a_set['mid'], $this->pl, $this->dic))->getHTML()
+                );
+            }
+        }
+
+        $this->tpl->setVariable('VAL_MID', $a_set['mid']);
+
+        $checked = xvmpSelectedMedia::isSelected($a_set['mid'], $this->parent_obj->getObjId());
+        if ($checked) {
+            $this->tpl->setVariable('VAL_CHECKED', 'checked');
+        }
+
+        foreach ($this->available_columns as $title => $props) {
+            $this->tpl->setVariable('VAL_' . strtoupper($title), $this->parseColumnValue($title, $a_set[$title]));
+        }
+
+        foreach ($this->getSelectableColumns() as $title => $props) {
+            if ($this->isColumnSelected($title)) {
+                $this->tpl->setCurrentBlock('generic');
+                $this->tpl->setVariable('VAL_GENERIC', $this->parseColumnValue($title, $a_set[$title]));
+                $this->tpl->parseCurrentBlock();
+            }
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getSelectableColumns() : array
+    {
+        $selectable_columns = array(
+            'categories' => array(
+                'sort_field' => 'categories',
+                'txt' => $this->pl->txt('categories')
+            )
+        );
+        foreach (xvmpConf::getConfig(xvmpConf::F_FILTER_FIELDS) as $filter_field) {
+            $selectable_columns[$filter_field[xvmpConf::F_FILTER_FIELD_ID]] = array(
+                'sort_field' => $filter_field[xvmpConf::F_FILTER_FIELD_ID],
+                'txt' => $filter_field[xvmpConf::F_FILTER_FIELD_TITLE]
+            );
+        }
+        return $selectable_columns;
+    }
 
     /**
      *
@@ -107,7 +160,8 @@ class xvmpSearchVideosTableGUI extends xvmpTableGUI
                         }
                         $filter['userid'] = $xvmpUser->getId();
                     } else {
-                        $this->dic->ui()->mainTemplate()->setOnScreenMessage('info', $this->pl->txt('msg_username_not_found'));
+                        $this->dic->ui()->mainTemplate()->setOnScreenMessage('info',
+                            $this->pl->txt('msg_username_not_found'));
                         $this->setData(array());
                         return;
                     }
@@ -130,24 +184,33 @@ class xvmpSearchVideosTableGUI extends xvmpTableGUI
             }
         }
 
-
         $filter = array_filter($filter);
         if (empty($filter)) {
-            $this->dic->ui()->mainTemplate()->setOnScreenMessage('question', $this->pl->txt('msg_please_enter_filter'), true);
+            $this->dic->ui()->mainTemplate()->setOnScreenMessage('question', $this->pl->txt('msg_please_enter_filter'),
+                true);
             $this->redirectToParent();
         }
 
         $current_user = xvmpUser::getOrCreateVimpUser($this->user);
-        if (!in_array(xvmpUserRoles::ROLE_ADMINISTRATOR, array_keys($current_user->getRoles()))) {  // don't check roles for admins
-            $filter['mediapermissions'] = xvmpUserRoles::ROLE_ANONYMOUS . ',' . implode(',', array_keys($current_user->getRoles()));  //PLVIMP-37
+        if (!in_array(xvmpUserRoles::ROLE_ADMINISTRATOR,
+            array_keys($current_user->getRoles()))) {  // don't check roles for admins
+            $filter['mediapermissions'] = xvmpUserRoles::ROLE_ANONYMOUS . ',' . implode(',',
+                    array_keys($current_user->getRoles()));  //PLVIMP-37
         }
         $data = array_filter(xvmpMedium::getFilteredAsArray($filter));
         $this->setData($data);
         $this->setMaxCount(count($data));
     }
 
+    /**
+     * @throws ilCtrlException
+     */
+    protected function redirectToParent() : void
+    {
+        $this->ctrl->redirect($this->parent_obj, xvmpGUI::CMD_STANDARD);
+    }
 
-    public function initFilter(): void
+    public function initFilter() : void
     {
         $filter_item = new ilTextInputGUI($this->pl->txt('title'), 'title');
         $this->addAndReadFilterItem($filter_item);
@@ -155,7 +218,8 @@ class xvmpSearchVideosTableGUI extends xvmpTableGUI
         $filter_item = new ilTextInputGUI($this->pl->txt('username'), 'username');
         $this->ctrl->setParameterByClass('ilViMPPlugin', 'ref_id', $_GET['ref_id']);
 
-        $filter_item->setDataSource($this->dic->ctrl()->getLinkTarget(new ilObjViMPGUI(), 'addUserAutoComplete', "", true));
+        $filter_item->setDataSource($this->dic->ctrl()->getLinkTarget(new ilObjViMPGUI(), 'addUserAutoComplete', "",
+            true));
         $this->addAndReadFilterItem($filter_item);
 
         $filter_item = new ilMultiSelectSearchInputGUI($this->pl->txt('category'), 'categories');
@@ -200,83 +264,10 @@ class xvmpSearchVideosTableGUI extends xvmpTableGUI
             if (!$field[xvmpConf::F_FILTER_FIELD_ID]) {
                 continue;
             }
-            $filter_item = new ilTextInputGUI($field[xvmpConf::F_FILTER_FIELD_TITLE], $field[xvmpConf::F_FILTER_FIELD_ID]);
+            $filter_item = new ilTextInputGUI($field[xvmpConf::F_FILTER_FIELD_TITLE],
+                $field[xvmpConf::F_FILTER_FIELD_ID]);
             $this->addAndReadFilterItem($filter_item);
         }
     }
-
-
-    /**
-     * @param xvmpObject $a_set
-     * @throws ilTemplateException
-     */
-    protected function fillRow($a_set): void
-    {
-        $transcoded = ($a_set['status'] === 'legal');
-        $transcoding = ($a_set['status'] === 'converting');
-
-        if ($transcoded) {
-            $this->tpl->touchBlock('transcoded');
-        } else {
-            $this->tpl->touchBlock('transcoding');
-            $this->tpl->setVariable('PLAY_OVERLAY_ATTRIBUTES', 'hidden');
-            if ($transcoding) {
-                $this->tpl->setVariable(
-                    'PROGRESS_BAR',
-                    (new xvmpProgressBarUI($a_set['mid'], $this->pl, $this->dic))->getHTML()
-                );
-            }
-        }
-
-        $this->tpl->setVariable('VAL_MID', $a_set['mid']);
-
-        $checked = xvmpSelectedMedia::isSelected($a_set['mid'], $this->parent_obj->getObjId());
-        if ($checked) {
-            $this->tpl->setVariable('VAL_CHECKED', 'checked');
-        }
-
-        foreach ($this->available_columns as $title => $props) {
-            $this->tpl->setVariable('VAL_' . strtoupper($title), $this->parseColumnValue($title, $a_set[$title]));
-        }
-
-        foreach ($this->getSelectableColumns() as $title => $props) {
-            if ($this->isColumnSelected($title)) {
-                $this->tpl->setCurrentBlock('generic');
-                $this->tpl->setVariable('VAL_GENERIC', $this->parseColumnValue($title, $a_set[$title]));
-                $this->tpl->parseCurrentBlock();
-            }
-        }
-    }
-
-
-    /**
-     *
-     * @throws ilCtrlException
-     */
-    protected function redirectToParent() : void
-    {
-        $this->ctrl->redirect($this->parent_obj, xvmpGUI::CMD_STANDARD);
-    }
-
-    /**
-     * @return array
-     */
-    public function getSelectableColumns(): array
-    {
-        $selectable_columns = array(
-            'categories' => array(
-                'sort_field' => 'categories',
-                'txt' => $this->pl->txt('categories')
-            )
-        );
-        foreach (xvmpConf::getConfig(xvmpConf::F_FILTER_FIELDS) as $filter_field) {
-            $selectable_columns[$filter_field[xvmpConf::F_FILTER_FIELD_ID]] = array(
-                'sort_field' => $filter_field[xvmpConf::F_FILTER_FIELD_ID],
-                'txt' => $filter_field[xvmpConf::F_FILTER_FIELD_TITLE]
-            );
-        }
-        return $selectable_columns;
-    }
-
 
 }

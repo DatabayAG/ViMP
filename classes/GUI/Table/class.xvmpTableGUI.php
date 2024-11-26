@@ -8,7 +8,6 @@ use ILIAS\DI\Container;
 
 /**
  * Class xvmpTableGUI
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 abstract class xvmpTableGUI extends ilTable2GUI
@@ -25,7 +24,6 @@ abstract class xvmpTableGUI extends ilTable2GUI
     protected array $available_filters = array();
     protected array $filter = array();
     protected ilGlobalPageTemplate $tpl_global;
-
 
     /**
      * @throws Exception
@@ -58,11 +56,12 @@ abstract class xvmpTableGUI extends ilTable2GUI
             $this->tpl_global->addCss($this->pl->getAssetURL('default/' . $css_file));
         }
 
-        $this->tpl_global->addOnLoadCode("VimpContent.ajax_base_url = '" . $this->ctrl->getLinkTarget($this->parent_obj, '', '', true) . "';");
+        $this->tpl_global->addOnLoadCode("VimpContent.ajax_base_url = '" . $this->ctrl->getLinkTarget($this->parent_obj,
+                '', '', true) . "';");
 
     }
 
-    protected function initColumns(): void
+    protected function initColumns() : void
     {
         foreach ($this->available_columns as $title => $props) {
             if (!isset($props['no_header'])) {
@@ -77,10 +76,19 @@ abstract class xvmpTableGUI extends ilTable2GUI
         }
     }
 
+    public function isColumnSelected(string $col) : bool
+    {
+        if (!array_key_exists($col, $this->getSelectableColumns())) {
+            return true;
+        }
+
+        return in_array($col, $this->getSelectedColumns());
+    }
+
     /**
      * @throws Exception
      */
-    public function initFilter(): void
+    public function initFilter() : void
     {
         foreach ($this->available_filters as $title => $props) {
             $filter_item = new $props['input_gui']($this->pl->txt($title), $props['post_var'] ?: $title);
@@ -88,7 +96,7 @@ abstract class xvmpTableGUI extends ilTable2GUI
         }
     }
 
-    protected function addAndReadFilterItem(ilTableFilterItem $item): void
+    protected function addAndReadFilterItem(ilTableFilterItem $item) : void
     {
         $this->addFilterItem($item);
         $item->readFromSession();
@@ -112,21 +120,12 @@ abstract class xvmpTableGUI extends ilTable2GUI
         }
     }
 
-    public function isColumnSelected(string $col): bool
-    {
-        if (!array_key_exists($col, $this->getSelectableColumns())) {
-            return true;
-        }
-
-        return in_array($col, $this->getSelectedColumns());
-    }
-
     /**
      * @param $column
      * @param $value
      * @return string
      */
-    protected function parseColumnValue($column, $value): string
+    protected function parseColumnValue($column, $value) : string
     {
         switch ($column) {
             case 'categories':

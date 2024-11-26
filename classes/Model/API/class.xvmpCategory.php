@@ -6,14 +6,25 @@ declare(strict_types=1);
 
 /**
  * Class xvmpCategory
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class xvmpCategory extends xvmpObject
 {
     public const DEFAULT_CACHE_TTL = 86400; // 1 day
+    protected int $cid;
+    protected int $pid;
+    protected ?int $parent;
+    protected string $culture;
+    protected string $name;
+    protected ?string $description;
+    protected string $categorytype;
+    protected string $status;
+    protected string $picture;
+    protected int $weight;
+    protected string $created_at;
+    protected string $updated_at;
 
-    public static function getObjectAsArray($id): array
+    public static function getObjectAsArray($id) : array
     {
         $key = self::class;
         $existing = xvmpCacheFactory::getInstance()->get($key);
@@ -36,7 +47,12 @@ class xvmpCategory extends xvmpObject
         return $response;
     }
 
-    public static function getAllAsArray(): array
+    public static function cache($identifier, $object, $ttl = null) : void
+    {
+        parent::cache($identifier, $object, (int) ($ttl ?: xvmpConf::getConfig(xvmpConf::F_CACHE_TTL_CATEGORIES)));
+    }
+
+    public static function getAllAsArray() : array
     {
         $key = self::class;
         $existing = xvmpCacheFactory::getInstance()->get($key);
@@ -63,31 +79,7 @@ class xvmpCategory extends xvmpObject
         return $cache_array;
     }
 
-    public static function cache($identifier, $object, $ttl = null) : void
-    {
-        parent::cache($identifier, $object, (int) ($ttl ?: xvmpConf::getConfig(xvmpConf::F_CACHE_TTL_CATEGORIES)));
-    }
-
-    protected int $cid;
-    protected int $pid;
-    protected ?int $parent;
-    protected string $culture;
-    protected string $name;
-    protected ?string $description;
-    protected string $categorytype;
-    protected string $status;
-    protected string $picture;
-    protected int $weight;
-    protected string $created_at;
-
-    protected string $updated_at;
-
-    public function getId(): int
-    {
-        return $this->cid;
-    }
-
-    public function getCid(): int
+    public function getCid() : int
     {
         return $this->cid;
     }
@@ -97,7 +89,7 @@ class xvmpCategory extends xvmpObject
         $this->cid = $cid;
     }
 
-    public function getPid(): int
+    public function getPid() : int
     {
         return $this->pid;
     }
@@ -107,17 +99,7 @@ class xvmpCategory extends xvmpObject
         $this->pid = $pid;
     }
 
-    public function getParent(): ?int
-    {
-        return $this->parent;
-    }
-
-    public function setParent(int $parent) : void
-    {
-        $this->parent = $parent;
-    }
-
-    public function getCulture(): string
+    public function getCulture() : string
     {
         return $this->culture;
     }
@@ -127,12 +109,7 @@ class xvmpCategory extends xvmpObject
         $this->culture = $culture;
     }
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function getNameWithPath(): string
+    public function getNameWithPath() : string
     {
         $path = array($this->getName());
         $category = $this;
@@ -148,12 +125,32 @@ class xvmpCategory extends xvmpObject
         return implode(' » ', $path);
     }
 
+    public function getName() : string
+    {
+        return $this->name;
+    }
+
     public function setName(string $name) : void
     {
         $this->name = $name;
     }
 
-    public function getDescription(): string
+    public function getId() : int
+    {
+        return $this->cid;
+    }
+
+    public function getParent() : ?int
+    {
+        return $this->parent;
+    }
+
+    public function setParent(int $parent) : void
+    {
+        $this->parent = $parent;
+    }
+
+    public function getDescription() : string
     {
         return $this->description;
     }
@@ -163,7 +160,7 @@ class xvmpCategory extends xvmpObject
         $this->description = $description;
     }
 
-    public function getCategorytype(): string
+    public function getCategorytype() : string
     {
         return $this->categorytype;
     }
@@ -173,7 +170,7 @@ class xvmpCategory extends xvmpObject
         $this->categorytype = $categorytype;
     }
 
-    public function getStatus(): string
+    public function getStatus() : string
     {
         return $this->status;
     }
@@ -183,7 +180,7 @@ class xvmpCategory extends xvmpObject
         $this->status = $status;
     }
 
-    public function getPicture(): string
+    public function getPicture() : string
     {
         return $this->picture;
     }
@@ -193,7 +190,7 @@ class xvmpCategory extends xvmpObject
         $this->picture = $picture;
     }
 
-    public function getWeight(): int
+    public function getWeight() : int
     {
         return $this->weight;
     }
@@ -203,7 +200,7 @@ class xvmpCategory extends xvmpObject
         $this->weight = $weight;
     }
 
-    public function getCreatedAt(): string
+    public function getCreatedAt() : string
     {
         return $this->created_at;
     }
@@ -213,7 +210,7 @@ class xvmpCategory extends xvmpObject
         $this->created_at = $created_at;
     }
 
-    public function getUpdatedAt(): string
+    public function getUpdatedAt() : string
     {
         return $this->updated_at;
     }
@@ -222,6 +219,5 @@ class xvmpCategory extends xvmpObject
     {
         $this->updated_at = $updated_at;
     }
-
 
 }

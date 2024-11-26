@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 /**
  * Class ilMultiSelectSearchInputGUI
- *
  * @author: Oskar Truffer <ot@studer-raimann.ch>
  * @author: Martin Studer <ms@studer-raimann.ch>
- *
  */
 class ilMultiSelectSearchInputGUI extends ilMultiSelectInputGUI
 {
@@ -34,17 +32,17 @@ class ilMultiSelectSearchInputGUI extends ilMultiSelectInputGUI
         $tpl->addJavaScript("./Customizing/global/plugins/Services/Repository/RepositoryObject/ViMP/templates/default/form/select2/select2.min.js");
         //$tpl->addJavaScript("./Customizing/global/plugins/Services/Repository/RepositoryObject/ViMP/templates/default/form/select2/select2_locale_".$ilUser->getCurrentLanguage().".js");
         $tpl->addCss("./Customizing/global/plugins/Services/Repository/RepositoryObject/ViMP/templates/default/form/select2/select2.css");
-        $this->setInputTemplate(new ilTemplate("tpl.multiple_select.html", true, true, "Customizing/global/plugins/Services/Repository/RepositoryObject/ViMP"));
+        $this->setInputTemplate(new ilTemplate("tpl.multiple_select.html", true, true,
+            "Customizing/global/plugins/Services/Repository/RepositoryObject/ViMP"));
         $this->setWidth(308);
         $this->setHeight(100);
     }
 
     /**
      * Check input, strip slashes etc. set alert, if input is not ok.
-     *
-     * @return	boolean		Input ok, true/false
+     * @return    boolean        Input ok, true/false
      */
-    public function checkInput(): bool
+    public function checkInput() : bool
     {
         global $DIC;
         $lng = $DIC['lng'];
@@ -57,7 +55,7 @@ class ilMultiSelectSearchInputGUI extends ilMultiSelectInputGUI
         return true;
     }
 
-    public function getSubItems(): array
+    public function getSubItems() : array
     {
         return array();
     }
@@ -65,7 +63,7 @@ class ilMultiSelectSearchInputGUI extends ilMultiSelectInputGUI
     /**
      * @throws ilTemplateException
      */
-    public function render(): string
+    public function render() : string
     {
         $tpl = $this->getInputTemplate();
         $values = $this->getValue();
@@ -123,93 +121,11 @@ class ilMultiSelectSearchInputGUI extends ilMultiSelectInputGUI
     }
 
     /**
-     * @param int $a_height
-     *@deprecated setting inline style items from the controller is bad practice. please use the setClass together with an appropriate css class.
+     * @return ilTemplate
      */
-    public function setHeight(int $a_height): void
+    public function getInputTemplate() : ilTemplate
     {
-        $this->height = $a_height;
-    }
-
-    public function getHeight(): int
-    {
-        return $this->height;
-    }
-
-    /**
-     * @param int $a_width
-     *@deprecated setting inline style items from the controller is bad practice. please use the setClass together with an appropriate css class.
-     */
-    public function setWidth(int $a_width): void
-    {
-        $this->width = $a_width;
-    }
-
-    /**
-     * @return int
-     */
-    public function getWidth(): int
-    {
-        return $this->width;
-    }
-
-    /**
-     * @param string $css_class
-     */
-    public function setCssClass(string $css_class) : void
-    {
-        $this->css_class = $css_class;
-    }
-
-    public function getCssClass(): ?string
-    {
-        return $this->css_class;
-    }
-
-    /**
-     * @param int $minimum_input_length
-     */
-    public function setMinimumInputLength(int $minimum_input_length) : void
-    {
-        $this->minimum_input_length = $minimum_input_length;
-    }
-
-    /**
-     * @return int
-     */
-    public function getMinimumInputLength(): int
-    {
-        return $this->minimum_input_length;
-    }
-
-    /**
-     * @param string $ajax_link setting the ajax link will lead to ignoration of the "setOptions" function as the link given will be used to get the
-     */
-    public function setAjaxLink(string $ajax_link) : void
-    {
-        $this->ajax_link = $ajax_link;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAjaxLink(): string
-    {
-        return $this->ajax_link;
-    }
-
-    /**
-     * @param srDefaultAccessChecker $access_checker
-     */
-    public function setAccessChecker($access_checker) : void
-    {
-        $this->access_checker = $access_checker;
-    }/**
-     * @return srDefaultAccessChecker
-     */
-    public function getAccessChecker()
-    {
-        return $this->access_checker;
+        return $this->input_template;
     }
 
     /**
@@ -221,19 +137,112 @@ class ilMultiSelectSearchInputGUI extends ilMultiSelectInputGUI
     }
 
     /**
-     * @return ilTemplate
+     * @return int
      */
-    public function getInputTemplate() : ilTemplate
+    public function getWidth() : int
     {
-        return $this->input_template;
+        return $this->width;
     }
 
+    /**
+     * @param int $a_width
+     * @deprecated setting inline style items from the controller is bad practice. please use the setClass together with an appropriate css class.
+     */
+    public function setWidth(int $a_width) : void
+    {
+        $this->width = $a_width;
+    }
+
+    public function getHeight() : int
+    {
+        return $this->height;
+    }
+
+    /**
+     * @param int $a_height
+     * @deprecated setting inline style items from the controller is bad practice. please use the setClass together with an appropriate css class.
+     */
+    public function setHeight(int $a_height) : void
+    {
+        $this->height = $a_height;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMinimumInputLength() : int
+    {
+        return $this->minimum_input_length;
+    }
+
+    /**
+     * @param int $minimum_input_length
+     */
+    public function setMinimumInputLength(int $minimum_input_length) : void
+    {
+        $this->minimum_input_length = $minimum_input_length;
+    }
+
+    public function getCssClass() : ?string
+    {
+        return $this->css_class;
+    }
+
+    /**
+     * @param string $css_class
+     */
+    public function setCssClass(string $css_class) : void
+    {
+        $this->css_class = $css_class;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAjaxLink() : string
+    {
+        return $this->ajax_link;
+    }
+
+    /**
+     * @param string $ajax_link setting the ajax link will lead to ignoration of the "setOptions" function as the link given will be used to get the
+     */
+    public function setAjaxLink(string $ajax_link) : void
+    {
+        $this->ajax_link = $ajax_link;
+    }
+
+    /**
+     * @param srDefaultAccessChecker $access_checker
+     */
+    public function setAccessChecker($access_checker) : void
+    {
+        $this->access_checker = $access_checker;
+    }
+
+    /**
+     * @return srDefaultAccessChecker
+     */
+    public function getAccessChecker()
+    {
+        return $this->access_checker;
+    }
+
+    public function setValueByArray(array $a_values) : void
+    {
+        $val = isset($a_values[$this->searchPostVar()]) ? $a_values[$this->searchPostVar()] : array();
+        if (!is_array($val)) {
+            $val = explode(",", $val);
+        }
+
+        $this->setValue($val);
+    }
 
     /**
      * This implementation might sound silly. But the multiple select input used parses the post vars differently if you use ajax. thus we have to do this stupid "trick". Shame on select2 project ;)
      * @return string the real postvar.
      */
-    protected function searchPostVar(): string
+    protected function searchPostVar() : string
     {
         $postVar = $this->getPostVar();
         if (str_ends_with($postVar, "[]")) {
@@ -242,15 +251,5 @@ class ilMultiSelectSearchInputGUI extends ilMultiSelectInputGUI
         }
 
         return $postVar;
-    }
-
-    public function setValueByArray(array $a_values): void
-    {
-        $val = isset($a_values[$this->searchPostVar()]) ? $a_values[$this->searchPostVar()] : array();
-        if (!is_array($val)) {
-            $val = explode(",", $val);
-        }
-
-        $this->setValue($val);
     }
 }

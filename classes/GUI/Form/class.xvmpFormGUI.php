@@ -8,7 +8,6 @@ use ILIAS\DI\Container;
 
 /**
  * Class xvmpFormGUI
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 abstract class xvmpFormGUI extends ilPropertyFormGUI
@@ -41,6 +40,5 @@ abstract class xvmpFormGUI extends ilPropertyFormGUI
     }
 
     abstract protected function initForm();
-
 
 }

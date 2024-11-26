@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 /**
  * Class xvmpCurlError
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class xvmpCurlError
@@ -92,7 +91,14 @@ class xvmpCurlError
         87 => 'CURLE_FTP_BAD_FILE_LIST',
         88 => 'CURLE_CHUNK_FAILED'
     );
-
+    /**
+     * @var int
+     */
+    protected int $error_nr = 0;
+    /**
+     * @var string
+     */
+    protected string $error_text = '';
 
     /**
      * @param $ch
@@ -103,52 +109,21 @@ class xvmpCurlError
         $this->setErrorText(curl_error($ch));
     }
 
-
     /**
      * @return string
      */
-    public function getMessage(): string
+    public function getMessage() : string
     {
         return $this->getErrorText() . ' (' . self::$error_codes[$this->getErrorNr()] . ')';
     }
 
-
-    /**
-     * @var int
-     */
-    protected int $error_nr = 0;
-    /**
-     * @var string
-     */
-    protected string $error_text = '';
-
-
-    /**
-     * @return int
-     */
-    public function getErrorNr(): int
-    {
-        return $this->error_nr;
-    }
-
-
-    /**
-     * @param int $error_nr
-     */
-    public function setErrorNr(int $error_nr) : void
-    {
-        $this->error_nr = $error_nr;
-    }
-
-
     /**
      * @return string
      */
-    public function getErrorText(): string
+    public function getErrorText() : string
     {
         return $this->error_text;
     }
-
 
     /**
      * @param string $error_text
@@ -156,5 +131,21 @@ class xvmpCurlError
     public function setErrorText(string $error_text) : void
     {
         $this->error_text = $error_text;
+    }
+
+    /**
+     * @return int
+     */
+    public function getErrorNr() : int
+    {
+        return $this->error_nr;
+    }
+
+    /**
+     * @param int $error_nr
+     */
+    public function setErrorNr(int $error_nr) : void
+    {
+        $this->error_nr = $error_nr;
     }
 }

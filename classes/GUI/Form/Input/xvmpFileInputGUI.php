@@ -15,12 +15,11 @@ class xvmpFileInputGUI extends ilFileInputGUI
      * Render html
      * @throws ilTemplateException
      */
-    public function render($a_mode = ""): string
+    public function render($a_mode = "") : string
     {
         $lng = $this->lng;
 
         $f_tpl = new ilTemplate("tpl.prop_file.html", true, true, "Services/Form");
-
 
         // show filename selection if enabled
         if ($this->isFileNameSelectionEnabled()) {
@@ -62,7 +61,6 @@ class xvmpFileInputGUI extends ilFileInputGUI
             }
         }
 
-
         $pending = $this->getPending();
         if ($pending) {
             $f_tpl->setCurrentBlock("pending");
@@ -82,10 +80,8 @@ class xvmpFileInputGUI extends ilFileInputGUI
         $f_tpl->setVariable("ID", $this->getFieldId());
         $f_tpl->setVariable("SIZE", $this->getSize());
 
-
         /* experimental: bootstrap'ed file upload */
         $f_tpl->setVariable("TXT_BROWSE", $lng->txt("select_file"));
-
 
         return $f_tpl->get();
     }

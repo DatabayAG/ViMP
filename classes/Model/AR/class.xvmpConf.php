@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 /**
  * Class xvmpConf
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class xvmpConf extends ActiveRecord
@@ -76,7 +75,6 @@ class xvmpConf extends ActiveRecord
 
     /**
      * @var ?string
-     *
      * @db_has_field        true
      * @db_is_unique        true
      * @db_is_primary       true
@@ -87,7 +85,6 @@ class xvmpConf extends ActiveRecord
     protected ?string $name;
     /**
      * @var ?string
-     *
      * @db_has_field        true
      * @db_fieldtype        text
      * @db_length           4000
@@ -99,7 +96,7 @@ class xvmpConf extends ActiveRecord
         parent::__construct($primary_key);
     }
 
-    public static function returnDbTableName(): string
+    public static function returnDbTableName() : string
     {
         return self::DB_TABLE_NAME;
     }
@@ -123,6 +120,19 @@ class xvmpConf extends ActiveRecord
         return self::$cache[$name] ?? null;
     }
 
+    /**
+     * @return ?string
+     */
+    public function getValue() : ?string
+    {
+        return $this->value;
+    }
+
+    public function setValue(string $value) : void
+    {
+        $this->value = $value;
+    }
+
     public static function set($name, $value) : void
     {
         try {
@@ -135,27 +145,13 @@ class xvmpConf extends ActiveRecord
         $obj->store();
     }
 
-    public function setName(string $name) : void
-    {
-        $this->name = $name;
-    }
-
-    public function getName(): ?string
+    public function getName() : ?string
     {
         return $this->name;
     }
 
-    public function setValue(string $value) : void
+    public function setName(string $name) : void
     {
-        $this->value = $value;
-    }
-
-
-    /**
-     * @return ?string
-     */
-    public function getValue(): ?string
-    {
-        return $this->value;
+        $this->name = $name;
     }
 }

@@ -6,9 +6,7 @@ declare(strict_types=1);
 
 /**
  * Class xvmpSettingsGUI
- *
- * @author  Theodor Truffer <tt@studer-raimann.ch>
- *
+ * @author            Theodor Truffer <tt@studer-raimann.ch>
  * @ilCtrl_isCalledBy xvmpSettingsGUI: ilObjViMPGUI
  */
 class xvmpSettingsGUI extends xvmpGUI
@@ -16,19 +14,6 @@ class xvmpSettingsGUI extends xvmpGUI
     public const TAB_ACTIVE = ilObjViMPGUI::TAB_SETTINGS;
 
     public const CMD_UPDATE = 'update';
-
-
-    /**
-     *
-     */
-    public function executeCommand() : void
-    {
-        if (!ilObjViMPAccess::hasWriteAccess()) {
-            $this->accessDenied();
-        }
-        parent::executeCommand();
-    }
-
 
     /**
      *
@@ -40,6 +25,16 @@ class xvmpSettingsGUI extends xvmpGUI
         $this->dic->ui()->mainTemplate()->setContent($xvmpSettingsFormGUI->getHTML());
     }
 
+    /**
+     *
+     */
+    public function executeCommand() : void
+    {
+        if (!ilObjViMPAccess::hasWriteAccess()) {
+            $this->accessDenied();
+        }
+        parent::executeCommand();
+    }
 
     /**
      *

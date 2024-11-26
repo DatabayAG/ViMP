@@ -6,19 +6,14 @@ declare(strict_types=1);
 
 /**
  * Class xvmpOwnVideosTableGUI
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class xvmpOwnVideosTableGUI extends xvmpTableGUI
 {
     public const ROW_TEMPLATE = 'tpl.own_videos_row.html';
-
+    public const THUMBSIZE = '170x108';
     protected array $js_files = array('xvmp_search_videos.js');
     protected array $css_files = array('xvmp_video_table.css');
-
-
-    public const THUMBSIZE = '170x108';
-
     protected array $available_columns = array(
         'thumbnail' => array(
             'no_header' => true
@@ -40,11 +35,9 @@ class xvmpOwnVideosTableGUI extends xvmpTableGUI
 
     protected ?object $parent_obj;
 
-
     /**
      * xvmpOwnVideosTableGUI constructor.
-     *
-     * @param     $parent_gui
+     * @param        $parent_gui
      * @param string $parent_cmd
      * @throws ilException
      * @throws Exception
@@ -70,12 +63,12 @@ class xvmpOwnVideosTableGUI extends xvmpTableGUI
             $this->tpl = new ilTemplate("tpl.own_videos_table.html", true, true, $this->pl->getDirectory());
             $this->tpl->setVariable('TABLE_CONTENT_HIDDEN', 'hidden');
             $this->tpl->setCurrentBlock('xvmp_show_videos_button');
-            $this->tpl->setVariable('SHOW_VIDEOS_LINK', $this->ctrl->getLinkTarget($this->parent_obj, xvmpVideosGUI::CMD_SHOW_FILTERED));
+            $this->tpl->setVariable('SHOW_VIDEOS_LINK',
+                $this->ctrl->getLinkTarget($this->parent_obj, xvmpVideosGUI::CMD_SHOW_FILTERED));
             $this->tpl->setVariable('SHOW_VIDEOS_LABEL', $this->pl->txt('btn_show_own_videos'));
             $this->tpl->parseCurrentBlock();
         }
     }
-
 
     /**
      *
@@ -90,8 +83,106 @@ class xvmpOwnVideosTableGUI extends xvmpTableGUI
         $this->addColumn('', '', "75", true);
     }
 
+    /**
+     * @param xvmpObject $a_set
+     * @throws ilTemplateException
+     */
+    protected function fillRow($a_set) : void
+    {
+        $transcoded = ($a_set['status'] === 'legal');
+        $transcoding = ($a_set['status'] === 'converting');
 
-    public function initFilter(): void
+        if ($transcoded) {
+            $this->tpl->touchBlock('transcoded');
+        } else {
+            $this->tpl->touchBlock('transcoding');
+            $this->tpl->setVariable('PLAY_OVERLAY_ATTRIBUTES', 'hidden');
+            if ($transcoding) {
+                $this->tpl->setVariable(
+                    'PROGRESS_BAR',
+                    (new xvmpProgressBarUI($a_set['mid'], $this->pl, $this->dic))->getHTML()
+                );
+            }
+        }
+
+        if ($a_set['status'] == 'error') {
+            $this->tpl->setVariable('VAL_DISABLED', 'disabled');
+        }
+
+        $this->tpl->setVariable('VAL_MID', $a_set['mid']);
+
+        $checked = xvmpSelectedMedia::isSelected($a_set['mid'], $this->parent_obj->getObjId());
+        if ($checked) {
+            $this->tpl->setVariable('VAL_CHECKED', 'checked');
+        }
+
+        $this->tpl->setVariable('VAL_STATUS_TEXT', $this->pl->txt('status_' . $a_set['status']));
+        $this->tpl->setVariable('VAL_VISIBLE', (int) $transcoded);
+
+        foreach ($this->available_columns as $title => $props) {
+            if ($title == 'published') {
+                $this->tpl->setVariable('VAL_' . strtoupper($title), $this->pl->txt($a_set[$title]));
+            } else {
+                $this->tpl->setVariable('VAL_' . strtoupper($title), $a_set[$title]);
+            }
+        }
+
+        foreach ($this->getSelectableColumns() as $title => $props) {
+            if ($this->isColumnSelected($title)) {
+                $this->tpl->setCurrentBlock('generic');
+                $this->tpl->setVariable('VAL_GENERIC', $this->parseColumnValue($title, $a_set[$title]));
+                $this->tpl->parseCurrentBlock();
+            }
+        }
+
+        // for some reason, we have to do this a second time, because of the blocks i guess
+        $this->tpl->setVariable('VAL_MID', $a_set['mid']);
+
+        $this->tpl->setVariable('VAL_ACTIONS', $this->buildActionList($a_set));
+    }
+
+    /**
+     * @return array
+     */
+    public function getSelectableColumns() : array
+    {
+        $selectable_columns = array(
+            'categories' => array(
+                'sort_field' => 'categories',
+                'txt' => $this->pl->txt('categories')
+            )
+        );
+        foreach (xvmpConf::getConfig(xvmpConf::F_FILTER_FIELDS) as $filter_field) {
+            $selectable_columns[$filter_field[xvmpConf::F_FILTER_FIELD_ID]] = array(
+                'sort_field' => $filter_field[xvmpConf::F_FILTER_FIELD_ID],
+                'txt' => $filter_field[xvmpConf::F_FILTER_FIELD_TITLE]
+            );
+        }
+        return $selectable_columns;
+    }
+
+    /**
+     * @param $a_set
+     * @return string
+     * @throws ilCtrlException
+     */
+    protected function buildActionList($a_set) : string
+    {
+        $actions = new ilAdvancedSelectionListGUI();
+        $actions->setListTitle($this->lng->txt('actions'));
+        $this->ctrl->setParameter($this->parent_obj, 'mid', $a_set['mid']);
+        if ($a_set['status'] == 'legal') {
+            $actions->addItem($this->lng->txt('edit'), 'edit',
+                $this->ctrl->getLinkTarget($this->parent_obj, xvmpOwnVideosGUI::CMD_EDIT_VIDEO));
+            $actions->addItem($this->pl->txt('change_owner'), 'change_owner',
+                $this->ctrl->getLinkTarget($this->parent_obj, xvmpOwnVideosGUI::CMD_CHANGE_OWNER));
+        }
+        $actions->addItem($this->lng->txt('delete'), 'delete',
+            $this->ctrl->getLinkTarget($this->parent_obj, xvmpOwnVideosGUI::CMD_DELETE_VIDEO));
+        return $actions->getHTML();
+    }
+
+    public function initFilter() : void
     {
         $filter_item = new ilTextInputGUI($this->pl->txt('title'), 'title');
         $this->addAndReadFilterItem($filter_item);
@@ -120,11 +211,11 @@ class xvmpOwnVideosTableGUI extends xvmpTableGUI
             if (!$field[xvmpConf::F_FILTER_FIELD_ID]) {
                 continue;
             }
-            $filter_item = new ilTextInputGUI($field[xvmpConf::F_FILTER_FIELD_TITLE], $field[xvmpConf::F_FILTER_FIELD_ID]);
+            $filter_item = new ilTextInputGUI($field[xvmpConf::F_FILTER_FIELD_TITLE],
+                $field[xvmpConf::F_FILTER_FIELD_ID]);
             $this->addAndReadFilterItem($filter_item);
         }
     }
-
 
     /**
      *
@@ -139,7 +230,8 @@ class xvmpOwnVideosTableGUI extends xvmpTableGUI
             $postvar = $filter_item->getPostVar();
             switch ($postvar) {
                 case 'title':
-                    $pre_filter['filterbyname'] = $post_filter[$postvar] = is_array($value) ? implode(',', $value) : $value;
+                    $pre_filter['filterbyname'] = $post_filter[$postvar] = is_array($value) ? implode(',',
+                        $value) : $value;
                     break;
                 case 'category[]':
                     $pre_filter['filterbycategory'] = is_array($value) ? implode(',', $value) : $value;
@@ -190,109 +282,11 @@ class xvmpOwnVideosTableGUI extends xvmpTableGUI
     }
 
     /**
-     * @param xvmpObject $a_set
-     * @throws ilTemplateException
-     */
-    protected function fillRow($a_set): void
-    {
-        $transcoded = ($a_set['status'] === 'legal');
-        $transcoding = ($a_set['status'] === 'converting');
-
-        if ($transcoded) {
-            $this->tpl->touchBlock('transcoded');
-        } else {
-            $this->tpl->touchBlock('transcoding');
-            $this->tpl->setVariable('PLAY_OVERLAY_ATTRIBUTES', 'hidden');
-            if ($transcoding) {
-                $this->tpl->setVariable(
-                    'PROGRESS_BAR',
-                    (new xvmpProgressBarUI($a_set['mid'], $this->pl, $this->dic))->getHTML()
-                );
-            }
-        }
-
-        if ($a_set['status'] == 'error') {
-            $this->tpl->setVariable('VAL_DISABLED', 'disabled');
-        }
-
-        $this->tpl->setVariable('VAL_MID', $a_set['mid']);
-
-        $checked = xvmpSelectedMedia::isSelected($a_set['mid'], $this->parent_obj->getObjId());
-        if ($checked) {
-            $this->tpl->setVariable('VAL_CHECKED', 'checked');
-        }
-
-        $this->tpl->setVariable('VAL_STATUS_TEXT', $this->pl->txt('status_' . $a_set['status']));
-        $this->tpl->setVariable('VAL_VISIBLE', (int) $transcoded);
-
-
-        foreach ($this->available_columns as $title => $props) {
-            if ($title == 'published') {
-                $this->tpl->setVariable('VAL_' . strtoupper($title), $this->pl->txt($a_set[$title]));
-            } else {
-                $this->tpl->setVariable('VAL_' . strtoupper($title), $a_set[$title]);
-            }
-        }
-
-        foreach ($this->getSelectableColumns() as $title => $props) {
-            if ($this->isColumnSelected($title)) {
-                $this->tpl->setCurrentBlock('generic');
-                $this->tpl->setVariable('VAL_GENERIC', $this->parseColumnValue($title, $a_set[$title]));
-                $this->tpl->parseCurrentBlock();
-            }
-        }
-
-        // for some reason, we have to do this a second time, because of the blocks i guess
-        $this->tpl->setVariable('VAL_MID', $a_set['mid']);
-
-        $this->tpl->setVariable('VAL_ACTIONS', $this->buildActionList($a_set));
-    }
-
-    /**
-     * @return array
-     */
-    public function getSelectableColumns(): array
-    {
-        $selectable_columns = array(
-            'categories' => array(
-                'sort_field' => 'categories',
-                'txt' => $this->pl->txt('categories')
-            )
-        );
-        foreach (xvmpConf::getConfig(xvmpConf::F_FILTER_FIELDS) as $filter_field) {
-            $selectable_columns[$filter_field[xvmpConf::F_FILTER_FIELD_ID]] = array(
-                'sort_field' => $filter_field[xvmpConf::F_FILTER_FIELD_ID],
-                'txt' => $filter_field[xvmpConf::F_FILTER_FIELD_TITLE]
-            );
-        }
-        return $selectable_columns;
-    }
-
-    /**
-     * @param $a_set
-     *
-     * @return string
-     * @throws ilCtrlException
-     */
-    protected function buildActionList($a_set): string
-    {
-        $actions = new ilAdvancedSelectionListGUI();
-        $actions->setListTitle($this->lng->txt('actions'));
-        $this->ctrl->setParameter($this->parent_obj, 'mid', $a_set['mid']);
-        if ($a_set['status'] == 'legal') {
-            $actions->addItem($this->lng->txt('edit'), 'edit', $this->ctrl->getLinkTarget($this->parent_obj, xvmpOwnVideosGUI::CMD_EDIT_VIDEO));
-            $actions->addItem($this->pl->txt('change_owner'), 'change_owner', $this->ctrl->getLinkTarget($this->parent_obj, xvmpOwnVideosGUI::CMD_CHANGE_OWNER));
-        }
-        $actions->addItem($this->lng->txt('delete'), 'delete', $this->ctrl->getLinkTarget($this->parent_obj, xvmpOwnVideosGUI::CMD_DELETE_VIDEO));
-        return $actions->getHTML();
-    }
-
-    /**
      * @param $post_filter
      * @param $data
      * @return array
      */
-    protected function postFilterData($post_filter, $data): array
+    protected function postFilterData($post_filter, $data) : array
     {
         if (!empty($post_filter['title'])) {
             $data = array_filter($data, function ($video) use ($post_filter) {

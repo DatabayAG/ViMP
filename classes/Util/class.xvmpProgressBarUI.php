@@ -11,6 +11,7 @@ use ILIAS\DI\Container;
 class xvmpProgressBarUI
 {
     private static int $version = 1;
+    protected static bool $js_loaded = false;
     /**
      * @var ilPlugin
      */
@@ -28,12 +29,10 @@ class xvmpProgressBarUI
      */
     protected Container $dic;
 
-    protected static bool $js_loaded = false;
-
     /**
      * xvmpProgressBarUI constructor.
-     * @param int $mid
-     * @param ilPlugin $plugin
+     * @param int       $mid
+     * @param ilPlugin  $plugin
      * @param Container $dic
      * @throws ilCtrlException
      */
@@ -68,7 +67,7 @@ class xvmpProgressBarUI
      * @return string
      * @throws ilTemplateException
      */
-    public function getHTML(): string
+    public function getHTML() : string
     {
         $this->tpl->setVariable('TEXT_TRANSCODING', $this->plugin->txt('transcoding'));
         $this->tpl->setVariable('MID', $this->mid);

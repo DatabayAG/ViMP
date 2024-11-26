@@ -6,24 +6,20 @@ declare(strict_types=1);
 
 /**
  * Class xvmpObject
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class xvmpObject
 {
-    protected int $id;
     protected static array $cache_initialized = array();
     protected static array $cache = array();
-
+    protected int $id;
 
     /**
      * returns a single object via id
-     *
      * @param $id
-     *
      * @return static
      */
-    public static function find($id): xvmpObject
+    public static function find($id) : xvmpObject
     {
         $class_name = get_called_class();
         if (!isset(self::$cache[$class_name][$id])) {
@@ -38,38 +34,8 @@ class xvmpObject
         return self::$cache[$class_name][$id];
     }
 
-
-    /**
-     * returns array with all objects
-     *
-     * @return self[]
-     */
-    public static function getAll(): array
-    {
-        $class_name = get_called_class();
-        if (!isset(self::$cache_initialized[$class_name])) {
-            self::buildAllFromArray($class_name::getAllAsArray());
-        }
-        return self::$cache[$class_name] ?? [];
-    }
-
-    /**
-     * @param array $filter
-     *
-     * @return array
-     */
-    public static function getFiltered(array $filter): array
-    {
-        $class_name = get_called_class();
-        if (!self::$cache_initialized[$class_name]) {
-            self::buildFromArray($class_name::getFilteredAsArray($filter));
-        }
-        return self::$cache[$class_name];
-    }
-
     /**
      * build object from data array
-     *
      * @param array $array
      */
     public function buildObjectFromArray(array $array) : void
@@ -79,10 +45,31 @@ class xvmpObject
         }
     }
 
+    /**
+     * fetch single object from api and return as an array
+     * @param $id
+     * @return array
+     */
+    public static function getObjectAsArray($id) : array
+    {
+        return array();
+    }
+
+    /**
+     * returns array with all objects
+     * @return self[]
+     */
+    public static function getAll() : array
+    {
+        $class_name = get_called_class();
+        if (!isset(self::$cache_initialized[$class_name])) {
+            self::buildAllFromArray($class_name::getAllAsArray());
+        }
+        return self::$cache[$class_name] ?? [];
+    }
 
     /**
      * build all objects from data array
-     *
      * @param array $array
      */
     public static function buildAllFromArray(array $array) : void
@@ -94,7 +81,6 @@ class xvmpObject
 
     /**
      * build all objects from data array
-     *
      * @param array $array
      */
     public static function buildFromArray(array $array) : void
@@ -111,9 +97,68 @@ class xvmpObject
     }
 
     /**
+     * @return int
+     */
+    public function getId() : int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id) : void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * fetch all data from api and return as an array
+     * @return array()
+     */
+    public static function getAllAsArray() : array
+    {
+        return array();
+    }
+
+    /**
+     * @param array $filter
      * @return array
      */
-    public function __toArray(): array
+    public static function getFiltered(array $filter) : array
+    {
+        $class_name = get_called_class();
+        if (!self::$cache_initialized[$class_name]) {
+            self::buildFromArray($class_name::getFilteredAsArray($filter));
+        }
+        return self::$cache[$class_name];
+    }
+
+    /**
+     * @param array $filter
+     * @return array
+     */
+    public static function getFilteredAsArray(array $filter) : array
+    {
+        return array();
+    }
+
+    /**
+     * @param       $identifier
+     * @param       $object
+     * @param null  $ttl
+     */
+    public static function cache($identifier, $object, $ttl = null) : void
+    {
+        //		self::$cache[$key] = $object;
+        xvmpCurlLog::getInstance()->write('CACHE: added to cache: ' . $identifier, xvmpCurlLog::DEBUG_LEVEL_1);
+        xvmpCacheFactory::getInstance()->set($identifier, $object, (int) $ttl);
+    }
+
+    /**
+     * @return array
+     */
+    public function __toArray() : array
     {
         $data = $this->__toStdClass();
         $array = (array) $data;
@@ -124,7 +169,7 @@ class xvmpObject
     /**
      * @return stdClass
      */
-    public function __toStdClass(): stdClass
+    public function __toStdClass() : stdClass
     {
         $r = new ReflectionClass($this);
         $stdClass = new stdClass();
@@ -181,25 +226,21 @@ class xvmpObject
         return $stdClass;
     }
 
-
     /**
-     * @param       $identifier
-     * @param       $object
-     * @param null  $ttl
+     * @param $fieldname
+     * @param $value
+     * @return mixed
      */
-    public static function cache($identifier, $object, $ttl = null) : void
+    protected function sleep($fieldname, $value)
     {
-        //		self::$cache[$key] = $object;
-        xvmpCurlLog::getInstance()->write('CACHE: added to cache: ' . $identifier, xvmpCurlLog::DEBUG_LEVEL_1);
-        xvmpCacheFactory::getInstance()->set($identifier, $object, (int) $ttl);
+        return $value;
     }
 
     /**
      * @param $string
-     *
      * @return string
      */
-    public static function convertToUtf8($string): string
+    public static function convertToUtf8($string) : string
     {
         if (is_object($string) || ilStr::isUtf8($string)) {
             return $string;
@@ -209,75 +250,8 @@ class xvmpObject
     }
 
     /**
-     * @param $fieldname
-     * @param $value
-     *
-     * @return mixed
-     */
-    protected function sleep($fieldname, $value)
-    {
-        return $value;
-    }
-
-
-    /**
-     * @param array $filter
-     *
-     * @return array
-     */
-    public static function getFilteredAsArray(array $filter): array
-    {
-        return array();
-    }
-
-
-    /**
-     * fetch all data from api and return as an array
-     *
-     * @return array()
-     */
-    public static function getAllAsArray(): array
-    {
-        return array();
-    }
-
-
-    /**
-     * fetch single object from api and return as an array
-     *
-     * @param $id
-     *
-     * @return array
-     */
-    public static function getObjectAsArray($id): array
-    {
-        return array();
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-
-    /**
-     * @param int $id
-     */
-    public function setId(int $id) : void
-    {
-        $this->id = $id;
-    }
-
-
-    /**
      * used for custom fields
-     *
      * @param $field_name
-     *
      * @return mixed
      */
     public function getField($field_name)

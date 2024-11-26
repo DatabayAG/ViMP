@@ -6,9 +6,7 @@ declare(strict_types=1);
 
 /**
  * Class xvmpSearchVideosGUI
- *
- * @author  Theodor Truffer <tt@studer-raimann.ch>
- *
+ * @author            Theodor Truffer <tt@studer-raimann.ch>
  * @ilCtrl_isCalledBy xvmpSearchVideosGUI: ilObjViMPGUI
  */
 class xvmpSearchVideosGUI extends xvmpVideosGUI
@@ -16,7 +14,6 @@ class xvmpSearchVideosGUI extends xvmpVideosGUI
     public const SUBTAB_ACTIVE = xvmpVideosGUI::SUBTAB_SEARCH;
 
     public const TABLE_CLASS = 'xvmpSearchVideosTableGUI';
-
 
     public function executeCommand() : void
     {

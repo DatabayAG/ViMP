@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 /**
  * Class xvmpUploadVideoFormGUI
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class xvmpUploadVideoFormGUI extends xvmpVideoFormGUI
@@ -31,10 +30,8 @@ class xvmpUploadVideoFormGUI extends xvmpVideoFormGUI
      */
     protected ?ilObjUser $user;
 
-
     /**
      * xvmpUploadVideoFormGUI constructor.
-     *
      * @param $parent_gui
      */
     public function __construct($parent_gui)
@@ -51,9 +48,7 @@ class xvmpUploadVideoFormGUI extends xvmpVideoFormGUI
         $this->setTarget('_top');
     }
 
-
     /**
-     *
      * @throws ilCtrlException
      */
     protected function initForm() : void
@@ -95,7 +90,6 @@ class xvmpUploadVideoFormGUI extends xvmpVideoFormGUI
         $this->addItem($input);
     }
 
-
     protected function addCustomInputs() : void
     {
         foreach (xvmpConf::getConfig(xvmpConf::F_FORM_FIELDS) as $field) {
@@ -120,20 +114,7 @@ class xvmpUploadVideoFormGUI extends xvmpVideoFormGUI
         }
     }
 
-    public function saveForm(): bool
-    {
-        if (parent::saveForm()) {
-            // the object has to be loaded again, since the response from "upload" has another format for the categories
-            // also, this adds it to the cache
-            $video = xvmpMedium::getObjectAsArray($this->data[xvmpMedium::F_MID]);
-            xvmpEventLog::logEvent(xvmpEventLog::ACTION_UPLOAD, $this->parent_gui->getObjId(), $video);
-            return true;
-        }
-
-        return false;
-    }
-
-    protected function storeVideo(): int
+    protected function storeVideo() : int
     {
         $this->data = xvmpMedium::upload(
             $this->data,
@@ -160,6 +141,28 @@ class xvmpUploadVideoFormGUI extends xvmpVideoFormGUI
         $this->data['uid'] = xvmpUser::getOrCreateVimpUser($this->user)->getUid();
     }
 
+    /**
+     *
+     */
+    protected function addCommandButtons() : void
+    {
+        $this->addCommandButton(xvmpOwnVideosGUI::CMD_CREATE, $this->lng->txt('save'));
+        $this->addCommandButton(xvmpGUI::CMD_CANCEL, $this->lng->txt(xvmpGUI::CMD_CANCEL));
+    }
+
+    public function saveForm() : bool
+    {
+        if (parent::saveForm()) {
+            // the object has to be loaded again, since the response from "upload" has another format for the categories
+            // also, this adds it to the cache
+            $video = xvmpMedium::getObjectAsArray($this->data[xvmpMedium::F_MID]);
+            xvmpEventLog::logEvent(xvmpEventLog::ACTION_UPLOAD, $this->parent_gui->getObjId(), $video);
+            return true;
+        }
+
+        return false;
+    }
+
     public function fillForm() : void
     {
         $array = array();
@@ -176,14 +179,5 @@ class xvmpUploadVideoFormGUI extends xvmpVideoFormGUI
         }
 
         $this->setValuesByArray($array, true);
-    }
-
-    /**
-     *
-     */
-    protected function addCommandButtons() : void
-    {
-        $this->addCommandButton(xvmpOwnVideosGUI::CMD_CREATE, $this->lng->txt('save'));
-        $this->addCommandButton(xvmpGUI::CMD_CANCEL, $this->lng->txt(xvmpGUI::CMD_CANCEL));
     }
 }

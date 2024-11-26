@@ -5,7 +5,7 @@ declare(strict_types=1);
 /**
  * Class ilViMPConfigGUI
  * @ilCtrl_IsCalledBy ilViMPConfigGUI: ilObjComponentSettingsGUI
- * @author  Theodor Truffer <tt@studer-raimann.ch>
+ * @author            Theodor Truffer <tt@studer-raimann.ch>
  */
 class ilViMPConfigGUI extends ilPluginConfigGUI
 {
@@ -32,6 +32,7 @@ class ilViMPConfigGUI extends ilPluginConfigGUI
     /* @var Container
      */
     protected $dic;
+
     /**
      * ilViMPConfigGUI constructor.
      */
@@ -41,33 +42,9 @@ class ilViMPConfigGUI extends ilPluginConfigGUI
         $this->dic = $DIC;
         $this->toolbar = $DIC['ilToolbar'];
         $this->tpl = $DIC->ui()->mainTemplate();
-        $this->ctrl =  $DIC->ctrl();
+        $this->ctrl = $DIC->ctrl();
         $this->pl = ilViMPPlugin::getInstance();
         $this->tabs = $DIC['ilTabs'];
-    }
-
-
-    /**
-     * @param string $cmd
-     * @throws ilCtrlException
-     */
-    public function performCommand(string $cmd): void
-    {
-        $this->addSubTabs();
-        switch ($cmd) {
-            default:
-                $this->{$cmd}();
-                break;
-        }
-    }
-
-    /**
-     * @throws ilCtrlException
-     */
-    protected function addSubTabs() : void
-    {
-        $this->tabs->addSubTab(self::SUBTAB_SETTINGS, $this->pl->txt(self::SUBTAB_SETTINGS), $this->ctrl->getLinkTarget($this, self::CMD_STANDARD));
-        $this->tabs->addSubTab(self::SUBTAB_LOG, $this->pl->txt(self::SUBTAB_LOG), $this->ctrl->getLinkTarget($this, self::CMD_SHOW_LOG));
     }
 
     /**
@@ -111,28 +88,6 @@ class ilViMPConfigGUI extends ilPluginConfigGUI
     /**
      * @throws ilCtrlException
      */
-    public function addFlushCacheButton() : void
-    {
-        $button = ilLinkButton::getInstance();
-        $button->setUrl($this->ctrl->getLinkTarget($this, self::CMD_FLUSH_CACHE));
-        $button->setCaption($this->pl->txt('flush_cache'), false);
-        $this->toolbar->addButtonInstance($button);
-    }
-
-    /**
-     *
-     */
-    public function flushCache() : void
-    {
-        xvmpCacheFactory::getInstance()->flush();
-
-        $this->ctrl->redirect($this, self::CMD_STANDARD);
-    }
-
-    /**
-     *
-     * @throws ilCtrlException
-     */
     protected function configure() : void
     {
         $this->tabs->activateSubTab(self::SUBTAB_SETTINGS);
@@ -142,9 +97,18 @@ class ilViMPConfigGUI extends ilPluginConfigGUI
         $this->tpl->setContent($xvmpConfFormGUI->getHTML());
     }
 
+    /**
+     * @throws ilCtrlException
+     */
+    public function addFlushCacheButton() : void
+    {
+        $button = ilLinkButton::getInstance();
+        $button->setUrl($this->ctrl->getLinkTarget($this, self::CMD_FLUSH_CACHE));
+        $button->setCaption($this->pl->txt('flush_cache'), false);
+        $this->toolbar->addButtonInstance($button);
+    }
 
     /**
-     *
      * @throws ilCtrlException|JsonException
      */
     protected function update() : void
@@ -156,5 +120,40 @@ class ilViMPConfigGUI extends ilPluginConfigGUI
             $this->ctrl->redirect($this, self::CMD_STANDARD);
         }
         $this->tpl->setContent($xvmpConfFormGUI->getHTML());
+    }
+
+    /**
+     * @param string $cmd
+     * @throws ilCtrlException
+     */
+    public function performCommand(string $cmd) : void
+    {
+        $this->addSubTabs();
+        switch ($cmd) {
+            default:
+                $this->{$cmd}();
+                break;
+        }
+    }
+
+    /**
+     * @throws ilCtrlException
+     */
+    protected function addSubTabs() : void
+    {
+        $this->tabs->addSubTab(self::SUBTAB_SETTINGS, $this->pl->txt(self::SUBTAB_SETTINGS),
+            $this->ctrl->getLinkTarget($this, self::CMD_STANDARD));
+        $this->tabs->addSubTab(self::SUBTAB_LOG, $this->pl->txt(self::SUBTAB_LOG),
+            $this->ctrl->getLinkTarget($this, self::CMD_SHOW_LOG));
+    }
+
+    /**
+     *
+     */
+    public function flushCache() : void
+    {
+        xvmpCacheFactory::getInstance()->flush();
+
+        $this->ctrl->redirect($this, self::CMD_STANDARD);
     }
 }

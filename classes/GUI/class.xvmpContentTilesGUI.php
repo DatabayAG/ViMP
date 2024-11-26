@@ -8,14 +8,13 @@ use ILIAS\DI\Container;
 
 /**
  * Class xvmpContentTilesGUI
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class xvmpContentTilesGUI
 {
+    private ilViMPPlugin $pl;
     protected xvmpContentGUI $parent_gui;
     protected Container $dic;
-    private ilViMPPlugin $pl;
 
     /**
      * xvmpContentTilesGUI constructor.
@@ -33,7 +32,6 @@ class xvmpContentTilesGUI
         $this->dic->ui()->mainTemplate()->addCss($this->pl->getAssetURL('default/waiter.css'));
     }
 
-
     /**
      * @return string|void
      * @throws arException
@@ -43,7 +41,9 @@ class xvmpContentTilesGUI
      */
     public function getHTML()
     {
-        $selected_media = xvmpSelectedMedia::where(array('obj_id' => $this->parent_gui->getObjId(), 'visible' => 1))->orderBy('sort');
+        $selected_media = xvmpSelectedMedia::where(array('obj_id' => $this->parent_gui->getObjId(),
+                                                         'visible' => 1
+        ))->orderBy('sort');
         if (!$selected_media->hasSets()) {
             $this->dic->ui()->mainTemplate()->setOnScreenMessage('info', $this->pl->txt('msg_no_videos'));
             return;
@@ -61,7 +61,8 @@ class xvmpContentTilesGUI
         }
 
         $this->dic->ui()->mainTemplate()->addOnLoadCode('VimpContent.selected_media = ' . json_encode($json_array) . ';');
-        $this->dic->ui()->mainTemplate()->addOnLoadCode("VimpContent.ajax_base_url = '" . $this->dic->ctrl()->getLinkTarget($this->parent_gui, '', '', true) . "';");
+        $this->dic->ui()->mainTemplate()->addOnLoadCode("VimpContent.ajax_base_url = '" . $this->dic->ctrl()->getLinkTarget($this->parent_gui,
+                '', '', true) . "';");
         $this->dic->ui()->mainTemplate()->addOnLoadCode("VimpContent.template = 'Tile';");
         $this->dic->ui()->mainTemplate()->addOnLoadCode('VimpContent.loadTilesInOrder(0);');
         return $tpl->get();

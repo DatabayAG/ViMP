@@ -8,9 +8,7 @@ use srag\Plugins\ViMP\UIComponents\Player\VideoPlayer;
 
 /**
  * Class xvmpContentGUI
- *
- * @author  Theodor Truffer <tt@studer-raimann.ch>
- *
+ * @author            Theodor Truffer <tt@studer-raimann.ch>
  * @ilCtrl_isCalledBy xvmpContentGUI: ilObjViMPGUI
  */
 class xvmpContentGUI extends xvmpGUI
@@ -23,6 +21,37 @@ class xvmpContentGUI extends xvmpGUI
     public const CMD_DELIVER_VIDEO = 'deliverVideo';
     public const CMD_PLAY_VIDEO = 'playVideo';
     public const GET_TEMPLATE = 'tpl';
+
+    protected function performCommand($cmd) : void
+    {
+        switch ($cmd) {
+            case self::CMD_RENDER_LIST_ITEM:
+            case self::CMD_RENDER_TILE:
+            case self::CMD_RENDER_TILE_SMALL:
+                $mid = $_GET['mid'];
+                if (!$mid || !xvmpSelectedMedia::isSelected($mid, $this->getObjId())) {
+                    $this->accessDenied();
+                }
+                break;
+            case self::CMD_DELIVER_VIDEO:
+                $this->accessDenied();
+                break;
+        }
+        parent::performCommand($cmd);
+    }
+
+    /**
+     * used for goto link
+     */
+    public function playVideo() : void
+    {
+        $mid = filter_input(INPUT_GET, ilObjViMPGUI::GET_VIDEO_ID, FILTER_SANITIZE_NUMBER_INT);
+        $play_video_id = xvmpMedium::find($mid)->isTranscoded() ? $mid : null;
+        if ($play_video_id) {
+            $this->dic->ui()->mainTemplate()->addOnLoadCode('$(\'#xvmp_modal_player\').modal(\'show\');');
+        }
+        $this->index($play_video_id);
+    }
 
     protected function index($play_video_id = null) : void
     {
@@ -59,39 +88,6 @@ class xvmpContentGUI extends xvmpGUI
                 $this->dic->ui()->mainTemplate()->setContent((string) $xvmpContentPlayerGUI->getHTML());
                 break;
         }
-    }
-
-
-    protected function performCommand($cmd) : void
-    {
-        switch ($cmd) {
-            case self::CMD_RENDER_LIST_ITEM:
-            case self::CMD_RENDER_TILE:
-            case self::CMD_RENDER_TILE_SMALL:
-                $mid = $_GET['mid'];
-                if (!$mid || !xvmpSelectedMedia::isSelected($mid, $this->getObjId())) {
-                    $this->accessDenied();
-                }
-                break;
-            case self::CMD_DELIVER_VIDEO:
-                $this->accessDenied();
-                break;
-        }
-        parent::performCommand($cmd);
-    }
-
-
-    /**
-     * used for goto link
-     */
-    public function playVideo() : void
-    {
-        $mid = filter_input(INPUT_GET, ilObjViMPGUI::GET_VIDEO_ID, FILTER_SANITIZE_NUMBER_INT);
-        $play_video_id = xvmpMedium::find($mid)->isTranscoded() ? $mid : null;
-        if ($play_video_id) {
-            $this->dic->ui()->mainTemplate()->addOnLoadCode('$(\'#xvmp_modal_player\').modal(\'show\');');
-        }
-        $this->index($play_video_id);
     }
 
     /**

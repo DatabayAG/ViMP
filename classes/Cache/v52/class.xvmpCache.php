@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 /**
  * Class xvmpCache
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  * @version 1.0.0
  */
@@ -24,10 +23,11 @@ class xvmpCache extends ilGlobalCache
     protected static array $active_components = array(
         self::COMP_PREFIX,
     );
+
     /**
      * @return xvmpCache
      */
-    public static function getInstance($component): ilGlobalCache
+    public static function getInstance($component) : ilGlobalCache
     {
         $service_type = self::getSettings()->getService();
         $xvmpCache = new self($service_type);
@@ -56,7 +56,7 @@ class xvmpCache extends ilGlobalCache
         self::setOverrideActive(true);
     }
 
-    protected function initCachingService(): void
+    protected function initCachingService() : void
     {
         /**
          * @var $ilGlobalCacheService ilGlobalCacheService
@@ -81,20 +81,18 @@ class xvmpCache extends ilGlobalCache
 
     /**
      * Checks if live voting is able to use the global cache.
-     *
      * @return bool
      */
-    private function isVimpCacheEnabled(): bool
+    private function isVimpCacheEnabled() : bool
     {
         return true;
     }
 
     /**
      * @param $service_type
-     *
      * @return string
      */
-    public static function lookupServiceClassName($service_type): string
+    public static function lookupServiceClassName($service_type) : string
     {
         switch ($service_type) {
             case self::TYPE_APC:
@@ -108,23 +106,20 @@ class xvmpCache extends ilGlobalCache
         }
     }
 
-
     /**
      * @return array
      */
-    public static function getActiveComponents(): array
+    public static function getActiveComponents() : array
     {
         return self::$active_components;
     }
 
-
     /**
      * @param bool $complete
-     *
      * @return bool
      * @throws RuntimeException
      */
-    public function flush(bool $complete = false): bool
+    public function flush(bool $complete = false) : bool
     {
         if (!$this->global_cache instanceof ilGlobalCacheService || !$this->isActive()) {
             return false;
@@ -133,40 +128,21 @@ class xvmpCache extends ilGlobalCache
         return parent::flush(true);
     }
 
-
-    /**
-     * @param $key
-     *
-     * @throws RuntimeException
-     * @return bool
-     */
-    public function delete($key): bool
-    {
-        if (!$this->global_cache instanceof ilGlobalCacheService || !$this->isActive()) {
-            return false;
-        }
-
-        return parent::delete($key);
-    }
-
-
     /**
      * @return bool
      */
-    public function isActive(): bool
+    public function isActive() : bool
     {
         return self::isOverrideActive();
     }
 
-
     /**
      * @return boolean
      */
-    public static function isOverrideActive(): bool
+    public static function isOverrideActive() : bool
     {
         return self::$override_active;
     }
-
 
     /**
      * @param boolean $override_active
@@ -176,15 +152,27 @@ class xvmpCache extends ilGlobalCache
         self::$override_active = $override_active;
     }
 
+    /**
+     * @param $key
+     * @return bool
+     * @throws RuntimeException
+     */
+    public function delete($key) : bool
+    {
+        if (!$this->global_cache instanceof ilGlobalCacheService || !$this->isActive()) {
+            return false;
+        }
+
+        return parent::delete($key);
+    }
 
     /**
      * @param      $key
      * @param      $value
      * @param null $ttl
-     *
      * @return bool
      */
-    public function set($key, $value, $ttl = null): bool
+    public function set($key, $value, $ttl = null) : bool
     {
         //		$ttl = $ttl ? $ttl : 480;
         if (!$this->global_cache instanceof ilGlobalCacheService || !$this->isActive()) {
@@ -194,10 +182,8 @@ class xvmpCache extends ilGlobalCache
         return $this->global_cache->set($key, $this->global_cache->serialize($value), (int) $ttl);
     }
 
-
     /**
      * @param $key
-     *
      * @return bool|mixed|null
      */
     public function get($key) : mixed

@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 /* Copyright (c) 1998-2009 ILIAS open source, Extended GPL, see docs/LICENSE */
+
 /**
  * Class xvmpCacheFactory
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class xvmpCacheFactory
@@ -14,10 +14,9 @@ class xvmpCacheFactory
 
     /**
      * Generates a new instance of the service.
-     *
      * @return xvmpCache
      */
-    public static function getInstance(): ?xvmpCache
+    public static function getInstance() : ?xvmpCache
     {
 
         if (self::$cache_instance === null) {

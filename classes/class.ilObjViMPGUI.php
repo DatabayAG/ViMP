@@ -5,13 +5,10 @@ declare(strict_types=1);
 /* Copyright (c) 1998-2009 ILIAS open source, Extended GPL, see docs/LICENSE */
 
 use ILIAS\DI\Container;
-use JetBrains\PhpStorm\NoReturn;
 
 /**
  * Class ilObjViMPGUI
- *
  * @author            Theodor Truffer <tt@studer-raimann.ch>
- *
  * @ilCtrl_isCalledBy ilObjViMPGUI: ilRepositoryGUI, ilObjPluginDispatchGUI, ilAdministrationGUI
  * @ilCtrl_Calls      ilObjViMPGUI: ilPermissionGUI, ilInfoScreenGUI, ilObjectCopyGUI, ilCommonActionDispatcherGUI, ilLearningProgressGUI
  */
@@ -48,7 +45,6 @@ class ilObjViMPGUI extends ilObjectPluginGUI
 
     /**
      * ilObjViMPGUI constructor.
-     *
      * @param int $a_ref_id
      * @param int $a_id_type
      * @param int $a_parent_node_id
@@ -63,10 +59,60 @@ class ilObjViMPGUI extends ilObjectPluginGUI
     }
 
     /**
-     *
+     * @param $a_target
+     */
+    public static function _goto($a_target) : void
+    {
+        global $DIC;
+        $DIC->ctrl()->setTargetScript('ilias.php');
+        $id = explode("_", $a_target[0]);
+
+        $DIC->ctrl()->setParameterByClass(xvmpContentGUI::class, self::GET_REF_ID, $id[0]);
+
+        if (isset($id[1])) {
+            if (isset($id[2])) {
+                // time
+                $DIC->ctrl()->setParameterByClass(xvmpContentGUI::class, self::GET_TIME, (int) $id[2]);
+            }
+            $DIC->ctrl()->setParameterByClass(xvmpContentGUI::class, self::GET_VIDEO_ID, (int) $id[1]);
+            $DIC->ctrl()->redirectByClass(
+                [ilObjPluginDispatchGUI::class, self::class, xvmpContentGUI::class],
+                xvmpContentGUI::CMD_PLAY_VIDEO
+            );
+        }
+        parent::_goto($a_target);
+    }
+
+    /**
+     * @return bool
+     */
+    protected function supportsCloning() : bool
+    {
+        return false;
+    }
+
+    /**
+     * AJAX call
+     */
+    protected function getTranscodingProgress() : void
+    {
+        try {
+            $transcodingProgress = xvmpRequest::getTranscodingProgress(filter_input(
+                INPUT_GET,
+                'mid',
+                FILTER_VALIDATE_INT
+            ), 2);
+            echo $transcodingProgress;
+        } catch (xvmpException $e) {
+            xvmpCurlLog::getInstance()->write($e->getMessage());
+        }
+        exit;
+    }
+
+    /**
      * @throws ilCtrlException
      */
-    public function executeCommand(): void
+    public function executeCommand() : void
     {
         $next_class = $this->ctrl->getNextClass();
         $cmd = $this->ctrl->getCmd();
@@ -173,75 +219,6 @@ class ilObjViMPGUI extends ilObjectPluginGUI
     }
 
     /**
-     * @param $cmd
-     */
-    public function performCommand($cmd): void
-    {
-        switch ($cmd) {
-            default:
-                $this->$cmd();
-                break;
-        }
-    }
-
-    /**
-     * @return bool
-     */
-    protected function supportsCloning(): bool
-    {
-        return false;
-    }
-
-    /**
-     * @param string $new_type
-     * @return ilPropertyFormGUI
-     */
-    public function initCreateForm(string $new_type): ilPropertyFormGUI
-    {
-        $this->tpl->addCss($this->pl->getAssetURL('default/xvmp_settings.css'));
-
-        $form = parent::initCreateForm($new_type);
-
-        // ONLINE
-        $input = new ilCheckboxInputGUI($this->lng->txt(xvmpSettingsFormGUI::F_ONLINE), xvmpSettingsFormGUI::F_ONLINE);
-        $form->addItem($input);
-
-        // LAYOUT
-        $input = new ilRadioGroupInputGUI($this->pl->txt(xvmpSettingsFormGUI::F_LAYOUT), xvmpSettingsFormGUI::F_LAYOUT);
-        $option = new ilRadioOption(
-            ilUtil::img($this->pl->getImagePath(xvmpSettingsFormGUI::F_LAYOUT . '_' . xvmpSettings::LAYOUT_TYPE_LIST . '.png')),
-            (string) xvmpSettings::LAYOUT_TYPE_LIST
-        );
-        $input->addOption($option);
-        $option = new ilRadioOption(
-            ilUtil::img($this->pl->getImagePath(xvmpSettingsFormGUI::F_LAYOUT . '_' . xvmpSettings::LAYOUT_TYPE_TILES . '.png')),
-            (string) xvmpSettings::LAYOUT_TYPE_TILES
-        );
-        $input->addOption($option);
-        $option = new ilRadioOption(
-            ilUtil::img($this->pl->getImagePath(xvmpSettingsFormGUI::F_LAYOUT . '_' . xvmpSettings::LAYOUT_TYPE_PLAYER . '.png')),
-            (string) xvmpSettings::LAYOUT_TYPE_PLAYER
-        );
-        $input->addOption($option);
-        $input->setValue((string) xvmpSettings::LAYOUT_TYPE_LIST);
-        $form->addItem($input);
-
-        return $form;
-    }
-
-    public function afterSave(ilObject $new_object): void
-    {
-        if ($_POST[xvmpSettingsFormGUI::F_ONLINE] || $_POST[xvmpSettingsFormGUI::F_LAYOUT]) {
-            /** @var xvmpSettings $settings */
-            $settings = xvmpSettings::find($new_object->getId());
-            $settings->setIsOnline((int) $_POST[xvmpSettingsFormGUI::F_ONLINE]);
-            $settings->setLayoutType((int) $_POST[xvmpSettingsFormGUI::F_LAYOUT]);
-            $settings->update();
-        }
-        parent::afterSave($new_object);
-    }
-
-    /**
      * @param bool $render_locator
      */
     protected function initHeader(bool $render_locator = true) : void
@@ -266,7 +243,7 @@ class ilObjViMPGUI extends ilObjectPluginGUI
         $this->tpl->setPermanentLink('xvmp', (int) $_GET['ref_id']);
     }
 
-    protected function setTabs(): void
+    protected function setTabs() : void
     {
         $this->tabs_gui->addTab(
             self::TAB_CONTENT,
@@ -336,28 +313,64 @@ class ilObjViMPGUI extends ilObjectPluginGUI
     }
 
     /**
-     * @param $a_target
+     * @param $cmd
      */
-    public static function _goto($a_target): void
+    public function performCommand($cmd) : void
     {
-        global $DIC;
-        $DIC->ctrl()->setTargetScript('ilias.php');
-        $id = explode("_", $a_target[0]);
-
-        $DIC->ctrl()->setParameterByClass(xvmpContentGUI::class, self::GET_REF_ID, $id[0]);
-
-        if (isset($id[1])) {
-            if (isset($id[2])) {
-                // time
-                $DIC->ctrl()->setParameterByClass(xvmpContentGUI::class, self::GET_TIME, (int) $id[2]);
-            }
-            $DIC->ctrl()->setParameterByClass(xvmpContentGUI::class, self::GET_VIDEO_ID, (int) $id[1]);
-            $DIC->ctrl()->redirectByClass(
-                [ilObjPluginDispatchGUI::class, self::class, xvmpContentGUI::class],
-                xvmpContentGUI::CMD_PLAY_VIDEO
-            );
+        switch ($cmd) {
+            default:
+                $this->$cmd();
+                break;
         }
-        parent::_goto($a_target);
+    }
+
+    /**
+     * @param string $new_type
+     * @return ilPropertyFormGUI
+     */
+    public function initCreateForm(string $new_type) : ilPropertyFormGUI
+    {
+        $this->tpl->addCss($this->pl->getAssetURL('default/xvmp_settings.css'));
+
+        $form = parent::initCreateForm($new_type);
+
+        // ONLINE
+        $input = new ilCheckboxInputGUI($this->lng->txt(xvmpSettingsFormGUI::F_ONLINE), xvmpSettingsFormGUI::F_ONLINE);
+        $form->addItem($input);
+
+        // LAYOUT
+        $input = new ilRadioGroupInputGUI($this->pl->txt(xvmpSettingsFormGUI::F_LAYOUT), xvmpSettingsFormGUI::F_LAYOUT);
+        $option = new ilRadioOption(
+            ilUtil::img($this->pl->getImagePath(xvmpSettingsFormGUI::F_LAYOUT . '_' . xvmpSettings::LAYOUT_TYPE_LIST . '.png')),
+            (string) xvmpSettings::LAYOUT_TYPE_LIST
+        );
+        $input->addOption($option);
+        $option = new ilRadioOption(
+            ilUtil::img($this->pl->getImagePath(xvmpSettingsFormGUI::F_LAYOUT . '_' . xvmpSettings::LAYOUT_TYPE_TILES . '.png')),
+            (string) xvmpSettings::LAYOUT_TYPE_TILES
+        );
+        $input->addOption($option);
+        $option = new ilRadioOption(
+            ilUtil::img($this->pl->getImagePath(xvmpSettingsFormGUI::F_LAYOUT . '_' . xvmpSettings::LAYOUT_TYPE_PLAYER . '.png')),
+            (string) xvmpSettings::LAYOUT_TYPE_PLAYER
+        );
+        $input->addOption($option);
+        $input->setValue((string) xvmpSettings::LAYOUT_TYPE_LIST);
+        $form->addItem($input);
+
+        return $form;
+    }
+
+    public function afterSave(ilObject $new_object) : void
+    {
+        if ($_POST[xvmpSettingsFormGUI::F_ONLINE] || $_POST[xvmpSettingsFormGUI::F_LAYOUT]) {
+            /** @var xvmpSettings $settings */
+            $settings = xvmpSettings::find($new_object->getId());
+            $settings->setIsOnline((int) $_POST[xvmpSettingsFormGUI::F_ONLINE]);
+            $settings->setLayoutType((int) $_POST[xvmpSettingsFormGUI::F_LAYOUT]);
+            $settings->update();
+        }
+        parent::afterSave($new_object);
     }
 
     /**
@@ -395,7 +408,7 @@ class ilObjViMPGUI extends ilObjectPluginGUI
     /**
      * @return string
      */
-    public function getType(): string
+    public function getType() : string
     {
         return ilViMPPlugin::XVMP;
     }
@@ -403,7 +416,7 @@ class ilObjViMPGUI extends ilObjectPluginGUI
     /**
      * @return string
      */
-    public function getAfterCreationCmd(): string
+    public function getAfterCreationCmd() : string
     {
         return self::CMD_SHOW_CONTENT;
     }
@@ -411,7 +424,7 @@ class ilObjViMPGUI extends ilObjectPluginGUI
     /**
      * @return string
      */
-    public function getStandardCmd(): string
+    public function getStandardCmd() : string
     {
         return self::CMD_SHOW_CONTENT;
     }
@@ -443,24 +456,6 @@ class ilObjViMPGUI extends ilObjectPluginGUI
             'title' => $username,
         ))->getResponseBody();
         echo $response;
-        exit;
-    }
-
-    /**
-     * AJAX call
-     */
-    protected function getTranscodingProgress() : void
-    {
-        try {
-            $transcodingProgress = xvmpRequest::getTranscodingProgress(filter_input(
-                INPUT_GET,
-                'mid',
-                FILTER_VALIDATE_INT
-            ), 2);
-            echo $transcodingProgress;
-        } catch (xvmpException $e) {
-            xvmpCurlLog::getInstance()->write($e->getMessage());
-        }
         exit;
     }
 

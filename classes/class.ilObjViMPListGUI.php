@@ -8,19 +8,18 @@ use ILIAS\UI\Component\Card\RepositoryObject;
 
 /**
  * Class ilObjViMPListGUI
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class ilObjViMPListGUI extends ilObjectPluginListGUI
 {
     protected int $obj_id = 0;
-    public function getGuiClass(): string
+
+    public function getGuiClass() : string
     {
         return ilObjViMPGUI::class;
     }
 
-
-    public function initCommands(): array
+    public function initCommands() : array
     {
         // Always set
         $this->timings_enabled = true;
@@ -50,7 +49,6 @@ class ilObjViMPListGUI extends ilObjectPluginListGUI
         );
     }
 
-
     public function initType() : void
     {
         $this->setType(ilViMPPlugin::XVMP);
@@ -58,10 +56,9 @@ class ilObjViMPListGUI extends ilObjectPluginListGUI
 
     /**
      * get all alert properties
-     *
      * @return array
      */
-    public function getAlertProperties(): array
+    public function getAlertProperties() : array
     {
         $alert = [];
         foreach ($this->getCustomProperties(array()) as $prop) {
@@ -72,17 +69,15 @@ class ilObjViMPListGUI extends ilObjectPluginListGUI
         return $alert;
     }
 
-
     /**
      * Get item properties
-     *
      * @return    array        array of property arrays:
      *                        'alert' (boolean) => display as an alert property (usually in red)
      *                        'property' (string) => property name
      *                        'value' (string) => property value
      * @throws arException
      */
-    public function getCustomProperties($prop): array
+    public function getCustomProperties($prop) : array
     {
         $props = parent::getCustomProperties(array());
 
@@ -110,13 +105,14 @@ class ilObjViMPListGUI extends ilObjectPluginListGUI
         return $props;
     }
 
-
     /**
      * @throws arException
      */
-    protected function getVideoPreview($count): string
+    protected function getVideoPreview($count) : string
     {
-        $selected_videos = xvmpSelectedMedia::where(['obj_id' => $this->obj_id, 'visible' => 1])->orderBy('sort')->limit(0, (int) $count)->get();
+        $selected_videos = xvmpSelectedMedia::where(['obj_id' => $this->obj_id,
+                                                     'visible' => 1
+        ])->orderBy('sort')->limit(0, (int) $count)->get();
         $preview = '';
         foreach ($selected_videos as $selected) {
             try {
@@ -139,13 +135,21 @@ class ilObjViMPListGUI extends ilObjectPluginListGUI
         return $preview;
     }
 
+    private function isTileView() : bool
+    {
+        global $DIC;
+        $parent_ref_id = $DIC->repositoryTree()->getParentId($this->ref_id);
+        return $parent_ref_id && ilContainer::_lookupContainerSetting(ilContainer::_lookupObjectId($parent_ref_id),
+                "list_presentation") === 'tile';
+    }
+
     public function getAsCard(
         int $ref_id,
         int $obj_id,
         string $type,
         string $title,
         string $description
-    ): ?RepositoryObject {
+    ) : ?RepositoryObject {
         /** @var RepositoryObject $card */
         $card = parent::getAsCard($ref_id, $obj_id, $type, $title, $description);
         return $card->withObjectIcon(
@@ -154,13 +158,6 @@ class ilObjViMPListGUI extends ilObjectPluginListGUI
                 $this->plugin->txt('xvmp_obj')
             )
         );
-    }
-
-    private function isTileView(): bool
-    {
-        global $DIC;
-        $parent_ref_id = $DIC->repositoryTree()->getParentId($this->ref_id);
-        return $parent_ref_id && ilContainer::_lookupContainerSetting(ilContainer::_lookupObjectId($parent_ref_id), "list_presentation") === 'tile';
     }
 
 }

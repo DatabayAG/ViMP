@@ -6,19 +6,14 @@ declare(strict_types=1);
 
 /**
  * Class xvmpSelectedVideosTableGUI
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class xvmpSelectedVideosTableGUI extends xvmpTableGUI
 {
     public const ROW_TEMPLATE = 'tpl.selected_videos_row.html';
-
-
+    public const THUMBSIZE = '170x108';
     protected array $js_files = array('xvmp_selected_videos.js', 'sortable.js');
     protected array $css_files = array('xvmp_video_table.css');
-
-    public const THUMBSIZE = '170x108';
-
     protected array $available_columns = array(
         'thumbnail' => array(
             'no_header' => true
@@ -47,7 +42,6 @@ class xvmpSelectedVideosTableGUI extends xvmpTableGUI
 
     /**
      * xvmpSelectedVideosTableGUI constructor.
-     *
      * @param int    $parent_gui
      * @param string $parent_cmd
      */
@@ -72,67 +66,7 @@ class xvmpSelectedVideosTableGUI extends xvmpTableGUI
         $this->tpl_global->addOnLoadCode('VimpSelected.init("' . $base_link . '");');
         $this->tpl_global->addOnLoadCode('xoctWaiter.init("waiter");');
 
-
         $this->parseData();
-    }
-
-    protected function initColumns() : void
-    {
-        $this->addColumn('', '', "75", true);
-        $this->addColumn('', '', "210", true);
-
-        parent::initColumns();
-
-        $this->addColumn('', '', "75", true);
-    }
-
-
-    public function parseData() : void
-    {
-        $this->setData(xvmpMedium::getSelectedAsArray($this->parent_obj->getObjId()));
-    }
-
-    /**
-     * @param xvmpObject $a_set
-     */
-    protected function fillRow($a_set): void
-    {
-        $transcoded = ($a_set['status'] == 'legal');
-        $transcoding = ($a_set['status'] === 'converting');
-
-        $this->tpl->setVariable('VAL_MID', $a_set['mid']);
-
-        if ($transcoded) {
-            $this->tpl->setCurrentBlock('transcoded');
-            $this->tpl->setVariable('MID', $a_set['mid']);
-            $this->tpl->parseCurrentBlock();
-        } else {
-            $this->tpl->touchBlock('transcoding');
-            $this->tpl->setVariable('PLAY_OVERLAY_ATTRIBUTES', 'hidden');
-            if ($transcoding) {
-                $this->tpl->setVariable(
-                    'PROGRESS_BAR',
-                    (new xvmpProgressBarUI($a_set['mid'], $this->pl, $this->dic))->getHTML()
-                );
-            }
-        }
-
-        $this->ctrl->setParameter($this->parent_obj, 'mid', $a_set['mid']);
-        $this->tpl->setVariable('VAL_LINK_REMOVE', $this->ctrl->getLinkTarget($this->parent_obj, xvmpVideosGUI::CMD_REMOVE_VIDEO, '', true));
-
-        foreach ($this->available_columns as $title => $props) {
-            if ($title == 'visible') {
-                $this->tpl->setVariable('VAL_' . strtoupper($title), $a_set[$title] == 1 ? 'checked' : '');
-            } elseif ($title == 'description' && strlen($a_set[$title]) > 95) {
-                $this->tpl->setVariable('VAL_' . strtoupper($title), substr($a_set[$title], 0, 90) . '...');
-            } elseif ($title == 'title' && strlen($a_set[$title]) > 50) {
-                $this->tpl->setVariable('VAL_' . strtoupper($title), substr($a_set[$title], 0, 45) . '...');
-            } else {
-                $this->tpl->setVariable('VAL_' . strtoupper($title), $a_set[$title]);
-            }
-        }
-
-        $this->tpl->parseCurrentBlock();
     }
 
     /**
@@ -160,5 +94,64 @@ class xvmpSelectedVideosTableGUI extends xvmpTableGUI
 			border-right: 2px solid black;
 		}";
         $this->tpl_global->addInlineCss($css);
+    }
+
+    public function parseData() : void
+    {
+        $this->setData(xvmpMedium::getSelectedAsArray($this->parent_obj->getObjId()));
+    }
+
+    protected function initColumns() : void
+    {
+        $this->addColumn('', '', "75", true);
+        $this->addColumn('', '', "210", true);
+
+        parent::initColumns();
+
+        $this->addColumn('', '', "75", true);
+    }
+
+    /**
+     * @param xvmpObject $a_set
+     */
+    protected function fillRow($a_set) : void
+    {
+        $transcoded = ($a_set['status'] == 'legal');
+        $transcoding = ($a_set['status'] === 'converting');
+
+        $this->tpl->setVariable('VAL_MID', $a_set['mid']);
+
+        if ($transcoded) {
+            $this->tpl->setCurrentBlock('transcoded');
+            $this->tpl->setVariable('MID', $a_set['mid']);
+            $this->tpl->parseCurrentBlock();
+        } else {
+            $this->tpl->touchBlock('transcoding');
+            $this->tpl->setVariable('PLAY_OVERLAY_ATTRIBUTES', 'hidden');
+            if ($transcoding) {
+                $this->tpl->setVariable(
+                    'PROGRESS_BAR',
+                    (new xvmpProgressBarUI($a_set['mid'], $this->pl, $this->dic))->getHTML()
+                );
+            }
+        }
+
+        $this->ctrl->setParameter($this->parent_obj, 'mid', $a_set['mid']);
+        $this->tpl->setVariable('VAL_LINK_REMOVE',
+            $this->ctrl->getLinkTarget($this->parent_obj, xvmpVideosGUI::CMD_REMOVE_VIDEO, '', true));
+
+        foreach ($this->available_columns as $title => $props) {
+            if ($title == 'visible') {
+                $this->tpl->setVariable('VAL_' . strtoupper($title), $a_set[$title] == 1 ? 'checked' : '');
+            } elseif ($title == 'description' && strlen($a_set[$title]) > 95) {
+                $this->tpl->setVariable('VAL_' . strtoupper($title), substr($a_set[$title], 0, 90) . '...');
+            } elseif ($title == 'title' && strlen($a_set[$title]) > 50) {
+                $this->tpl->setVariable('VAL_' . strtoupper($title), substr($a_set[$title], 0, 45) . '...');
+            } else {
+                $this->tpl->setVariable('VAL_' . strtoupper($title), $a_set[$title]);
+            }
+        }
+
+        $this->tpl->parseCurrentBlock();
     }
 }

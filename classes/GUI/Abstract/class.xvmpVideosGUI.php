@@ -8,7 +8,6 @@ use srag\Plugins\ViMP\UIComponents\Player\VideoPlayer;
 
 /**
  * Class xvmpVideosGUI
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 abstract class xvmpVideosGUI extends xvmpGUI
@@ -28,9 +27,7 @@ abstract class xvmpVideosGUI extends xvmpGUI
     public const CMD_TOGGLE_VIDEO = 'toggleVideo';
     public const CMD_REMOVE_VIDEO = 'removeVideo';
 
-
     public const TABLE_CLASS = '';
-
 
     /**
      * @param $cmd
@@ -65,18 +62,31 @@ abstract class xvmpVideosGUI extends xvmpGUI
     }
 
     /**
-     *
      * @throws ilCtrlException
      */
     protected function setSubTabs() : void
     {
         if (ilObjViMPAccess::hasWriteAccess()) {
-            $this->dic->tabs()->addSubTab(self::SUBTAB_SEARCH, $this->pl->txt(self::SUBTAB_SEARCH), $this->dic->ctrl()->getLinkTargetByClass(xvmpSearchVideosGUI::class, xvmpGUI::CMD_STANDARD));
-            $this->dic->tabs()->addSubTab(self::SUBTAB_SELECTED, $this->pl->txt(self::SUBTAB_SELECTED), $this->dic->ctrl()->getLinkTargetByClass(xvmpSelectedVideosGUI::class, xvmpGUI::CMD_STANDARD));
-            $this->dic->tabs()->addSubTab(self::SUBTAB_OWN, $this->pl->txt(self::SUBTAB_OWN), $this->dic->ctrl()->getLinkTargetByClass(xvmpOwnVideosGUI::class, xvmpGUI::CMD_STANDARD));
+            $this->dic->tabs()->addSubTab(self::SUBTAB_SEARCH, $this->pl->txt(self::SUBTAB_SEARCH),
+                $this->dic->ctrl()->getLinkTargetByClass(xvmpSearchVideosGUI::class, xvmpGUI::CMD_STANDARD));
+            $this->dic->tabs()->addSubTab(self::SUBTAB_SELECTED, $this->pl->txt(self::SUBTAB_SELECTED),
+                $this->dic->ctrl()->getLinkTargetByClass(xvmpSelectedVideosGUI::class, xvmpGUI::CMD_STANDARD));
+            $this->dic->tabs()->addSubTab(self::SUBTAB_OWN, $this->pl->txt(self::SUBTAB_OWN),
+                $this->dic->ctrl()->getLinkTargetByClass(xvmpOwnVideosGUI::class, xvmpGUI::CMD_STANDARD));
         }
     }
 
+    /**
+     * @throws ilCtrlException
+     */
+    protected function initUploadButton() : void
+    {
+        $upload_button = ilLinkButton::getInstance();
+        $upload_button->setCaption($this->pl->txt('upload_video'), false);
+        $upload_button->setUrl($this->dic->ctrl()->getLinkTargetByClass(xvmpOwnVideosGUI::class,
+            xvmpOwnVideosGUI::CMD_UPLOAD_VIDEO_FORM));
+        $this->dic->toolbar()->addButtonInstance($upload_button);
+    }
 
     /**
      *
@@ -88,7 +98,6 @@ abstract class xvmpVideosGUI extends xvmpGUI
         $table_gui = new $class_name($this, self::CMD_SHOW);
         $this->dic->ui()->mainTemplate()->setContent($table_gui->getHTML() . $this->getModalPlayer()->getHTML());
     }
-
 
     /**
      *
@@ -116,9 +125,12 @@ abstract class xvmpVideosGUI extends xvmpGUI
         $this->dic->ui()->mainTemplate()->setContent($table_gui->getHTML() . $this->getModalPlayer()->getHTML());
     }
 
+    protected function getVideoPlayer($video, int $obj_id) : VideoPlayer
+    {
+        return (new VideoPlayer($video, xvmp::isUseEmbeddedPlayer($obj_id, $video), false));
+    }
 
     /**
-     *
      * @throws ilCtrlException
      */
     public function applyFilter() : void
@@ -131,9 +143,7 @@ abstract class xvmpVideosGUI extends xvmpGUI
         $this->dic->ctrl()->redirect($this, self::CMD_SHOW_FILTERED);
     }
 
-
     /**
-     *
      * @throws ilCtrlException
      */
     public function resetFilter() : void
@@ -181,24 +191,6 @@ abstract class xvmpVideosGUI extends xvmpGUI
         xvmpSelectedMedia::removeVideo($mid, $this->getObjId());
         echo "{\"success\": true}";
         exit;
-    }
-
-
-    /**
-     *
-     * @throws ilCtrlException
-     */
-    protected function initUploadButton() : void
-    {
-        $upload_button = ilLinkButton::getInstance();
-        $upload_button->setCaption($this->pl->txt('upload_video'), false);
-        $upload_button->setUrl($this->dic->ctrl()->getLinkTargetByClass(xvmpOwnVideosGUI::class, xvmpOwnVideosGUI::CMD_UPLOAD_VIDEO_FORM));
-        $this->dic->toolbar()->addButtonInstance($upload_button);
-    }
-
-    protected function getVideoPlayer($video, int $obj_id): VideoPlayer
-    {
-        return (new VideoPlayer($video, xvmp::isUseEmbeddedPlayer($obj_id, $video), false));
     }
 
 }

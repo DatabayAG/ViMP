@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 /**
  * Class xvmpLog
- *
- * @author  Theodor Truffer <tt@studer-raimann.ch>
+ * @author     Theodor Truffer <tt@studer-raimann.ch>
  * @deprecated use xvmpCurlLog
  */
 class xvmpLog extends ilLog
@@ -14,9 +13,16 @@ class xvmpLog extends ilLog
 
     protected static xvmpLog $instance;
 
+    public static function getFullPath() : string
+    {
+        $log = self::getInstance();
+
+        return $log->getLogDir() . '/' . $log->getLogFile();
+    }
+
     public static function getInstance() : xvmpLog
     {
-        if (! isset(self::$instance)) {
+        if (!isset(self::$instance)) {
             if (ILIAS_LOG_DIR === "php:/" && ILIAS_LOG_FILE === "stdout") {
                 // Fix Docker-ILIAS log
                 self::$instance = new self(ILIAS_LOG_DIR, ILIAS_LOG_FILE);
@@ -28,25 +34,9 @@ class xvmpLog extends ilLog
         return self::$instance;
     }
 
-    public function writeTrace() : void
-    {
-        try {
-            throw new Exception();
-        } catch (Exception $e) {
-            parent::write($e->getTraceAsString());
-        }
-    }
-
     public function getLogDir()
     {
         return ILIAS_LOG_DIR;
-    }
-
-    public static function getFullPath() : string
-    {
-        $log = self::getInstance();
-
-        return $log->getLogDir() . '/' . $log->getLogFile();
     }
 
     public function getLogFile() : string
@@ -59,5 +49,13 @@ class xvmpLog extends ilLog
         }
     }
 
+    public function writeTrace() : void
+    {
+        try {
+            throw new Exception();
+        } catch (Exception $e) {
+            parent::write($e->getTraceAsString());
+        }
+    }
 
 }

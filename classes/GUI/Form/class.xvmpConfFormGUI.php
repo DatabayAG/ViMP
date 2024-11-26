@@ -8,7 +8,6 @@ use ILIAS\HTTP\Services;
 
 /**
  * Class xvmpConfFormGUI
- *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class xvmpConfFormGUI extends xvmpFormGUI
@@ -26,7 +25,6 @@ class xvmpConfFormGUI extends xvmpFormGUI
 
     /**
      * xvmpConfFormGUI constructor.
-     *
      * @param $parent_gui
      * @throws ilCtrlException
      */
@@ -44,7 +42,6 @@ class xvmpConfFormGUI extends xvmpFormGUI
     }
 
     /**
-     *
      * @throws ilCtrlException
      */
     protected function initForm() : void
@@ -84,18 +81,22 @@ class xvmpConfFormGUI extends xvmpFormGUI
         $input = new ilCustomInputGUI();
         $input->setTitle('');
         $input->setHtml(
-            "<a class='btn btn-default' id='xvmp_test_connection' onclick='VimpConfig.test_connection(event)' href='" . $this->ctrl->getLinkTargetByClass(array('ilAdministrationGUI', 'ilObjViMPGUI'), 'testConnectionAjax', '', true) . "'>Test Connection</a>
+            "<a class='btn btn-default' id='xvmp_test_connection' onclick='VimpConfig.test_connection(event)' href='" . $this->ctrl->getLinkTargetByClass(array('ilAdministrationGUI',
+                                                                                                                                                                'ilObjViMPGUI'
+            ), 'testConnectionAjax', '', true) . "'>Test Connection</a>
 					<span id='xvmp_connection_status' style='margin-left: 5px'></span>"
         );
         $this->addItem($input);
 
         // ignore ssl
-        $input = new ilCheckboxInputGUI($this->pl->confTxt(xvmpConf::F_DISABLE_VERIFY_PEER), xvmpConf::F_DISABLE_VERIFY_PEER);
+        $input = new ilCheckboxInputGUI($this->pl->confTxt(xvmpConf::F_DISABLE_VERIFY_PEER),
+            xvmpConf::F_DISABLE_VERIFY_PEER);
         $input->setInfo($this->pl->confTxt(xvmpConf::F_DISABLE_VERIFY_PEER . '_info'));
         $this->addItem($input);
 
         // External User Mapping
-        $input = new ilTextInputGUI($this->pl->confTxt(xvmpConf::F_USER_MAPPING_EXTERNAL), xvmpConf::F_USER_MAPPING_EXTERNAL);
+        $input = new ilTextInputGUI($this->pl->confTxt(xvmpConf::F_USER_MAPPING_EXTERNAL),
+            xvmpConf::F_USER_MAPPING_EXTERNAL);
         $input->setInfo($this->pl->confTxt(xvmpConf::F_USER_MAPPING_EXTERNAL . '_info'));
         $input->setRequired(true);
         $this->addItem($input);
@@ -107,11 +108,14 @@ class xvmpConfFormGUI extends xvmpFormGUI
         $this->addItem($input);
 
         // Mapping Priority
-        $input = new ilRadioGroupInputGUI($this->pl->confTxt(xvmpConf::F_MAPPING_PRIORITY), xvmpConf::F_MAPPING_PRIORITY);
+        $input = new ilRadioGroupInputGUI($this->pl->confTxt(xvmpConf::F_MAPPING_PRIORITY),
+            xvmpConf::F_MAPPING_PRIORITY);
         $input->setInfo($this->pl->confTxt(xvmpConf::F_MAPPING_PRIORITY . '_info'));
-        $opt = new ilRadioOption($this->pl->confTxt(xvmpConf::F_MAPPING_PRIORITY . '_' . xvmpConf::PRIORITIZE_EMAIL), (string) xvmpConf::PRIORITIZE_EMAIL);
+        $opt = new ilRadioOption($this->pl->confTxt(xvmpConf::F_MAPPING_PRIORITY . '_' . xvmpConf::PRIORITIZE_EMAIL),
+            (string) xvmpConf::PRIORITIZE_EMAIL);
         $input->addOption($opt);
-        $opt = new ilRadioOption($this->pl->confTxt(xvmpConf::F_MAPPING_PRIORITY . '_' . xvmpConf::PRIORITIZE_MAPPING), (string) xvmpConf::PRIORITIZE_MAPPING);
+        $opt = new ilRadioOption($this->pl->confTxt(xvmpConf::F_MAPPING_PRIORITY . '_' . xvmpConf::PRIORITIZE_MAPPING),
+            (string) xvmpConf::PRIORITIZE_MAPPING);
         $input->addOption($opt);
         $this->addItem($input);
 
@@ -132,11 +136,12 @@ class xvmpConfFormGUI extends xvmpFormGUI
         $this->addItem($input);
 
         // Default Publication
-        $input = new ilSelectInputGUI($this->pl->confTxt(xvmpConf::F_DEFAULT_PUBLICATION), xvmpConf::F_DEFAULT_PUBLICATION);
+        $input = new ilSelectInputGUI($this->pl->confTxt(xvmpConf::F_DEFAULT_PUBLICATION),
+            xvmpConf::F_DEFAULT_PUBLICATION);
         $input->setOptions(array(
-                0 => $this->pl->txt('public'),
-                1 => $this->pl->txt('private'),
-                2 => $this->pl->txt('hidden'),
+            0 => $this->pl->txt('public'),
+            1 => $this->pl->txt('private'),
+            2 => $this->pl->txt('hidden'),
         ));
 
         $input->setInfo($this->pl->confTxt(xvmpConf::F_DEFAULT_PUBLICATION . '_info'));
@@ -146,12 +151,12 @@ class xvmpConfFormGUI extends xvmpFormGUI
         $input = new ilCheckboxInputGUI($this->pl->confTxt(xvmpConf::F_ALLOW_PUBLIC), xvmpConf::F_ALLOW_PUBLIC);
         $input->setInfo($this->pl->confTxt(xvmpConf::F_ALLOW_PUBLIC . '_info'));
 
-        $input2 = new ilCheckboxInputGUI($this->pl->confTxt(xvmpConf::F_ALLOW_PUBLIC_UPLOAD), xvmpConf::F_ALLOW_PUBLIC_UPLOAD);
+        $input2 = new ilCheckboxInputGUI($this->pl->confTxt(xvmpConf::F_ALLOW_PUBLIC_UPLOAD),
+            xvmpConf::F_ALLOW_PUBLIC_UPLOAD);
         $input2->setInfo($this->pl->confTxt(xvmpConf::F_ALLOW_PUBLIC_UPLOAD . '_info'));
         $input->addSubItem($input2);
 
         $this->addItem($input);
-
 
         // Form Fields
         $input = new srGenericMultiInputGUI($this->pl->confTxt(xvmpConf::F_FORM_FIELDS), xvmpConf::F_FORM_FIELDS);
@@ -187,9 +192,9 @@ class xvmpConfFormGUI extends xvmpFormGUI
         $input->addInput($subinput);
         $this->addItem($input);
 
-
         // Media Permission
-        $input = new ilRadioGroupInputGUI($this->pl->confTxt(xvmpConf::F_MEDIA_PERMISSIONS), xvmpConf::F_MEDIA_PERMISSIONS);
+        $input = new ilRadioGroupInputGUI($this->pl->confTxt(xvmpConf::F_MEDIA_PERMISSIONS),
+            xvmpConf::F_MEDIA_PERMISSIONS);
         $input->setInfo($this->pl->confTxt(xvmpConf::F_MEDIA_PERMISSIONS . '_info'));
 
         $radio_option = new ilRadioOption($this->lng->txt('no'), (string) xvmpConf::MEDIA_PERMISSION_OFF);
@@ -207,19 +212,18 @@ class xvmpConfFormGUI extends xvmpFormGUI
         $radio_option->addSubItem($sub_selection);
 
         // Media Permission Preselection
-        $sub_input = new ilCheckboxInputGUI($this->pl->confTxt(xvmpConf::F_MEDIA_PERMISSIONS_PRESELECTED), xvmpConf::F_MEDIA_PERMISSIONS_PRESELECTED);
+        $sub_input = new ilCheckboxInputGUI($this->pl->confTxt(xvmpConf::F_MEDIA_PERMISSIONS_PRESELECTED),
+            xvmpConf::F_MEDIA_PERMISSIONS_PRESELECTED);
         $sub_input->setInfo($this->pl->confTxt(xvmpConf::F_MEDIA_PERMISSIONS_PRESELECTED . '_info'));
         $radio_option->addSubItem($sub_input);
 
         $input->addOption($radio_option);
         $this->addItem($input);
 
-
         // Embedded Player
         $input = new ilCheckboxInputGUI($this->pl->confTxt(xvmpConf::F_EMBED_PLAYER), xvmpConf::F_EMBED_PLAYER);
         $input->setInfo($this->pl->confTxt(xvmpConf::F_EMBED_PLAYER . '_info'));
         $this->addItem($input);
-
 
         // *** NOTIFICATION ***
         $header = new ilFormSectionHeaderGUI();
@@ -227,29 +231,32 @@ class xvmpConfFormGUI extends xvmpFormGUI
         $this->addItem($header);
 
         // Noticiation Subject
-        $input = new ilTextInputGUI($this->pl->confTxt(xvmpConf::F_NOTIFICATION_SUBJECT_SUCCESSFULL), xvmpConf::F_NOTIFICATION_SUBJECT_SUCCESSFULL);
+        $input = new ilTextInputGUI($this->pl->confTxt(xvmpConf::F_NOTIFICATION_SUBJECT_SUCCESSFULL),
+            xvmpConf::F_NOTIFICATION_SUBJECT_SUCCESSFULL);
         $input->setInfo($this->pl->confTxt(xvmpConf::F_NOTIFICATION_SUBJECT_SUCCESSFULL . '_info'));
         $input->setRequired(true);
         $this->addItem($input);
 
         // Noticiation Body
-        $input = new ilTextAreaInputGUI($this->pl->confTxt(xvmpConf::F_NOTIFICATION_BODY_SUCCESSFULL), xvmpConf::F_NOTIFICATION_BODY_SUCCESSFULL);
+        $input = new ilTextAreaInputGUI($this->pl->confTxt(xvmpConf::F_NOTIFICATION_BODY_SUCCESSFULL),
+            xvmpConf::F_NOTIFICATION_BODY_SUCCESSFULL);
         $input->setInfo($this->pl->confTxt(xvmpConf::F_NOTIFICATION_BODY_SUCCESSFULL . '_info'));
         $input->setRequired(true);
         $this->addItem($input);
 
         // Noticiation Subject
-        $input = new ilTextInputGUI($this->pl->confTxt(xvmpConf::F_NOTIFICATION_SUBJECT_FAILED), xvmpConf::F_NOTIFICATION_SUBJECT_FAILED);
+        $input = new ilTextInputGUI($this->pl->confTxt(xvmpConf::F_NOTIFICATION_SUBJECT_FAILED),
+            xvmpConf::F_NOTIFICATION_SUBJECT_FAILED);
         $input->setInfo($this->pl->confTxt(xvmpConf::F_NOTIFICATION_SUBJECT_FAILED . '_info'));
         $input->setRequired(true);
         $this->addItem($input);
 
         // Noticiation Body
-        $input = new ilTextAreaInputGUI($this->pl->confTxt(xvmpConf::F_NOTIFICATION_BODY_FAILED), xvmpConf::F_NOTIFICATION_BODY_FAILED);
+        $input = new ilTextAreaInputGUI($this->pl->confTxt(xvmpConf::F_NOTIFICATION_BODY_FAILED),
+            xvmpConf::F_NOTIFICATION_BODY_FAILED);
         $input->setInfo($this->pl->confTxt(xvmpConf::F_NOTIFICATION_BODY_FAILED . '_info'));
         $input->setRequired(true);
         $this->addItem($input);
-
 
         // *** CACHE ***
         $header = new ilFormSectionHeaderGUI();
@@ -268,7 +275,8 @@ class xvmpConfFormGUI extends xvmpFormGUI
         $this->addItem($input);
 
         // Category Cache TTL
-        $input = new ilNumberInputGUI($this->pl->confTxt(xvmpConf::F_CACHE_TTL_CATEGORIES), xvmpConf::F_CACHE_TTL_CATEGORIES);
+        $input = new ilNumberInputGUI($this->pl->confTxt(xvmpConf::F_CACHE_TTL_CATEGORIES),
+            xvmpConf::F_CACHE_TTL_CATEGORIES);
         $input->setInfo($this->pl->confTxt(xvmpConf::F_CACHE_TTL_CATEGORIES . '_info'));
         $this->addItem($input);
 
@@ -282,16 +290,14 @@ class xvmpConfFormGUI extends xvmpFormGUI
         $input->setInfo($this->pl->confTxt(xvmpConf::F_CACHE_TTL_CONFIG . '_info'));
         $this->addItem($input);
 
-
         // Buttons
         $this->addCommandButton(ilViMPConfigGUI::CMD_UPDATE, $this->lng->txt('save'));
     }
 
-
     /**
      * @return array
      */
-    protected function getMediaPermissionOptions(): array
+    protected function getMediaPermissionOptions() : array
     {
         $options = array();
         if ($this->pl->hasConnection()) {
@@ -316,11 +322,9 @@ class xvmpConfFormGUI extends xvmpFormGUI
         $this->setValuesByArray($array);
     }
 
-
     /**
      * @param $item
      * @param $array
-     *
      * @internal param $key
      */
     private function getValuesForItem($item, &$array) : void
@@ -349,6 +353,43 @@ class xvmpConfFormGUI extends xvmpFormGUI
         }
     }
 
+    /**
+     * @param $item
+     * @return bool
+     */
+    public static function checkItem($item) : bool
+    {
+        $return = !$item instanceof ilFormSectionHeaderGUI;
+        if (empty($item->getPostVar())) {
+            return false;
+        }
+        return $return;
+    }
+
+    /**
+     * @param $item
+     * @return bool
+     */
+    public static function checkForSubItem($item) : bool
+    {
+        return !$item instanceof ilFormSectionHeaderGUI and !$item instanceof ilMultiSelectInputGUI;
+    }
+
+    /**
+     * @return bool
+     */
+    public function saveObject() : bool
+    {
+        if (!$this->checkInput()) {
+            return false;
+        }
+        foreach ($this->getItems() as $item) {
+            $this->saveValueForItem($item);
+        }
+        xvmpConf::set(xvmpConf::F_CONFIG_VERSION, xvmpConf::CONFIG_VERSION);
+
+        return true;
+    }
 
     /**
      * @param $item
@@ -438,47 +479,5 @@ class xvmpConfFormGUI extends xvmpFormGUI
                 }
             }
         }
-    }
-
-    /**
-     * @return bool
-     */
-    public function saveObject(): bool
-    {
-        if (!$this->checkInput()) {
-            return false;
-        }
-        foreach ($this->getItems() as $item) {
-            $this->saveValueForItem($item);
-        }
-        xvmpConf::set(xvmpConf::F_CONFIG_VERSION, xvmpConf::CONFIG_VERSION);
-
-        return true;
-    }
-
-
-    /**
-     * @param $item
-     *
-     * @return bool
-     */
-    public static function checkForSubItem($item): bool
-    {
-        return !$item instanceof ilFormSectionHeaderGUI and !$item instanceof ilMultiSelectInputGUI;
-    }
-
-
-    /**
-     * @param $item
-     *
-     * @return bool
-     */
-    public static function checkItem($item): bool
-    {
-        $return = !$item instanceof ilFormSectionHeaderGUI;
-        if (empty($item->getPostVar())) {
-            return false;
-        }
-        return $return;
     }
 }
