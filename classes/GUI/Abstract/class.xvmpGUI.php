@@ -15,53 +15,54 @@ use srag\Plugins\ViMP\UIComponents\Player\VideoPlayer;
  *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-abstract class xvmpGUI {
+abstract class xvmpGUI
+{
+    public const CMD_STANDARD = 'index';
+    public const CMD_CANCEL = 'cancel';
+    public const CMD_FLUSH_CACHE = 'flushCache';
+    public const CMD_FILL_MODAL = 'fillModalPlayer';
 
-	const CMD_STANDARD = 'index';
-	const CMD_CANCEL = 'cancel';
-	const CMD_FLUSH_CACHE = 'flushCache';
-	const CMD_FILL_MODAL = 'fillModalPlayer';
-
-	const TAB_ACTIVE = ''; // overwrite in subclass
-    const CMD_DOWNLOAD_MEDIUM = 'downloadMedium';
+    public const TAB_ACTIVE = ''; // overwrite in subclass
+    public const CMD_DOWNLOAD_MEDIUM = 'downloadMedium';
     /**
-	 * @var ilObjViMPGUI
-	 */
-	protected ilObjViMPGUI $parent_gui;
-	/**
-	 * @var ilViMPPlugin
-	 */
-	protected ilViMPPlugin $pl;
+     * @var ilObjViMPGUI
+     */
+    protected ilObjViMPGUI $parent_gui;
+    /**
+     * @var ilViMPPlugin
+     */
+    protected ilViMPPlugin $pl;
     /**
      * @var Container
      */
-	protected $dic;
+    protected $dic;
     /**
      * @var Factory
      */
-	protected Factory $renderer_factory;
+    protected Factory $renderer_factory;
     /**
      * @var MediumMetadataDTOBuilder
      */
-	protected MediumMetadataDTOBuilder $metadata_builder;
+    protected MediumMetadataDTOBuilder $metadata_builder;
 
 
-	/**
-	 * xvmpGUI constructor.
-	 *
-	 * @param ilObjViMPGUI $parent_gui
-	 */
-	public function __construct(ilObjViMPGUI $parent_gui) {
-		global $DIC;
-		$this->dic = $DIC;
-		$this->pl = ilViMPPlugin::getInstance();
-		$this->parent_gui = $parent_gui;
-		$this->metadata_builder = new MediumMetadataDTOBuilder($DIC, $this->pl);
-		$this->renderer_factory = new Factory($DIC, $this->pl);
-		$this->addJavaScript();
-	}
+    /**
+     * xvmpGUI constructor.
+     *
+     * @param ilObjViMPGUI $parent_gui
+     */
+    public function __construct(ilObjViMPGUI $parent_gui)
+    {
+        global $DIC;
+        $this->dic = $DIC;
+        $this->pl = ilViMPPlugin::getInstance();
+        $this->parent_gui = $parent_gui;
+        $this->metadata_builder = new MediumMetadataDTOBuilder($DIC, $this->pl);
+        $this->renderer_factory = new Factory($DIC, $this->pl);
+        $this->addJavaScript();
+    }
 
-	protected function addJavaScript()
+    protected function addJavaScript()
     {
         $this->dic->ui()->mainTemplate()->addJavaScript('./libs/bower/bower_components/webui-popover/dist/jquery.webui-popover.js');
         $this->dic->ui()->mainTemplate()->addJavaScript('./src/UI/templates/js/Popover/popover.js');
@@ -70,7 +71,7 @@ abstract class xvmpGUI {
     /**
      * @return ilModalGUI
      */
-    protected function getAccessDeniedModal() : ilModalGUI
+    protected function getAccessDeniedModal(): ilModalGUI
     {
         $modal = ilModalGUI::getInstance();
         $modal->setId('xvmp_modal_player');
@@ -84,11 +85,12 @@ abstract class xvmpGUI {
      * @return PlayerContainerDTO
      * @throws xvmpException|ilCtrlException
      */
-    public function buildPlayerContainerDTO(xvmpMedium $medium) : PlayerContainerDTO
+    public function buildPlayerContainerDTO(xvmpMedium $medium): PlayerContainerDTO
     {
         $playerContainerDTO = new PlayerContainerDTO(
             $this->getVideoPlayer($medium, $this->getObjId()),
-            $this->metadata_builder->buildFromVimpMedium($medium, false, false));
+            $this->metadata_builder->buildFromVimpMedium($medium, false, false)
+        );
 
         $buttons = [];
         if (!is_null($this->getObject())) {
@@ -113,7 +115,7 @@ abstract class xvmpGUI {
     /**
      * @throws xvmpException
      */
-    protected function getVideoPlayer($video, int $obj_id) : VideoPlayer
+    protected function getVideoPlayer($video, int $obj_id): VideoPlayer
     {
         return (new VideoPlayer($video, xvmp::isUseEmbeddedPlayer($obj_id, $video), false));
     }
@@ -122,7 +124,7 @@ abstract class xvmpGUI {
      * @param xvmpMedium $video
      * @return ILIAS\UI\Component\Component[]
      */
-    public function buildPermLinkUI(xvmpMedium $video) : array
+    public function buildPermLinkUI(xvmpMedium $video): array
     {
         $link_tpl = ilLink::_getStaticLink(
             $this->parent_gui->getRefId(),
@@ -132,11 +134,14 @@ abstract class xvmpGUI {
         );
 
         $popover = $this->dic->ui()->factory()->popover()->standard(
-            $this->dic->ui()->factory()->legacy($this->pl->txt('popover_link_copied')));
+            $this->dic->ui()->factory()->legacy($this->pl->txt('popover_link_copied'))
+        );
 
         if (!xvmpConf::getConfig(xvmpConf::F_EMBED_PLAYER)) {
-            $items[] = $this->dic->ui()->factory()->button()->shy($this->pl->txt('btn_copy_link_w_time'),
-                '')->withOnClick($popover->getShowSignal())->withOnLoadCode(function ($id) use ($link_tpl) {
+            $items[] = $this->dic->ui()->factory()->button()->shy(
+                $this->pl->txt('btn_copy_link_w_time'),
+                ''
+            )->withOnClick($popover->getShowSignal())->withOnLoadCode(function ($id) use ($link_tpl) {
                 return "document.getElementById('$id').addEventListener('click', () => VimpContent.copyDirectLinkWithTime('$link_tpl'));";
             });
         }
@@ -155,117 +160,123 @@ abstract class xvmpGUI {
      *
      * @throws ilCtrlException
      */
-	public function executeCommand() {
-		if (!$this->dic->ctrl()->isAsynch()) {
-			$this->dic->tabs()->activateTab(static::TAB_ACTIVE);
-		}
-
-		$nextClass = $this->dic->ctrl()->getNextClass();
-		switch ($nextClass) {
-			default:
-				$cmd = $this->dic->ctrl()->getCmd(self::CMD_STANDARD);
-				$this->performCommand($cmd);
-				break;
-		}
-	}
-
-	/**
-	 * @param $cmd
-	 */
-	protected function performCommand($cmd) {
-		switch ($cmd) {
-			case self::CMD_FILL_MODAL:
-				$mid = $_GET['mid'];
-				$medium = xvmpMedium::find($mid);
-				ilObjViMPAccess::checkAction(ilObjViMPAccess::ACTION_PLAY_VIDEO, $this, $medium);
-				break;
-		}
-
-		$this->{$cmd}();
-	}
-
-
-	/**
-	 *
-	 */
-	public function addFlushCacheButton () {
-		$button = ilLinkButton::getInstance();
-		$button->setUrl($this->dic->ctrl()->getLinkTarget($this,self::CMD_FLUSH_CACHE));
-		$button->setCaption($this->pl->txt('flush_video_cache'), false);
-		$button->setId('xvmp_flush_video_cache');
-		$this->dic->toolbar()->addButtonInstance($button);
-
-		ilTooltipGUI::addTooltip('xvmp_flush_video_cache', $this->pl->txt('flush_video_cache_tooltip'));
-	}
-
-    /**
-     *
-     * @throws ilCtrlException
-     */
-	public function flushCache() {
-//		xvmpCacheFactory::getInstance()->flush();
-		foreach (xvmpSelectedMedia::getSelected($this->getObjId()) as $selected) {
-			xvmpCacheFactory::getInstance()->delete(xvmpMedium::class . '-' . $selected->getMid());
-		}
-		$this->dic->ctrl()->redirect($this, self::CMD_STANDARD);
-	}
-
-
-	/**
-	 * @return mixed
-	 */
-	abstract protected function index();
-
-
-    /**
-     *
-     * @throws ilCtrlException
-     */
-	protected function cancel() {
-		$this->dic->ctrl()->redirect($this, self::CMD_STANDARD);
-	}
-
-
-	/**
-	 * @return ?ilObject
-     */
-	public function getObject(): ?ilObject
+    public function executeCommand()
     {
-		return $this->parent_gui->getObject();
-	}
+        if (!$this->dic->ctrl()->isAsynch()) {
+            $this->dic->tabs()->activateTab(static::TAB_ACTIVE);
+        }
 
-	/**
-	 * @return int
-	 */
-	public function getObjId(): int
+        $nextClass = $this->dic->ctrl()->getNextClass();
+        switch ($nextClass) {
+            default:
+                $cmd = $this->dic->ctrl()->getCmd(self::CMD_STANDARD);
+                $this->performCommand($cmd);
+                break;
+        }
+    }
+
+    /**
+     * @param $cmd
+     */
+    protected function performCommand($cmd)
+    {
+        switch ($cmd) {
+            case self::CMD_FILL_MODAL:
+                $mid = $_GET['mid'];
+                $medium = xvmpMedium::find($mid);
+                ilObjViMPAccess::checkAction(ilObjViMPAccess::ACTION_PLAY_VIDEO, $this, $medium);
+                break;
+        }
+
+        $this->{$cmd}();
+    }
+
+
+    /**
+     *
+     */
+    public function addFlushCacheButton()
+    {
+        $button = ilLinkButton::getInstance();
+        $button->setUrl($this->dic->ctrl()->getLinkTarget($this, self::CMD_FLUSH_CACHE));
+        $button->setCaption($this->pl->txt('flush_video_cache'), false);
+        $button->setId('xvmp_flush_video_cache');
+        $this->dic->toolbar()->addButtonInstance($button);
+
+        ilTooltipGUI::addTooltip('xvmp_flush_video_cache', $this->pl->txt('flush_video_cache_tooltip'));
+    }
+
+    /**
+     *
+     * @throws ilCtrlException
+     */
+    public function flushCache()
+    {
+        //		xvmpCacheFactory::getInstance()->flush();
+        foreach (xvmpSelectedMedia::getSelected($this->getObjId()) as $selected) {
+            xvmpCacheFactory::getInstance()->delete(xvmpMedium::class . '-' . $selected->getMid());
+        }
+        $this->dic->ctrl()->redirect($this, self::CMD_STANDARD);
+    }
+
+
+    /**
+     * @return mixed
+     */
+    abstract protected function index();
+
+
+    /**
+     *
+     * @throws ilCtrlException
+     */
+    protected function cancel()
+    {
+        $this->dic->ctrl()->redirect($this, self::CMD_STANDARD);
+    }
+
+
+    /**
+     * @return ?ilObject
+     */
+    public function getObject(): ?ilObject
+    {
+        return $this->parent_gui->getObject();
+    }
+
+    /**
+     * @return int
+     */
+    public function getObjId(): int
     {
         $obj = $this->parent_gui->getObject();
         return $obj ? $obj->getId() : 0;
-	}
+    }
 
 
     /**
      * called by ilObjViMPAccess
      * @throws ilCtrlException
      */
-	public function accessDenied() {
-        $this->dic->ui()->mainTemplate()->setOnScreenMessage('failure', $this->pl->txt('access_denied'), true);
-		$this->dic->ctrl()->redirect($this->parent_gui, ilObjViMPGUI::CMD_SHOW_CONTENT);
-	}
-
-		/**
-	 * @return ilModalGUI
-	 */
-	public static function getModalPlayer(): ilModalGUI
+    public function accessDenied()
     {
-		global $tpl;
-		$tpl->addCss(ilViMPPlugin::getInstance()->getAssetURL('default/modal.css'));
-		$modal = ilModalGUI::getInstance();
-		$modal->setId('xvmp_modal_player');
-		$modal->setType(ilModalGUI::TYPE_LARGE);
+        $this->dic->ui()->mainTemplate()->setOnScreenMessage('failure', $this->pl->txt('access_denied'), true);
+        $this->dic->ctrl()->redirect($this->parent_gui, ilObjViMPGUI::CMD_SHOW_CONTENT);
+    }
+
+    /**
+     * @return ilModalGUI
+     */
+    public static function getModalPlayer(): ilModalGUI
+    {
+        global $tpl;
+        $tpl->addCss(ilViMPPlugin::getInstance()->getAssetURL('default/modal.css'));
+        $modal = ilModalGUI::getInstance();
+        $modal->setId('xvmp_modal_player');
+        $modal->setType(ilModalGUI::TYPE_LARGE);
         $modal->setBody('<section><div id="xvmp_video_container"></div></section>');
-		return $modal;
-	}
+        return $modal;
+    }
 
 
     /**
@@ -275,7 +286,7 @@ abstract class xvmpGUI {
      * @throws ilTemplateException
      * @throws xvmpException
      */
-    public function getFilledModalPlayer($video_mid) : ilModalGUI
+    public function getFilledModalPlayer($video_mid): ilModalGUI
     {
         $selected_medium = xvmpSelectedMedia::where(array('obj_id' => $this->getObjId(), 'mid' => $video_mid));
         if (!ilObjViMPAccess::hasWriteAccess()) {
@@ -311,10 +322,10 @@ abstract class xvmpGUI {
      * @throws ilTemplateException
      * @throws xvmpException
      */
-	public function fillModalPlayer($play_video_id = null, bool $async = true): stdClass
+    public function fillModalPlayer($play_video_id = null, bool $async = true): stdClass
     {
-		$mid = $play_video_id ?? $_GET['mid'];
-		$video = xvmpMedium::find($mid);
+        $mid = $play_video_id ?? $_GET['mid'];
+        $video = xvmpMedium::find($mid);
         $playModalDto = $this->buildPlayerContainerDTO($video);
 
         $response = new stdClass();
@@ -324,20 +335,20 @@ abstract class xvmpGUI {
         $response->html = $this->renderer_factory->playerModal()->render($playModalDto, $async, $show_unavailable);
 
         $response->video_title = $video->getTitle();
-		/** @var xvmpUserProgress $progress */
-		$progress = xvmpUserProgress::where(array(xvmpUserProgress::F_USR_ID => $this->dic->user()->getId(), xvmpMedium::F_MID => $mid))->first();
-		if ($progress) {
-			$response->time_ranges = json_decode($progress->getRanges());
-		} else {
-			$response->time_ranges = array();
-		}
-		if ($async) {
+        /** @var xvmpUserProgress $progress */
+        $progress = xvmpUserProgress::where(array(xvmpUserProgress::F_USR_ID => $this->dic->user()->getId(), xvmpMedium::F_MID => $mid))->first();
+        if ($progress) {
+            $response->time_ranges = json_decode($progress->getRanges());
+        } else {
+            $response->time_ranges = array();
+        }
+        if ($async) {
             echo json_encode($response);
             exit;
         } else {
-		    return $response;
+            return $response;
         }
-	}
+    }
 
     /**
      * @throws xvmpException
@@ -355,12 +366,13 @@ abstract class xvmpGUI {
      * ajax
      * @throws xvmpException
      */
-	public function updateProgress() {
-		$mid = (int) $_POST[xvmpMedium::F_MID];
-		$ranges = $_POST[xvmpUserProgress::F_RANGES];
-		xvmpUserProgress::storeProgress($this->dic->user()->getid(), $mid, $ranges);
-		echo "ok";
-		exit;
-	}
+    public function updateProgress()
+    {
+        $mid = (int) $_POST[xvmpMedium::F_MID];
+        $ranges = $_POST[xvmpUserProgress::F_RANGES];
+        xvmpUserProgress::storeProgress($this->dic->user()->getid(), $mid, $ranges);
+        echo "ok";
+        exit;
+    }
 
 }

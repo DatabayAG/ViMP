@@ -13,46 +13,45 @@ use Detection\MobileDetect;
  */
 class xvmpMedium extends xvmpObject
 {
+    public const PUBLISHED_PUBLIC = 'public';
+    public const PUBLISHED_PRIVATE = 'private';
+    public const PUBLISHED_HIDDEN = 'hidden';
 
-    const PUBLISHED_PUBLIC = 'public';
-    const PUBLISHED_PRIVATE = 'private';
-    const PUBLISHED_HIDDEN = 'hidden';
-
-    const F_MID = 'mid';
-    const F_UID = 'uid';
-    const F_USERNAME = 'username';
-    const F_MEDIAKEY = 'mediakey';
-    const F_MEDIAPERMISSIONS = 'mediapermissions';
-    const F_MEDIATYPE = 'mediatype';
-    const F_MEDIASUBTYPE = 'mediasubtype';
-    const F_PUBLISHED = 'published';
-    const F_STATUS = 'status';
-    const F_FEATURED = 'featured';
-    const F_CULTURE = 'culture';
-    const F_PROPERTIES = 'properties';
-    const F_TITLE = 'title';
-    const F_DESCRIPTION = 'description';
-    const F_DURATION = 'duration';
-    const F_THUMBNAIL = 'thumbnail';
-    const F_EMBED_CODE = 'embed_code';
-    const F_MEDIUM = 'medium';
-    const F_SOURCE = 'source';
-    const F_META_TITLE = 'meta_title';
-    const F_META_DESCRIPTION = 'meta_description';
-    const F_META_KEYWORDS = 'meta_keywords';
-    const F_META_AUTHOR = 'meta_author';
-    const F_META_COPYRIGHT = 'meta_copyright';
-    const F_SUM_RATING = 'sum_rating';
-    const F_COUNT_VIEWS = 'count_views';
-    const F_COUNT_RATING = 'count_rating';
-    const F_COUNT_FAVORITES = 'count_favorites';
-    const F_COUNT_COMMENTS = 'count_comments';
-    const F_COUNT_FLAGS = 'count_flags';
-    const F_CREATED_AT = 'created_at';
-    const F_UPDATED_AT = 'updated_at';
-    const F_TAGS = 'tags';
-    const F_CATEGORIES = 'categories';
-    const F_SUBTITLES = 'subtitles';
+    public const F_MID = 'mid';
+    public const F_UID = 'uid';
+    public const F_USERNAME = 'username';
+    public const F_MEDIAKEY = 'mediakey';
+    public const F_MEDIAPERMISSIONS = 'mediapermissions';
+    public const F_MEDIATYPE = 'mediatype';
+    public const F_MEDIASUBTYPE = 'mediasubtype';
+    public const F_PUBLISHED = 'published';
+    public const F_STATUS = 'status';
+    public const F_FEATURED = 'featured';
+    public const F_CULTURE = 'culture';
+    public const F_PROPERTIES = 'properties';
+    public const F_TITLE = 'title';
+    public const F_DESCRIPTION = 'description';
+    public const F_DURATION = 'duration';
+    public const F_THUMBNAIL = 'thumbnail';
+    public const F_EMBED_CODE = 'embed_code';
+    public const F_MEDIUM = 'medium';
+    public const F_SOURCE = 'source';
+    public const F_META_TITLE = 'meta_title';
+    public const F_META_DESCRIPTION = 'meta_description';
+    public const F_META_KEYWORDS = 'meta_keywords';
+    public const F_META_AUTHOR = 'meta_author';
+    public const F_META_COPYRIGHT = 'meta_copyright';
+    public const F_SUM_RATING = 'sum_rating';
+    public const F_COUNT_VIEWS = 'count_views';
+    public const F_COUNT_RATING = 'count_rating';
+    public const F_COUNT_FAVORITES = 'count_favorites';
+    public const F_COUNT_COMMENTS = 'count_comments';
+    public const F_COUNT_FLAGS = 'count_flags';
+    public const F_CREATED_AT = 'created_at';
+    public const F_UPDATED_AT = 'updated_at';
+    public const F_TAGS = 'tags';
+    public const F_CATEGORIES = 'categories';
+    public const F_SUBTITLES = 'subtitles';
 
 
     public static array $published_id_mapping = array(
@@ -75,7 +74,7 @@ class xvmpMedium extends xvmpObject
         } catch (Exception $e) {
             if ($e->getCode() == 404) {
                 $deleted = new xvmpDeletedMedium();
-                $deleted->setMid((int)$id);
+                $deleted->setMid((int) $id);
                 return $deleted;
             } else {
                 throw $e;
@@ -235,7 +234,7 @@ class xvmpMedium extends xvmpObject
 
         xvmpCurlLog::getInstance()->write('CACHE: cached not used: ' . $key, xvmpCurlLog::DEBUG_LEVEL_2);
 
-        $response = xvmpRequest::getMedium((int)$id)->getResponseArray();
+        $response = xvmpRequest::getMedium((int) $id)->getResponseArray();
         $response = $response['medium'];
         $response = self::formatResponse($response);
 
@@ -264,7 +263,7 @@ class xvmpMedium extends xvmpObject
      */
     public static function update(array $video): xvmpCurl
     {
-        $response = xvmpRequest::editMedium((int)$video['mid'], $video);
+        $response = xvmpRequest::editMedium((int) $video['mid'], $video);
         xvmpCacheFactory::getInstance()->delete(self::class . '-' . $video['mid']);
         return $response;
     }
@@ -332,9 +331,9 @@ class xvmpMedium extends xvmpObject
     public static function formatResponse($response)
     {
         $response['duration_formatted'] = gmdate("H:i:s", $response['duration'] ?? 0);
-        $response['description'] = strip_tags(html_entity_decode((string)$response['description']));
-        $response['title'] = (string)$response['title'];
-        $response['slug'] = (string)$response['slug'];
+        $response['description'] = strip_tags(html_entity_decode((string) $response['description']));
+        $response['title'] = (string) $response['title'];
+        $response['slug'] = (string) $response['slug'];
 
         if (isset($response['mediapermissions']['rid']) && is_array($response['mediapermissions']['rid'])) {
             $response['mediapermissions'] = $response['mediapermissions']['rid'];
@@ -372,9 +371,9 @@ class xvmpMedium extends xvmpObject
      * @param       $object
      * @param null $ttl
      */
-    public static function cache($identifier, $object, $ttl = NULL)
+    public static function cache($identifier, $object, $ttl = null)
     {
-        parent::cache($identifier, $object, (int)($ttl ? $ttl : xvmpConf::getConfig(xvmpConf::F_CACHE_TTL_VIDEOS)));
+        parent::cache($identifier, $object, (int) ($ttl ? $ttl : xvmpConf::getConfig(xvmpConf::F_CACHE_TTL_VIDEOS)));
     }
 
     /**

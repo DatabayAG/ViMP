@@ -78,7 +78,8 @@ class xvmpContentPlayerGUI
 
         $in_site_player = $this->player_renderer->render(
             $this->parent_gui->buildPlayerContainerDTO($medium),
-            $medium instanceof xvmpDeletedMedium);
+            $medium instanceof xvmpDeletedMedium
+        );
         $player_tpl->setVariable('VIDEO_PLAYER', $in_site_player);
 
         $tiles_tpl = new ilTemplate('tpl.content_tiles_waiting.html', true, true, $this->pl->getDirectory());
@@ -111,8 +112,12 @@ class xvmpContentPlayerGUI
             $this->dic->ui()->mainTemplate()->addOnLoadCode('VimpObserver.init(' . $mid . ', ' . $time_ranges . ');');
         }
         $this->dic->ui()->mainTemplate()->addOnLoadCode('VimpContent.selected_media = ' . json_encode($json_array) . ';');
-        $this->dic->ui()->mainTemplate()->addOnLoadCode("VimpContent.ajax_base_url = '" . $this->dic->ctrl()->getLinkTarget($this->parent_gui, '',
-                '', true) . "';");
+        $this->dic->ui()->mainTemplate()->addOnLoadCode("VimpContent.ajax_base_url = '" . $this->dic->ctrl()->getLinkTarget(
+            $this->parent_gui,
+            '',
+            '',
+            true
+        ) . "';");
         $this->dic->ui()->mainTemplate()->addOnLoadCode("VimpContent.template = 'TileSmall';");
         $this->dic->ui()->mainTemplate()->addOnLoadCode('VimpContent.loadTilesInOrder(0);');
 

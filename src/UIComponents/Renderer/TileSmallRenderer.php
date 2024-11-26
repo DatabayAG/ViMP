@@ -19,14 +19,16 @@ class TileSmallRenderer extends TileRenderer
      * @throws ilCtrlException
      * @throws ilTemplateException
      */
-    protected function buildTemplate(MediumMetadataDTO $mediumMetadataDTO) : ilTemplate
+    protected function buildTemplate(MediumMetadataDTO $mediumMetadataDTO): ilTemplate
     {
         $tpl = $this->getContainerTemplate();
         if ($mediumMetadataDTO->isAvailable()) {
             $tpl->setCurrentBlock('play_sync');
             $this->dic->ctrl()->setParameterByClass(xvmpContentGUI::class, 'mid', $mediumMetadataDTO->getMid());
-            $tpl->setVariable('HREF',
-                $this->dic->ctrl()->getLinkTargetByClass(xvmpContentGUI::class, xvmpContentGUI::CMD_PLAY_VIDEO));
+            $tpl->setVariable(
+                'HREF',
+                $this->dic->ctrl()->getLinkTargetByClass(xvmpContentGUI::class, xvmpContentGUI::CMD_PLAY_VIDEO)
+            );
         } else {
             $tpl->setCurrentBlock('not_available');
         }

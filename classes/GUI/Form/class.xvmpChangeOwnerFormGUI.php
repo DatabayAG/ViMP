@@ -9,20 +9,20 @@ declare(strict_types=1);
  * @ilCtrl_isCalledBy xvmpChangeOwnerFormGUI: ilObjViMPGUI
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-class xvmpChangeOwnerFormGUI extends xvmpFormGUI {
-
-	/**
-	 * @var int
+class xvmpChangeOwnerFormGUI extends xvmpFormGUI
+{
+    /**
+     * @var int
      */
-	protected int $mid;
-	/**
-	 * @var mixed
-	 */
-	protected ?ilGlobalTemplateInterface $global_tpl;
-	/**
-	 * @var xvmpOwnVideosGUI
-	 */
-	protected $parent_gui;
+    protected int $mid;
+    /**
+     * @var mixed
+     */
+    protected ?ilGlobalTemplateInterface $global_tpl;
+    /**
+     * @var xvmpOwnVideosGUI
+     */
+    protected $parent_gui;
 
 
     /**
@@ -32,30 +32,32 @@ class xvmpChangeOwnerFormGUI extends xvmpFormGUI {
      * @param $mid
      * @throws ilCtrlException
      */
-	public function __construct($parent_gui, $mid) {
-		global $DIC;
-		$this->global_tpl = $DIC['tpl'];
-		parent::__construct($parent_gui);
-		$this->mid = (int) $mid;
+    public function __construct($parent_gui, $mid)
+    {
+        global $DIC;
+        $this->global_tpl = $DIC['tpl'];
+        parent::__construct($parent_gui);
+        $this->mid = (int) $mid;
 
-		$this->setTitle($this->pl->txt('form_title_change_owner'));
+        $this->setTitle($this->pl->txt('form_title_change_owner'));
 
-		$this->ctrl->setParameterByClass(xvmpOwnVideosGUI::class, 'mid', $this->mid);
-		$this->setFormAction($this->ctrl->getFormAction($this->parent_gui));
-		$this->addCommandButton(xvmpOwnVideosGUI::CMD_CHANGE_OWNER, $this->lng->txt('save'));
-		$this->addCommandButton(xvmpGUI::CMD_STANDARD,$this->lng->txt('cancel'));
-	}
+        $this->ctrl->setParameterByClass(xvmpOwnVideosGUI::class, 'mid', $this->mid);
+        $this->setFormAction($this->ctrl->getFormAction($this->parent_gui));
+        $this->addCommandButton(xvmpOwnVideosGUI::CMD_CHANGE_OWNER, $this->lng->txt('save'));
+        $this->addCommandButton(xvmpGUI::CMD_STANDARD, $this->lng->txt('cancel'));
+    }
 
 
     /**
      *
      * @throws ilCtrlException
      */
-	protected function initForm() {
-		$input = new ilTextInputGUI($this->pl->txt('username'), 'login');
-		$input->setRequired(true);
-		$input->setInfo($this->pl->txt('info_autocomplete'));
+    protected function initForm()
+    {
+        $input = new ilTextInputGUI($this->pl->txt('username'), 'login');
+        $input->setRequired(true);
+        $input->setInfo($this->pl->txt('info_autocomplete'));
         $input->setDataSource($this->dic->ctrl()->getLinkTarget($this, 'addUserAutoComplete', "", true));
-		$this->addItem($input);
-	}
+        $this->addItem($input);
+    }
 }

@@ -11,7 +11,7 @@ declare(strict_types=1);
  */
 class xvmpCron
 {
-    const DEBUG = false;
+    public const DEBUG = false;
     /**
      * @var Ilias
      */
@@ -25,7 +25,7 @@ class xvmpCron
     /**
      *
      */
-    function __construct()
+    public function __construct()
     {
         global $DIC;
         $ilDB = $DIC['ilDB'];
@@ -145,6 +145,6 @@ class xvmpCron
             array(),
             true
         );
-//		xvmpLog::getInstance()->write('Notification sent to user: ' . ilObjUser::_lookupLogin($uploaded_medium->getUserId()) . ' (' . $uploaded_medium->getUserId() . ')');
+        //		xvmpLog::getInstance()->write('Notification sent to user: ' . ilObjUser::_lookupLogin($uploaded_medium->getUserId()) . ' (' . $uploaded_medium->getUserId() . ')');
     }
 }

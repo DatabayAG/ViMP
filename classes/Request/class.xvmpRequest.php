@@ -10,33 +10,33 @@ declare(strict_types=1);
  */
 class xvmpRequest
 {
-    const TYPE_VIDEO = '0';
+    public const TYPE_VIDEO = '0';
 
     // API ENDPOINTS
-    const VERSION = 'version';
-    const GET_USER_ROLES = 'getUserRoles';
-    const GET_CATEGORIES = 'getCategories';
-    const GET_CATEGORY = 'getCategory';
-    const GET_MEDIA = 'getMedia';
-    const GET_MEDIUM = 'getMedium';
-    const EDIT_MEDIUM = 'editMedium';
-    const DELETE_MEDIUM = 'deleteMedium';
-    const UPLOAD_MEDIUM = 'uploadMedium';
-    const LOGIN_USER = 'loginUser';
-    const GET_USERS = 'getUsers';
-    const GET_USER = 'getUser';
-    const REGISTER_USER = 'registerUser';
-    const GET_USER_MEDIA = 'getUserMedia';
-    const EXTENDED_SEARCH = 'extendedSearch';
-    const GET_PICTURE = 'getPicture';
-    const GET_VIDEOSOURCES = '../media/ajax';
-    const GET_CHAPTERS = '../webplayer/getchapters/key/';
-    const GET_MEDIUM_TRANSCODING_PROGRESS = 'getMediumTranscodingProgress';
-    const ADD_SUBTITLE = 'addSubtitle';
-    const REMOVE_SUBTITLES = 'removeSubtitles';
-    const REMOVE_SUBTITLE = 'removeSubtitle';
-    const CONFIG = 'config';
-    const ADD_MEDIUM_COUNT = 'addMediumCount';
+    public const VERSION = 'version';
+    public const GET_USER_ROLES = 'getUserRoles';
+    public const GET_CATEGORIES = 'getCategories';
+    public const GET_CATEGORY = 'getCategory';
+    public const GET_MEDIA = 'getMedia';
+    public const GET_MEDIUM = 'getMedium';
+    public const EDIT_MEDIUM = 'editMedium';
+    public const DELETE_MEDIUM = 'deleteMedium';
+    public const UPLOAD_MEDIUM = 'uploadMedium';
+    public const LOGIN_USER = 'loginUser';
+    public const GET_USERS = 'getUsers';
+    public const GET_USER = 'getUser';
+    public const REGISTER_USER = 'registerUser';
+    public const GET_USER_MEDIA = 'getUserMedia';
+    public const EXTENDED_SEARCH = 'extendedSearch';
+    public const GET_PICTURE = 'getPicture';
+    public const GET_VIDEOSOURCES = '../media/ajax';
+    public const GET_CHAPTERS = '../webplayer/getchapters/key/';
+    public const GET_MEDIUM_TRANSCODING_PROGRESS = 'getMediumTranscodingProgress';
+    public const ADD_SUBTITLE = 'addSubtitle';
+    public const REMOVE_SUBTITLES = 'removeSubtitles';
+    public const REMOVE_SUBTITLE = 'removeSubtitle';
+    public const CONFIG = 'config';
+    public const ADD_MEDIUM_COUNT = 'addMediumCount';
 
     /**
      * @return xvmpCurl
@@ -131,7 +131,7 @@ class xvmpRequest
         $xvmpCurl = new xvmpCurl(self::GET_MEDIUM);
         $params['mediumid'] = $mediumid;
         $params['token'] = xvmp::getToken();
-//		$params['reponsive'] = 'true';
+        //		$params['reponsive'] = 'true';
         foreach ($params as $name => $value) {
             $xvmpCurl->addPostField($name, $value);
         }
@@ -144,7 +144,7 @@ class xvmpRequest
      * @return xvmpCurl
      * @throws xvmpException
      */
-    public static function addMediumCount(int $mediumid) : xvmpCurl
+    public static function addMediumCount(int $mediumid): xvmpCurl
     {
         $xvmpCurl = new xvmpCurl(self::ADD_MEDIUM_COUNT);
         $xvmpCurl->addPostField('mediumid', $mediumid);
@@ -384,8 +384,8 @@ class xvmpRequest
      * @return xvmpCurl
      * @throws xvmpException
      */
-     public static function getChapters($key): xvmpCurl
-     {
+    public static function getChapters($key): xvmpCurl
+    {
         $xvmpCurl = new xvmpCurl(self::GET_CHAPTERS . $key . '?token=' . xvmp::getToken());
         $xvmpCurl->get();
         return $xvmpCurl;
@@ -398,8 +398,8 @@ class xvmpRequest
      * @return xvmpCurl
      * @throws xvmpException
      */
-     public static function get($url): xvmpCurl
-     {
+    public static function get($url): xvmpCurl
+    {
         $xvmpCurl = new xvmpCurl($url);
         $xvmpCurl->get();
         return $xvmpCurl;
@@ -410,7 +410,7 @@ class xvmpRequest
      * @return xvmpCurl
      * @throws xvmpException
      */
-    public static function config(string $name) : xvmpCurl
+    public static function config(string $name): xvmpCurl
     {
         $xvmpCurl = new xvmpCurl(self::CONFIG);
 
@@ -427,7 +427,7 @@ class xvmpRequest
     /**
      * @throws xvmpException
      */
-    public static function addSubtitle(int $mediumid, array $params) : xvmpCurl
+    public static function addSubtitle(int $mediumid, array $params): xvmpCurl
     {
         $xvmpCurl = new xvmpCurl(self::ADD_SUBTITLE);
         $params['token'] = xvmp::getToken();
@@ -444,7 +444,7 @@ class xvmpRequest
     /**
      * @throws xvmpException
      */
-    public static function removeSubtitles(int $mediumid) : xvmpCurl
+    public static function removeSubtitles(int $mediumid): xvmpCurl
     {
         $xvmpCurl = new xvmpCurl(self::REMOVE_SUBTITLES);
         $xvmpCurl->addPostField('token', xvmp::getToken());
@@ -458,7 +458,7 @@ class xvmpRequest
     /**
      * @throws xvmpException
      */
-    public static function removeSubtitle(int $mediumid, string $lang_code, string $lang_file) : xvmpCurl
+    public static function removeSubtitle(int $mediumid, string $lang_code, string $lang_file): xvmpCurl
     {
         $xvmpCurl = new xvmpCurl(self::REMOVE_SUBTITLE);
         $params['token'] = xvmp::getToken();
@@ -480,7 +480,7 @@ class xvmpRequest
      * @return float
      * @throws xvmpException
      */
-    public static function getTranscodingProgress(int $mid, int $decimals = 0) : float
+    public static function getTranscodingProgress(int $mid, int $decimals = 0): float
     {
         $xvmpCurl = new xvmpCurl(self::GET_MEDIUM_TRANSCODING_PROGRESS . '?token=' . xvmp::getToken());
         $xvmpCurl->addPostField('mediumid', $mid);

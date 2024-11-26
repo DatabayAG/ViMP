@@ -20,8 +20,8 @@ use srag\Plugins\ViMP\Content\MediumMetadataParser;
  */
 class PlayerModalRenderer
 {
-    const TEMPLATE_PATH = __DIR__ . '/../../../templates/default/tpl.player_modal.html';
-    const TEMPLATE_PATH_UNAVAILABLE = __DIR__ . '/../../../templates/default/tpl.video_not_available.html';
+    public const TEMPLATE_PATH = __DIR__ . '/../../../templates/default/tpl.player_modal.html';
+    public const TEMPLATE_PATH_UNAVAILABLE = __DIR__ . '/../../../templates/default/tpl.video_not_available.html';
     /**
      * @var ilViMPPlugin
      */
@@ -52,7 +52,7 @@ class PlayerModalRenderer
      * @throws ilTemplateException
      * @throws xvmpException|Throwable
      */
-    public function render(PlayerContainerDTO $playerContainerDTO, bool $async, bool $show_unavailable = false) : string
+    public function render(PlayerContainerDTO $playerContainerDTO, bool $async, bool $show_unavailable = false): string
     {
         $tpl = new ilTemplate(self::TEMPLATE_PATH, true, true);
         $is_available = $playerContainerDTO->getMediumMetadata()->isAvailable() | $show_unavailable;
@@ -68,7 +68,8 @@ class PlayerModalRenderer
                 $this->metadata_parser->parseAvailability(
                     $playerContainerDTO->getMediumMetadata()->getAvailabilityStart(),
                     $playerContainerDTO->getMediumMetadata()->getAvailabilityEnd(),
-                    true));
+                    true
+                ));
             $tpl->parseCurrentBlock();
         }
 
@@ -118,7 +119,7 @@ class PlayerModalRenderer
     /**
      * @throws ilTemplateException
      */
-    private function renderUnavailablePlayer(PlayerContainerDTO $playerContainerDTO) : string
+    private function renderUnavailablePlayer(PlayerContainerDTO $playerContainerDTO): string
     {
         $tpl = new ilTemplate(self::TEMPLATE_PATH_UNAVAILABLE, true, true);
         $tpl->setVariable('THUMBNAIL', $playerContainerDTO->getMediumMetadata()->getThumbnailUrl());
@@ -130,7 +131,7 @@ class PlayerModalRenderer
      * @param bool $async
      * @return string
      */
-    protected function renderComponents($component, bool $async) : string
+    protected function renderComponents($component, bool $async): string
     {
         return $async ? $this->dic->ui()->renderer()->renderAsync($component)
             : $this->dic->ui()->renderer()->render($component);

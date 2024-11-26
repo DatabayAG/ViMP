@@ -9,56 +9,58 @@ declare(strict_types=1);
  *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-class xvmpUploadVideoFormGUI extends xvmpVideoFormGUI {
+class xvmpUploadVideoFormGUI extends xvmpVideoFormGUI
+{
+    public const F_ADD_AUTOMATICALLY = 'add_automatically';
+    public const F_NOTIFICATION = 'notification';
 
-	const F_ADD_AUTOMATICALLY = 'add_automatically';
-	const F_NOTIFICATION = 'notification';
-
-	/**
-	 * @var ilLanguage
-	 */
-	protected ilLanguage $lng;
-	/**
-	 * @var ilViMPPlugin
-	 */
-	protected ilViMPPlugin $pl;
-	/**
-	 * @var xvmpOwnVideosGUI
-	 */
-	protected $parent_gui;
-	/**
-	 * @var ?ilObjUser
-	 */
-	protected ?ilObjUser $user;
+    /**
+     * @var ilLanguage
+     */
+    protected ilLanguage $lng;
+    /**
+     * @var ilViMPPlugin
+     */
+    protected ilViMPPlugin $pl;
+    /**
+     * @var xvmpOwnVideosGUI
+     */
+    protected $parent_gui;
+    /**
+     * @var ?ilObjUser
+     */
+    protected ?ilObjUser $user;
 
 
-	/**
-	 * xvmpUploadVideoFormGUI constructor.
-	 *
-	 * @param $parent_gui
-	 */
-	public function __construct($parent_gui) {
-		global $DIC;
-		$ilUser = $DIC['ilUser'];
-		$this->user = $ilUser;
+    /**
+     * xvmpUploadVideoFormGUI constructor.
+     *
+     * @param $parent_gui
+     */
+    public function __construct($parent_gui)
+    {
+        global $DIC;
+        $ilUser = $DIC['ilUser'];
+        $this->user = $ilUser;
 
-		$this->setId('xoct_event');
+        $this->setId('xoct_event');
 
-		parent::__construct($parent_gui);
+        parent::__construct($parent_gui);
 
-		$this->setTitle($this->pl->txt('upload_video'));
-		$this->setTarget('_top');
-	}
+        $this->setTitle($this->pl->txt('upload_video'));
+        $this->setTarget('_top');
+    }
 
 
     /**
      *
      * @throws ilCtrlException
      */
-	protected function initForm() {
-		$this->setFormAction($this->ctrl->getFormAction($this->parent_gui));
+    protected function initForm()
+    {
+        $this->setFormAction($this->ctrl->getFormAction($this->parent_gui));
 
-		$this->addHiddenIdInput();
+        $this->addHiddenIdInput();
 
         $this->addTitleInput();
         $this->addDescriptionInput();
@@ -91,7 +93,7 @@ class xvmpUploadVideoFormGUI extends xvmpVideoFormGUI {
         $input = new ilCheckboxInputGUI($this->pl->txt(self::F_ADD_AUTOMATICALLY), self::F_ADD_AUTOMATICALLY);
         $input->setInfo($this->pl->txt(self::F_ADD_AUTOMATICALLY . '_info'));
         $this->addItem($input);
-	}
+    }
 
 
     protected function addCustomInputs()
@@ -110,7 +112,7 @@ class xvmpUploadVideoFormGUI extends xvmpVideoFormGUI {
             } else {
                 $input = new ilTextInputGUI($title, $field[xvmpConf::F_FORM_FIELD_ID]);
             }
-            $input->setRequired((bool)($field[xvmpConf::F_FORM_FIELD_REQUIRED] ?? false));
+            $input->setRequired((bool) ($field[xvmpConf::F_FORM_FIELD_REQUIRED] ?? false));
             if (isset($field[xvmpConf::F_FORM_FIELD_FILL_USER_DATA])) {
                 $input->setValue($this->user->getFirstname() . ' ' . $this->user->getLastname());
             }
@@ -118,7 +120,7 @@ class xvmpUploadVideoFormGUI extends xvmpVideoFormGUI {
         }
     }
 
-    public function saveForm() : bool
+    public function saveForm(): bool
     {
         if (parent::saveForm()) {
             // the object has to be loaded again, since the response from "upload" has another format for the categories
@@ -128,10 +130,10 @@ class xvmpUploadVideoFormGUI extends xvmpVideoFormGUI {
             return true;
         }
 
-		return false;
-	}
+        return false;
+    }
 
-    protected function storeVideo() : int
+    protected function storeVideo(): int
     {
         $this->data = xvmpMedium::upload(
             $this->data,
@@ -146,8 +148,10 @@ class xvmpUploadVideoFormGUI extends xvmpVideoFormGUI {
     {
         parent::fillVideoByPost();
         if (!xvmp::isAllowedToSetPublic()) {
-            if (in_array(xvmpConf::getConfig(xvmpConf::F_DEFAULT_PUBLICATION),
-                array_values(xvmpMedium::$published_id_mapping))) {
+            if (in_array(
+                xvmpConf::getConfig(xvmpConf::F_DEFAULT_PUBLICATION),
+                array_values(xvmpMedium::$published_id_mapping)
+            )) {
                 $this->data[xvmpMedium::PUBLISHED_HIDDEN] = xvmpConf::getConfig(xvmpConf::F_DEFAULT_PUBLICATION);
             } else {
                 $this->data[xvmpMedium::PUBLISHED_HIDDEN] = xvmpMedium::$published_id_mapping[xvmpMedium::PUBLISHED_HIDDEN];
@@ -159,8 +163,10 @@ class xvmpUploadVideoFormGUI extends xvmpVideoFormGUI {
     public function fillForm()
     {
         $array = array();
-        if (in_array(xvmpConf::getConfig(xvmpConf::F_DEFAULT_PUBLICATION),
-            array_values(xvmpMedium::$published_id_mapping))) {
+        if (in_array(
+            xvmpConf::getConfig(xvmpConf::F_DEFAULT_PUBLICATION),
+            array_values(xvmpMedium::$published_id_mapping)
+        )) {
             $array[xvmpMedium::F_PUBLISHED] = array_keys(xvmpMedium::$published_id_mapping)[xvmpConf::getConfig(xvmpConf::F_DEFAULT_PUBLICATION)];
         }
 
@@ -175,7 +181,8 @@ class xvmpUploadVideoFormGUI extends xvmpVideoFormGUI {
     /**
      *
      */
-    protected function addCommandButtons() {
+    protected function addCommandButtons()
+    {
         $this->addCommandButton(xvmpOwnVideosGUI::CMD_CREATE, $this->lng->txt('save'));
         $this->addCommandButton(xvmpGUI::CMD_CANCEL, $this->lng->txt(xvmpGUI::CMD_CANCEL));
     }

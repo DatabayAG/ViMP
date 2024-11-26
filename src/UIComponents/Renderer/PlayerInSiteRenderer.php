@@ -19,9 +19,9 @@ use srag\Plugins\ViMP\Content\MediumMetadataParser;
  */
 class PlayerInSiteRenderer
 {
-    const TEMPLATE_PATH = __DIR__ . '/../../../templates/default/tpl.player_in_site.html';
-    const TEMPLATE_PATH_UNAVAILABLE = __DIR__ . '/../../../templates/default/tpl.video_not_available.html';
-    const DATE_FORMAT = 'd.m.Y';
+    public const TEMPLATE_PATH = __DIR__ . '/../../../templates/default/tpl.player_in_site.html';
+    public const TEMPLATE_PATH_UNAVAILABLE = __DIR__ . '/../../../templates/default/tpl.video_not_available.html';
+    public const DATE_FORMAT = 'd.m.Y';
 
     /**
      * @var ilViMPPlugin
@@ -53,7 +53,7 @@ class PlayerInSiteRenderer
      * @throws ilTemplateException
      * @throws xvmpException|Throwable
      */
-    public function render(PlayerContainerDTO $playerContainerDTO, bool $deleted) : string
+    public function render(PlayerContainerDTO $playerContainerDTO, bool $deleted): string
     {
         $tpl = new ilTemplate(self::TEMPLATE_PATH, true, true);
         $tpl->setVariable('VIDEO_PLAYER', $playerContainerDTO->getMediumMetadata()->isAvailable() && !$deleted && !$playerContainerDTO->getMediumMetadata()->isTranscoding() ?
@@ -76,7 +76,8 @@ class PlayerInSiteRenderer
                 $this->metadata_parser->parseAvailability(
                     $playerContainerDTO->getMediumMetadata()->getAvailabilityStart(),
                     $playerContainerDTO->getMediumMetadata()->getAvailabilityEnd(),
-                    true));
+                    true
+                ));
             $tpl->parseCurrentBlock();
         }
 
@@ -106,7 +107,7 @@ class PlayerInSiteRenderer
      * @param bool $async
      * @return string
      */
-    protected function renderComponent($component, bool $async) : string
+    protected function renderComponent($component, bool $async): string
     {
         return $async ? $this->dic->ui()->renderer()->renderAsync($component)
             : $this->dic->ui()->renderer()->render($component);
@@ -115,7 +116,7 @@ class PlayerInSiteRenderer
     /**
      * @throws ilTemplateException
      */
-    private function renderUnavailablePlayer(PlayerContainerDTO $playerContainerDTO) : string
+    private function renderUnavailablePlayer(PlayerContainerDTO $playerContainerDTO): string
     {
         $tpl = new ilTemplate(self::TEMPLATE_PATH_UNAVAILABLE, true, true);
         $tpl->setVariable('THUMBNAIL', $playerContainerDTO->getMediumMetadata()->getThumbnailUrl());

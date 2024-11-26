@@ -13,11 +13,11 @@ use ilTemplateException;
  */
 class ListElementRenderer extends ContentElementRenderer
 {
-    const TEMPLATE_PATH = __DIR__ . '/../../../templates/default/tpl.content_list.html';
-    const DESCRIPTION_LENGTH = 0;
+    public const TEMPLATE_PATH = __DIR__ . '/../../../templates/default/tpl.content_list.html';
+    public const DESCRIPTION_LENGTH = 0;
 
 
-    protected function getInnerTemplate() : ilTemplate
+    protected function getInnerTemplate(): ilTemplate
     {
         return new ilTemplate(self::TEMPLATE_PATH, true, true);
     }
@@ -25,7 +25,7 @@ class ListElementRenderer extends ContentElementRenderer
     /**
      * @throws ilTemplateException
      */
-    protected function buildTemplate(MediumMetadataDTO $mediumMetadataDTO) : ilTemplate
+    protected function buildTemplate(MediumMetadataDTO $mediumMetadataDTO): ilTemplate
     {
         $tpl = $this->getContainerTemplate();
         if ($mediumMetadataDTO->isAvailable() && !$mediumMetadataDTO->isTranscoding()) {

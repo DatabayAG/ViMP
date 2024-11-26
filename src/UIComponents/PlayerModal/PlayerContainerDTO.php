@@ -13,7 +13,6 @@ use srag\Plugins\ViMP\Content\MediumMetadataDTO;
  */
 class PlayerContainerDTO
 {
-
     /**
      * @var VideoPlayer
      */
@@ -38,7 +37,7 @@ class PlayerContainerDTO
         $this->medium_metadata = $medium_metadata;
     }
 
-    public function withButtons(array $buttons) : self
+    public function withButtons(array $buttons): self
     {
         $new = clone $this;
         $new->buttons = $buttons;
@@ -48,7 +47,7 @@ class PlayerContainerDTO
     /**
      * @return VideoPlayer
      */
-    public function getVideoPlayer() : VideoPlayer
+    public function getVideoPlayer(): VideoPlayer
     {
         return $this->video_player;
     }
@@ -56,7 +55,7 @@ class PlayerContainerDTO
     /**
      * @return MediumMetadataDTO
      */
-    public function getMediumMetadata() : MediumMetadataDTO
+    public function getMediumMetadata(): MediumMetadataDTO
     {
         return $this->medium_metadata;
     }
@@ -64,7 +63,7 @@ class PlayerContainerDTO
     /**
      * @return Button[]
      */
-    public function getButtons() : array
+    public function getButtons(): array
     {
         return $this->buttons;
     }

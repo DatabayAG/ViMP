@@ -9,36 +9,36 @@ declare(strict_types=1);
  *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-class xvmpUserRoles extends xvmpObject {
-
-    const ROLE_ANONYMOUS = 0;
-    const ROLE_ADMINISTRATOR = 1;
-
-    /**
-     * @inheritdoc
-     * @throws xvmpException
-     */
-	public static function find($id): xvmpObject
-    {
-		return self::getAllAsArray()[$id];
-	}
+class xvmpUserRoles extends xvmpObject
+{
+    public const ROLE_ANONYMOUS = 0;
+    public const ROLE_ADMINISTRATOR = 1;
 
     /**
      * @inheritdoc
      * @throws xvmpException
      */
-	public static function getAllAsArray(): array
+    public static function find($id): xvmpObject
     {
-		$existing = xvmpCacheFactory::getInstance()->get(self::class);
-		if ($existing) {
-			xvmpCurlLog::getInstance()->write('CACHE: used cached: ' . self::class, xvmpCurlLog::DEBUG_LEVEL_2);
-			return $existing;
-		}
+        return self::getAllAsArray()[$id];
+    }
 
-		xvmpCurlLog::getInstance()->write('CACHE: cache not used: ' . self::class, xvmpCurlLog::DEBUG_LEVEL_2);
+    /**
+     * @inheritdoc
+     * @throws xvmpException
+     */
+    public static function getAllAsArray(): array
+    {
+        $existing = xvmpCacheFactory::getInstance()->get(self::class);
+        if ($existing) {
+            xvmpCurlLog::getInstance()->write('CACHE: used cached: ' . self::class, xvmpCurlLog::DEBUG_LEVEL_2);
+            return $existing;
+        }
 
-		$response = xvmpRequest::getUserRoles()->getResponseArray();
-		$user_roles = $response['roles']['role'];
+        xvmpCurlLog::getInstance()->write('CACHE: cache not used: ' . self::class, xvmpCurlLog::DEBUG_LEVEL_2);
+
+        $response = xvmpRequest::getUserRoles()->getResponseArray();
+        $user_roles = $response['roles']['role'];
 
         // response has the wrong keys -> format array
         $cache_array = [];
@@ -46,168 +46,175 @@ class xvmpUserRoles extends xvmpObject {
             $cache_array[$item['id']] = $item;
         }
 
-		self::cache(self::class, $cache_array);
-		return $cache_array;
-	}
+        self::cache(self::class, $cache_array);
+        return $cache_array;
+    }
 
     /**
      * @return bool
      */
-    public function isInvisibleDefault() : bool
+    public function isInvisibleDefault(): bool
     {
         return $this->getField('default') && !$this->getField('visible');
-	}
+    }
 
-	/**
-	 * @var int
-	 */
-	protected $id;
-	/**
-	 * @var String
-	 */
-	protected string $status;
-	/**
-	 * @var String
-	 */
-	protected string $name;
-	/**
-	 * @var ?String
-	 */
-	protected ?string $description;
-	/**
-	 * @var bool
-	 */
-	protected bool $visible;
-	/**
-	 * @var bool
-	 */
-	protected bool $default;
-	/**
-	 * @var String
-	 */
-	protected string $created_at;
-	/**
-	 * @var String
-	 */
-	protected string $updated_at;
+    /**
+     * @var int
+     */
+    protected $id;
+    /**
+     * @var String
+     */
+    protected string $status;
+    /**
+     * @var String
+     */
+    protected string $name;
+    /**
+     * @var ?String
+     */
+    protected ?string $description;
+    /**
+     * @var bool
+     */
+    protected bool $visible;
+    /**
+     * @var bool
+     */
+    protected bool $default;
+    /**
+     * @var String
+     */
+    protected string $created_at;
+    /**
+     * @var String
+     */
+    protected string $updated_at;
 
 
-	/**
-	 * @return String
-	 */
-	public function getStatus(): string
+    /**
+     * @return String
+     */
+    public function getStatus(): string
     {
-		return $this->status;
-	}
+        return $this->status;
+    }
 
 
-	/**
-	 * @param String $status
-	 */
-	public function setStatus(string $status) {
-		$this->status = $status;
-	}
-
-
-	/**
-	 * @return String
-	 */
-	public function getName(): string
+    /**
+     * @param String $status
+     */
+    public function setStatus(string $status)
     {
-		return $this->name;
-	}
+        $this->status = $status;
+    }
 
 
-	/**
-	 * @param String $name
-	 */
-	public function setName(string $name) {
-		$this->name = $name;
-	}
-
-
-	/**
-	 * @return String
-	 */
-	public function getDescription(): string
+    /**
+     * @return String
+     */
+    public function getName(): string
     {
-		return $this->description;
-	}
+        return $this->name;
+    }
 
 
-	/**
-	 * @param String $description
-	 */
-	public function setDescription(string $description) {
-		$this->description = $description;
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isVisible(): bool
+    /**
+     * @param String $name
+     */
+    public function setName(string $name)
     {
-		return $this->visible;
-	}
+        $this->name = $name;
+    }
 
 
-	/**
-	 * @param bool $visible
-	 */
-	public function setVisible(bool $visible) {
-		$this->visible = $visible;
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isDefault(): bool
+    /**
+     * @return String
+     */
+    public function getDescription(): string
     {
-		return $this->default;
-	}
+        return $this->description;
+    }
 
 
-	/**
-	 * @param bool $default
-	 */
-	public function setDefault(bool $default) {
-		$this->default = $default;
-	}
-
-
-	/**
-	 * @return String
-	 */
-	public function getCreatedAt(): string
+    /**
+     * @param String $description
+     */
+    public function setDescription(string $description)
     {
-		return $this->created_at;
-	}
+        $this->description = $description;
+    }
 
 
-	/**
-	 * @param String $created_at
-	 */
-	public function setCreatedAt(string $created_at) {
-		$this->created_at = $created_at;
-	}
-
-
-	/**
-	 * @return String
-	 */
-	public function getUpdatedAt(): string
+    /**
+     * @return bool
+     */
+    public function isVisible(): bool
     {
-		return $this->updated_at;
-	}
+        return $this->visible;
+    }
 
 
-	/**
-	 * @param String $updated_at
-	 */
-	public function setUpdatedAt(string $updated_at) {
-		$this->updated_at = $updated_at;
-	}
+    /**
+     * @param bool $visible
+     */
+    public function setVisible(bool $visible)
+    {
+        $this->visible = $visible;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isDefault(): bool
+    {
+        return $this->default;
+    }
+
+
+    /**
+     * @param bool $default
+     */
+    public function setDefault(bool $default)
+    {
+        $this->default = $default;
+    }
+
+
+    /**
+     * @return String
+     */
+    public function getCreatedAt(): string
+    {
+        return $this->created_at;
+    }
+
+
+    /**
+     * @param String $created_at
+     */
+    public function setCreatedAt(string $created_at)
+    {
+        $this->created_at = $created_at;
+    }
+
+
+    /**
+     * @return String
+     */
+    public function getUpdatedAt(): string
+    {
+        return $this->updated_at;
+    }
+
+
+    /**
+     * @param String $updated_at
+     */
+    public function setUpdatedAt(string $updated_at)
+    {
+        $this->updated_at = $updated_at;
+    }
 
 }

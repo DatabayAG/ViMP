@@ -11,47 +11,50 @@ declare(strict_types=1);
  *
  * @ilCtrl_isCalledBy xvmpSettingsGUI: ilObjViMPGUI
  */
-class xvmpSettingsGUI extends xvmpGUI {
+class xvmpSettingsGUI extends xvmpGUI
+{
+    public const TAB_ACTIVE = ilObjViMPGUI::TAB_SETTINGS;
 
-	const TAB_ACTIVE = ilObjViMPGUI::TAB_SETTINGS;
-
-	const CMD_UPDATE = 'update';
-
-
-	/**
-	 *
-	 */
-	public function executeCommand() {
-		if (!ilObjViMPAccess::hasWriteAccess()) {
-			$this->accessDenied();
-		}
-		parent::executeCommand();
-	}
+    public const CMD_UPDATE = 'update';
 
 
-	/**
-	 *
-	 */
-	protected function index() {
-		$this->dic->ui()->mainTemplate()->addCss($this->pl->getAssetURL('default/xvmp_settings.css'));
-		$xvmpSettingsFormGUI = new xvmpSettingsFormGUI($this);
-		$this->dic->ui()->mainTemplate()->setContent($xvmpSettingsFormGUI->getHTML());
-	}
+    /**
+     *
+     */
+    public function executeCommand()
+    {
+        if (!ilObjViMPAccess::hasWriteAccess()) {
+            $this->accessDenied();
+        }
+        parent::executeCommand();
+    }
 
 
-	/**
-	 *
-	 */
-	public function update() {
-		$xvmpSettingsFormGUI = new xvmpSettingsFormGUI($this);
-		$xvmpSettingsFormGUI->setValuesByPost();
-		if (!$xvmpSettingsFormGUI->saveForm()) {
+    /**
+     *
+     */
+    protected function index()
+    {
+        $this->dic->ui()->mainTemplate()->addCss($this->pl->getAssetURL('default/xvmp_settings.css'));
+        $xvmpSettingsFormGUI = new xvmpSettingsFormGUI($this);
+        $this->dic->ui()->mainTemplate()->setContent($xvmpSettingsFormGUI->getHTML());
+    }
+
+
+    /**
+     *
+     */
+    public function update()
+    {
+        $xvmpSettingsFormGUI = new xvmpSettingsFormGUI($this);
+        $xvmpSettingsFormGUI->setValuesByPost();
+        if (!$xvmpSettingsFormGUI->saveForm()) {
             $this->dic->ui()->mainTemplate()->setOnScreenMessage('failure', $this->pl->txt('msg_incomplete'), true);
-			$this->dic->ui()->mainTemplate()->setContent($xvmpSettingsFormGUI->getHTML());
-		}
+            $this->dic->ui()->mainTemplate()->setContent($xvmpSettingsFormGUI->getHTML());
+        }
 
         $this->dic->ui()->mainTemplate()->setOnScreenMessage('success', $this->pl->txt('form_saved'), true);
-		$this->dic->ctrl()->redirect($this, self::CMD_STANDARD);
-	}
+        $this->dic->ctrl()->redirect($this, self::CMD_STANDARD);
+    }
 
 }

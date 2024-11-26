@@ -9,140 +9,147 @@ declare(strict_types=1);
  *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-class xvmpUploadFile {
-	/**
-	 * @param $name
-	 *
-	 * @return xvmpUploadFile
-	 */
-	public static function getInstanceFromFileArray($name): xvmpUploadFile
+class xvmpUploadFile
+{
+    /**
+     * @param $name
+     *
+     * @return xvmpUploadFile
+     */
+    public static function getInstanceFromFileArray($name): xvmpUploadFile
     {
-		$file = $_POST[$name];
+        $file = $_POST[$name];
 
-		$inst = new self();
-		$inst->setTitle($file['name']);
-		$inst->setFilePath($file['tmp_name']);
-		$inst->setFileSize($file['size']);
-		$inst->setPostVar($name);
+        $inst = new self();
+        $inst->setTitle($file['name']);
+        $inst->setFilePath($file['tmp_name']);
+        $inst->setFileSize($file['size']);
+        $inst->setPostVar($name);
 
-		return $inst;
-	}
-
-
-	/**
-	 * @return CURLFile
-	 */
-	public function getCURLFile() {
-		$xvmpPlupload = new xvmpPlupload();
-		$CURLFile = new CURLFile($xvmpPlupload->getTargetDir() . '/' . $this->getTitle());
-
-		return $CURLFile;
-	}
+        return $inst;
+    }
 
 
-	/**
-	 * @var string
-	 */
-	protected string $file_path = '';
-	/**
-	 * @var string
-	 */
-	protected string $title = '';
-	/**
-	 * @var int
-	 */
-	protected int $file_size = 0;
-	/**
-	 * @var string
-	 */
-	protected string $post_var = '';
-	/**
-	 * @var string
-	 */
-	protected string $mime_type = '';
-
-
-	/**
-	 * @return string
-	 */
-	public function getFilePath(): string
+    /**
+     * @return CURLFile
+     */
+    public function getCURLFile()
     {
-		return $this->file_path;
-	}
+        $xvmpPlupload = new xvmpPlupload();
+        $CURLFile = new CURLFile($xvmpPlupload->getTargetDir() . '/' . $this->getTitle());
+
+        return $CURLFile;
+    }
 
 
-	/**
-	 * @param string $file_path
-	 */
-	public function setFilePath(string $file_path) {
-		$this->file_path = $file_path;
-	}
+    /**
+     * @var string
+     */
+    protected string $file_path = '';
+    /**
+     * @var string
+     */
+    protected string $title = '';
+    /**
+     * @var int
+     */
+    protected int $file_size = 0;
+    /**
+     * @var string
+     */
+    protected string $post_var = '';
+    /**
+     * @var string
+     */
+    protected string $mime_type = '';
 
 
-	/**
-	 * @return string
-	 */
-	public function getTitle(): string
+    /**
+     * @return string
+     */
+    public function getFilePath(): string
     {
-		return $this->title;
-	}
+        return $this->file_path;
+    }
 
 
-	/**
-	 * @param string $title
-	 */
-	public function setTitle(string $title) {
-		$this->title = $title;
-	}
-
-
-	/**
-	 * @return int
-	 */
-	public function getFileSize(): int
+    /**
+     * @param string $file_path
+     */
+    public function setFilePath(string $file_path)
     {
-		return $this->file_size;
-	}
+        $this->file_path = $file_path;
+    }
 
 
-	/**
-	 * @param int $file_size
-	 */
-	public function setFileSize(int $file_size) {
-		$this->file_size = $file_size;
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function getPostVar(): string
+    /**
+     * @return string
+     */
+    public function getTitle(): string
     {
-		return $this->post_var;
-	}
+        return $this->title;
+    }
 
 
-	/**
-	 * @param string $post_var
-	 */
-	public function setPostVar(string $post_var) {
-		$this->post_var = $post_var;
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function getMimeType(): string
+    /**
+     * @param string $title
+     */
+    public function setTitle(string $title)
     {
-		return $this->mime_type;
-	}
+        $this->title = $title;
+    }
 
 
-	/**
-	 * @param string $mime_type
-	 */
-	public function setMimeType(string $mime_type) {
-		$this->mime_type = $mime_type;
-	}
+    /**
+     * @return int
+     */
+    public function getFileSize(): int
+    {
+        return $this->file_size;
+    }
+
+
+    /**
+     * @param int $file_size
+     */
+    public function setFileSize(int $file_size)
+    {
+        $this->file_size = $file_size;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getPostVar(): string
+    {
+        return $this->post_var;
+    }
+
+
+    /**
+     * @param string $post_var
+     */
+    public function setPostVar(string $post_var)
+    {
+        $this->post_var = $post_var;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getMimeType(): string
+    {
+        return $this->mime_type;
+    }
+
+
+    /**
+     * @param string $mime_type
+     */
+    public function setMimeType(string $mime_type)
+    {
+        $this->mime_type = $mime_type;
+    }
 }

@@ -16,8 +16,8 @@ use xvmpCron;
  */
 class ViMPJob extends ilCronJob
 {
-    const CRON_JOB_ID = ilViMPPlugin::XVMP;
-    const PLUGIN_CLASS_NAME = ilViMPPlugin::class;
+    public const CRON_JOB_ID = ilViMPPlugin::XVMP;
+    public const PLUGIN_CLASS_NAME = ilViMPPlugin::class;
     private ilViMPPlugin $pl;
 
     /**
@@ -29,7 +29,7 @@ class ViMPJob extends ilCronJob
     }
 
 
-    public function getId() : string
+    public function getId(): string
     {
         return self::CRON_JOB_ID;
     }
@@ -38,19 +38,19 @@ class ViMPJob extends ilCronJob
     /**
      * @inheritDoc
      */
-    public function hasAutoActivation() : bool
+    public function hasAutoActivation(): bool
     {
         return true;
     }
 
 
-    public function hasFlexibleSchedule() : bool
+    public function hasFlexibleSchedule(): bool
     {
         return true;
     }
 
 
-    public function getDefaultScheduleType() : int
+    public function getDefaultScheduleType(): int
     {
         return self::SCHEDULE_TYPE_IN_MINUTES;
     }
@@ -62,19 +62,19 @@ class ViMPJob extends ilCronJob
     }
 
 
-    public function getTitle() : string
+    public function getTitle(): string
     {
         return ilViMPPlugin::PLUGIN_NAME . ": " . $this->pl->txt("cron_title");
     }
 
 
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return $this->pl->txt("cron_description");
     }
 
 
-    public function run() : ilCronJobResult
+    public function run(): ilCronJobResult
     {
         $result = new ilCronJobResult();
 

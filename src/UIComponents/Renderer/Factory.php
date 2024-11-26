@@ -33,7 +33,7 @@ class Factory
         $this->plugin = $plugin;
     }
 
-    public function listElement() : ListElementRenderer
+    public function listElement(): ListElementRenderer
     {
         static $renderer;
         if (is_null($renderer)) {
@@ -42,7 +42,7 @@ class Factory
         return $renderer;
     }
 
-    public function playerInSite() : PlayerInSiteRenderer
+    public function playerInSite(): PlayerInSiteRenderer
     {
         static $renderer;
         if (is_null($renderer)) {
@@ -51,7 +51,7 @@ class Factory
         return $renderer;
     }
 
-    public function playerModal() : PlayerModalRenderer
+    public function playerModal(): PlayerModalRenderer
     {
         static $renderer;
         if (is_null($renderer)) {
@@ -60,7 +60,7 @@ class Factory
         return $renderer;
     }
 
-    public function tile() : TileRenderer
+    public function tile(): TileRenderer
     {
         static $renderer;
         if (is_null($renderer)) {
@@ -69,7 +69,7 @@ class Factory
         return $renderer;
     }
 
-    public function tileSmall() : TileSmallRenderer
+    public function tileSmall(): TileSmallRenderer
     {
         static $renderer;
         if (is_null($renderer)) {
@@ -78,7 +78,7 @@ class Factory
         return $renderer;
     }
 
-    public function metadataParser() : MediumMetadataParser
+    public function metadataParser(): MediumMetadataParser
     {
         static $parser;
         if (is_null($parser)) {

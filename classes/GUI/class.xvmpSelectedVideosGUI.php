@@ -13,14 +13,13 @@ declare(strict_types=1);
  */
 class xvmpSelectedVideosGUI extends xvmpVideosGUI
 {
+    public const SUBTAB_ACTIVE = xvmpVideosGUI::SUBTAB_SELECTED;
 
-    const SUBTAB_ACTIVE = xvmpVideosGUI::SUBTAB_SELECTED;
+    public const TABLE_CLASS = 'xvmpSelectedVideosTableGUI';
 
-    const TABLE_CLASS = 'xvmpSelectedVideosTableGUI';
-
-    const CMD_MOVE_UP = 'moveUp';
-    const CMD_MOVE_DOWN = 'moveDown';
-    const CMD_SET_VISIBILITY = 'setVisibility';
+    public const CMD_MOVE_UP = 'moveUp';
+    public const CMD_MOVE_DOWN = 'moveDown';
+    public const CMD_SET_VISIBILITY = 'setVisibility';
 
     public function executeCommand()
     {

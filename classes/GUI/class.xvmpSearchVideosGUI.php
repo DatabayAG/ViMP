@@ -11,19 +11,20 @@ declare(strict_types=1);
  *
  * @ilCtrl_isCalledBy xvmpSearchVideosGUI: ilObjViMPGUI
  */
-class xvmpSearchVideosGUI extends xvmpVideosGUI {
+class xvmpSearchVideosGUI extends xvmpVideosGUI
+{
+    public const SUBTAB_ACTIVE = xvmpVideosGUI::SUBTAB_SEARCH;
 
-	const SUBTAB_ACTIVE = xvmpVideosGUI::SUBTAB_SEARCH;
-
-	const TABLE_CLASS = 'xvmpSearchVideosTableGUI';
+    public const TABLE_CLASS = 'xvmpSearchVideosTableGUI';
 
 
-	public function executeCommand() {
-		if (!ilObjViMPAccess::hasWriteAccess()) {
-			$this->accessDenied();
-		}
+    public function executeCommand()
+    {
+        if (!ilObjViMPAccess::hasWriteAccess()) {
+            $this->accessDenied();
+        }
 
-		parent::executeCommand();
-	}
+        parent::executeCommand();
+    }
 
 }

@@ -79,7 +79,7 @@ class MediumMetadataDTO
     /**
      * @return int
      */
-    public function getMid() : int
+    public function getMid(): int
     {
         return $this->mid;
     }
@@ -87,7 +87,7 @@ class MediumMetadataDTO
     /**
      * @return string
      */
-    public function getThumbnailUrl() : string
+    public function getThumbnailUrl(): string
     {
         return $this->thumbnail_url;
     }
@@ -111,7 +111,7 @@ class MediumMetadataDTO
     /**
      * @return string
      */
-    public function getTitle() : string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -120,17 +120,18 @@ class MediumMetadataDTO
      * @param int $max_length
      * @return string
      */
-    public function getDescription(int $max_length = 0) : string
+    public function getDescription(int $max_length = 0): string
     {
         if ($max_length && mb_strlen($this->description) > $max_length) {
             return mb_substr($this->description, 0, $max_length) . '...';
         }
-        return $this->description;    }
+        return $this->description;
+    }
 
     /**
      * @return MediumAttribute[]
      */
-    public function getMediumAttributes() : array
+    public function getMediumAttributes(): array
     {
         return $this->medium_attributes;
     }
@@ -138,18 +139,18 @@ class MediumMetadataDTO
     /**
      * @return bool
      */
-    public function isTranscoding() : bool
+    public function isTranscoding(): bool
     {
         return $this->transcoding;
     }
 
-    public function isAvailable() : bool
+    public function isAvailable(): bool
     {
         return (is_null($this->availability_start) || time() > $this->availability_start->getTimestamp())
             && (is_null($this->availability_end) || time() < $this->availability_end->getTimestamp());
     }
 
-    public function hasAvailability() : bool
+    public function hasAvailability(): bool
     {
         return !is_null($this->getAvailabilityStart())
             || !is_null($this->getAvailabilityEnd());

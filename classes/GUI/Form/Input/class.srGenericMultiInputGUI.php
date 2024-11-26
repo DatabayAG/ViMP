@@ -8,11 +8,11 @@ declare(strict_types=1);
  * @author Michael Herren <mh@studer-raimann.ch>
  * @author Theodor Truffer <tt@studer-raimann.ch>
  */
-class srGenericMultiInputGUI extends ilFormPropertyGUI {
-
-    const HOOK_IS_LINE_REMOVABLE = "hook_is_line_removable";
-    const HOOK_IS_INPUT_DISABLED = "hook_is_disabled";
-    const HOOK_BEFORE_INPUT_RENDER = "hook_before_render";
+class srGenericMultiInputGUI extends ilFormPropertyGUI
+{
+    public const HOOK_IS_LINE_REMOVABLE = "hook_is_line_removable";
+    public const HOOK_IS_INPUT_DISABLED = "hook_is_disabled";
+    public const HOOK_BEFORE_INPUT_RENDER = "hook_before_render";
     /**
      * @var array
      */
@@ -73,7 +73,8 @@ class srGenericMultiInputGUI extends ilFormPropertyGUI {
      *
      * @param mixed $limit
      */
-    public function setLimit($limit) {
+    public function setLimit($limit)
+    {
         $this->limit = $limit;
     }
 
@@ -90,7 +91,8 @@ class srGenericMultiInputGUI extends ilFormPropertyGUI {
     /**
      * @param boolean $allow_empty_fields
      */
-    public function setAllowEmptyFields(bool $allow_empty_fields) {
+    public function setAllowEmptyFields(bool $allow_empty_fields)
+    {
         $this->allow_empty_fields = $allow_empty_fields;
     }
 
@@ -101,7 +103,8 @@ class srGenericMultiInputGUI extends ilFormPropertyGUI {
      * @param string $a_title   Title
      * @param string $a_postvar Post Variable
      */
-    public function __construct(string $a_title = "", string $a_postvar = "") {
+    public function __construct(string $a_title = "", string $a_postvar = "")
+    {
         parent::__construct($a_title, $a_postvar);
         $this->setType("line_select");
         $this->setMulti(true);
@@ -111,7 +114,8 @@ class srGenericMultiInputGUI extends ilFormPropertyGUI {
     /**
      * @return string
      */
-    public function getHook($key) {
+    public function getHook($key)
+    {
         if (isset($this->hooks[$key])) {
             return $this->hooks[$key];
         }
@@ -124,7 +128,8 @@ class srGenericMultiInputGUI extends ilFormPropertyGUI {
      * @param $key
      * @param array $options
      */
-    public function addHook($key, array $options) {
+    public function addHook($key, array $options)
+    {
         $this->hooks[$key] = $options;
     }
 
@@ -194,7 +199,7 @@ class srGenericMultiInputGUI extends ilFormPropertyGUI {
 
         foreach ($this->inputs as $key => $item) {
             if ($item instanceof ilCheckboxInputGUI) {
-                $item->setChecked((bool)($value[$key] ?? false));
+                $item->setChecked((bool) ($value[$key] ?? false));
             } else {
                 if ($item instanceof ilDateTimeInputGUI) {
                     if (ilCalendarUtil::parseIncomingDate($value[$key])) {
@@ -288,7 +293,8 @@ class srGenericMultiInputGUI extends ilFormPropertyGUI {
      * @param            $value
      * @param bool $override
      */
-    public function addCustomAttribute($key, $value, bool $override = false) {
+    public function addCustomAttribute($key, $value, bool $override = false)
+    {
         if (isset($this->cust_attr[$key]) && ! $override) {
             $this->cust_attr[$key] .= ' ' . $value;
         } else {
@@ -423,10 +429,10 @@ class srGenericMultiInputGUI extends ilFormPropertyGUI {
         $tpl = $DIC['tpl'];
 
         $output = "";
-//		$tpl->addCss($this->getTemplateDir() . '/templates/css/multi_line_input.css');
+        //		$tpl->addCss($this->getTemplateDir() . '/templates/css/multi_line_input.css');
         $output .= $this->render(0, true);
 
-        if($this->getMulti() && is_array($this->line_values) && count($this->line_values) > 0) {
+        if ($this->getMulti() && is_array($this->line_values) && count($this->line_values) > 0) {
             foreach ($this->line_values as $i => $data) {
                 $object = $this;
                 $object->setValue($data);

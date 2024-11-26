@@ -13,20 +13,19 @@ declare(strict_types=1);
  */
 class xvmpOwnVideosGUI extends xvmpVideosGUI
 {
+    public const SUBTAB_ACTIVE = xvmpVideosGUI::SUBTAB_OWN;
 
-    const SUBTAB_ACTIVE = xvmpVideosGUI::SUBTAB_OWN;
+    public const TABLE_CLASS = 'xvmpOwnVideosTableGUI';
 
-    const TABLE_CLASS = 'xvmpOwnVideosTableGUI';
-
-    const CMD_EDIT_VIDEO = 'editVideo';
-    const CMD_CHANGE_OWNER = 'changeOwner';
-    const CMD_CONFIRMED_CHANGE_OWNER = 'confirmedChangeOwner';
-    const CMD_UPDATE_VIDEO = 'updateVideo';
-    const CMD_DELETE_VIDEO = 'deleteVideo';
-    const CMD_UPLOAD_VIDEO_FORM = 'uploadVideoForm';
-    const CMD_CREATE = 'create';
-    const CMD_CONFIRMED_DELETE_VIDEO = 'confirmedDeleteVideo';
-    const CMD_UPLOAD_CHUNKS = 'uploadChunks';
+    public const CMD_EDIT_VIDEO = 'editVideo';
+    public const CMD_CHANGE_OWNER = 'changeOwner';
+    public const CMD_CONFIRMED_CHANGE_OWNER = 'confirmedChangeOwner';
+    public const CMD_UPDATE_VIDEO = 'updateVideo';
+    public const CMD_DELETE_VIDEO = 'deleteVideo';
+    public const CMD_UPLOAD_VIDEO_FORM = 'uploadVideoForm';
+    public const CMD_CREATE = 'create';
+    public const CMD_CONFIRMED_DELETE_VIDEO = 'confirmedDeleteVideo';
+    public const CMD_UPLOAD_CHUNKS = 'uploadChunks';
 
 
     protected function performCommand($cmd)
@@ -87,7 +86,7 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
     {
         $mid = filter_input(INPUT_GET, 'mid');
         $login = filter_input(INPUT_POST, 'login');
-        $login_exists = ilObjUser::_loginExists((string)$login);
+        $login_exists = ilObjUser::_loginExists((string) $login);
         if ($login && $login_exists) {
             $ilConfirmationGUI = new ilConfirmationGUI();
             $ilConfirmationGUI->setFormAction($this->dic->ctrl()->getFormAction($this));
@@ -116,7 +115,7 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
      */
     public function confirmedChangeOwner()
     {
-        $mid = (int)filter_input(INPUT_POST, 'mid');
+        $mid = (int) filter_input(INPUT_POST, 'mid');
         $login = filter_input(INPUT_POST, 'login');
 
         $medium = xvmpMedium::getObjectAsArray($mid);
@@ -244,7 +243,7 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
      */
     public function confirmedDeleteVideo()
     {
-        $mid = (int)$_POST['mid'];
+        $mid = (int) $_POST['mid'];
 
         // fetch the video for logging purposes
         $video = xvmpMedium::getObjectAsArray($mid);

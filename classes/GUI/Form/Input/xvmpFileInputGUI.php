@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 class xvmpFileInputGUI extends ilFileInputGUI
 {
-
     protected string $download_url;
 
     public function setDownloadUrl(string $download_url)
@@ -32,7 +31,7 @@ class xvmpFileInputGUI extends ilFileInputGUI
             $f_tpl->setVAriable('TXT_FILENAME_HINT', $lng->txt('if_no_title_then_filename'));
             $f_tpl->parseCurrentBlock();
         } else {
-            if (trim((string)$this->getValue())) {
+            if (trim((string) $this->getValue())) {
                 if (!$this->getDisabled() && $this->getALlowDeletion()) {
                     $f_tpl->setCurrentBlock("delete_bl");
                     $f_tpl->setVariable("POST_VAR_D", $this->getPostVar());
@@ -45,7 +44,7 @@ class xvmpFileInputGUI extends ilFileInputGUI
 
                 $f_tpl->setCurrentBlock('prop_file_propval');
                 /** BEGIN PATCH */
-//                $f_tpl->setVariable('FILE_VAL', $this->getValue());
+                //                $f_tpl->setVariable('FILE_VAL', $this->getValue());
                 try {
                     $value = $this->download_url ?
                         '<a href="data:text/vtt;base64,'

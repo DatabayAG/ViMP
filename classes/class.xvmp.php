@@ -9,101 +9,106 @@ declare(strict_types=1);
  *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-class xvmp {
-
-    const TOKEN = 'token';
-
-
-	/**
-	 * @return bool|mixed|string|null
-	 */
-	public static function getViMPVersion() {
-		$key = 'version';
-		$existing = xvmpCacheFactory::getInstance()->get($key);
-		if ($existing) {
-			xvmpCurlLog::getInstance()->write('CACHE: used cached: ' . $key, xvmpCurlLog::DEBUG_LEVEL_2);
-			return $existing;
-		}
-
-		$response = xvmpRequest::version()->getResponseArray()['info']['version'];
-		$vimp_version = substr($response, 0, strpos($response, ' '));
-
-		xvmpCurlLog::getInstance()->write('CACHE: added to cache: ' . $key, xvmpCurlLog::DEBUG_LEVEL_1);
-		xvmpCacheFactory::getInstance()->set($key, $vimp_version, 0);
-
-		return $vimp_version;
-	}
+class xvmp
+{
+    public const TOKEN = 'token';
 
 
-	/**
-	 * @param $version
-	 *
-	 * @return mixed
-	 */
-	public static function ViMPVersionEquals($version) {
-		$vimp_version = self::getViMPVersion();
-
-		return version_compare($vimp_version, $version, '=');
-	}
-
-
-	/**
-	 *
-	 * @param $version
-	 *
-	 * @return mixed
-	 */
-	public static function ViMPVersionGreaterEquals($version) {
-		$vimp_version = self::getViMPVersion();
-
-		return version_compare($vimp_version, $version, '>=');
-	}
-
-
-	/**
-	 * @return mixed
-	 */
-	public static function getToken() {
-		$token = xvmpCacheFactory::getInstance()->get(self::TOKEN);
-		if ($token) {
-			xvmpCurlLog::getInstance()->write('CACHE: used cached: ' . self::TOKEN, xvmpCurlLog::DEBUG_LEVEL_2);
-
-			return $token;
-		}
-
-		xvmpCurlLog::getInstance()->write('CACHE: cached not used: ' . self::TOKEN, xvmpCurlLog::DEBUG_LEVEL_2);
-
-		$response = xvmpRequest::loginUser(xvmpConf::getConfig(xvmpConf::F_API_USER), xvmpConf::getConfig(xvmpConf::F_API_PASSWORD))
-			->getResponseArray();
-		$token = $response[self::TOKEN];
-		xvmpCacheFactory::getInstance()->set(self::TOKEN, $token, (int) xvmpConf::getConfig(xvmpConf::F_CACHE_TTL_TOKEN));
-
-		return $token;
-	}
-
-
-	/**
-	 * @param $obj_id
-	 *
-	 * @return mixed
-	 */
-	public static function lookupRefId($obj_id) {
-        $refs = array_keys(ilObject2::_getAllReferences((int)$obj_id));
-		return array_shift($refs);
-	}
-
-
-	/**
-	 * @param $obj_id
-	 *
-	 * @return bool
-	 */
-	public static function isLearningProgressPossible($obj_id): bool
+    /**
+     * @return bool|mixed|string|null
+     */
+    public static function getViMPVersion()
     {
-		$ref_id = self::lookupRefId($obj_id);
+        $key = 'version';
+        $existing = xvmpCacheFactory::getInstance()->get($key);
+        if ($existing) {
+            xvmpCurlLog::getInstance()->write('CACHE: used cached: ' . $key, xvmpCurlLog::DEBUG_LEVEL_2);
+            return $existing;
+        }
 
-		return (ilObjUserTracking::_enabledLearningProgress() && self::getParentCourseRefId($ref_id));
-	}
+        $response = xvmpRequest::version()->getResponseArray()['info']['version'];
+        $vimp_version = substr($response, 0, strpos($response, ' '));
+
+        xvmpCurlLog::getInstance()->write('CACHE: added to cache: ' . $key, xvmpCurlLog::DEBUG_LEVEL_1);
+        xvmpCacheFactory::getInstance()->set($key, $vimp_version, 0);
+
+        return $vimp_version;
+    }
+
+
+    /**
+     * @param $version
+     *
+     * @return mixed
+     */
+    public static function ViMPVersionEquals($version)
+    {
+        $vimp_version = self::getViMPVersion();
+
+        return version_compare($vimp_version, $version, '=');
+    }
+
+
+    /**
+     *
+     * @param $version
+     *
+     * @return mixed
+     */
+    public static function ViMPVersionGreaterEquals($version)
+    {
+        $vimp_version = self::getViMPVersion();
+
+        return version_compare($vimp_version, $version, '>=');
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public static function getToken()
+    {
+        $token = xvmpCacheFactory::getInstance()->get(self::TOKEN);
+        if ($token) {
+            xvmpCurlLog::getInstance()->write('CACHE: used cached: ' . self::TOKEN, xvmpCurlLog::DEBUG_LEVEL_2);
+
+            return $token;
+        }
+
+        xvmpCurlLog::getInstance()->write('CACHE: cached not used: ' . self::TOKEN, xvmpCurlLog::DEBUG_LEVEL_2);
+
+        $response = xvmpRequest::loginUser(xvmpConf::getConfig(xvmpConf::F_API_USER), xvmpConf::getConfig(xvmpConf::F_API_PASSWORD))
+            ->getResponseArray();
+        $token = $response[self::TOKEN];
+        xvmpCacheFactory::getInstance()->set(self::TOKEN, $token, (int) xvmpConf::getConfig(xvmpConf::F_CACHE_TTL_TOKEN));
+
+        return $token;
+    }
+
+
+    /**
+     * @param $obj_id
+     *
+     * @return mixed
+     */
+    public static function lookupRefId($obj_id)
+    {
+        $refs = array_keys(ilObject2::_getAllReferences((int) $obj_id));
+        return array_shift($refs);
+    }
+
+
+    /**
+     * @param $obj_id
+     *
+     * @return bool
+     */
+    public static function isLearningProgressPossible($obj_id): bool
+    {
+        $ref_id = self::lookupRefId($obj_id);
+
+        return (ilObjUserTracking::_enabledLearningProgress() && self::getParentCourseRefId($ref_id));
+    }
 
     /**
      * @return bool
@@ -117,76 +122,78 @@ class xvmp {
     }
 
 
-	/**
-	 * @param $obj_id
-	 * @param $video array|xvmpMedium
-	 *
-	 * @return bool
-	 * @throws xvmpException
-	 */
-	public static function isUseEmbeddedPlayer($obj_id, $video) : bool
+    /**
+     * @param $obj_id
+     * @param $video array|xvmpMedium
+     *
+     * @return bool
+     * @throws xvmpException
+     */
+    public static function isUseEmbeddedPlayer($obj_id, $video): bool
     {
-		return (!xvmpSettings::find($obj_id)->getLpActive() && xvmpConf::getConfig(xvmpConf::F_EMBED_PLAYER))
-			|| xvmpMedium::isVimeoOrYoutube($video);
-	}
+        return (!xvmpSettings::find($obj_id)->getLpActive() && xvmpConf::getConfig(xvmpConf::F_EMBED_PLAYER))
+            || xvmpMedium::isVimeoOrYoutube($video);
+    }
 
 
-	/**
-	 * @param $obj_id
-	 *
-	 * @param $video
-	 *
-	 * @return bool
-	 * @throws xvmpException
-	 */
-	public static function showWatched($obj_id, $video): bool
+    /**
+     * @param $obj_id
+     *
+     * @param $video
+     *
+     * @return bool
+     * @throws xvmpException
+     */
+    public static function showWatched($obj_id, $video): bool
     {
-		return !self::isUseEmbeddedPlayer($obj_id, $video);
-	}
+        return !self::isUseEmbeddedPlayer($obj_id, $video);
+    }
 
 
-	/**
-	 * @param $ref_id
-	 *
-	 * @return bool|int
-	 */
-	public static function getParentCourseRefId($ref_id) {
-		global $DIC;
-		$tree = $DIC['tree'];
-		/**
-		 * @var $tree ilTree
-		 */
-		while (ilObject2::_lookupType($ref_id, true) != 'crs') {
-			if ($ref_id == 1) {
-				return false;
-			}
-			$ref_id = $tree->getParentId($ref_id);
-		}
+    /**
+     * @param $ref_id
+     *
+     * @return bool|int
+     */
+    public static function getParentCourseRefId($ref_id)
+    {
+        global $DIC;
+        $tree = $DIC['tree'];
+        /**
+         * @var $tree ilTree
+         */
+        while (ilObject2::_lookupType($ref_id, true) != 'crs') {
+            if ($ref_id == 1) {
+                return false;
+            }
+            $ref_id = $tree->getParentId($ref_id);
+        }
 
-		return $ref_id;
-	}
+        return $ref_id;
+    }
 
 
-	/**
-	 * @param $id
-	 *
-	 * @return array
-	 */
-	public static function getCourseMembers($id, $is_ref_id = true) {
-		$members = array();
-		$ref_id = self::getParentCourseRefId($is_ref_id ? $id : self::lookupRefId($id));
-		if ($ref_id) {
-			global $DIC;
-			$rbacreview = $DIC['rbacreview'];
-			$crs = new ilObjCourse($ref_id);
-			$member_role = $crs->getDefaultMemberRole();
-			$members = $rbacreview->assignedUsers($member_role);
-		}
+    /**
+     * @param $id
+     *
+     * @return array
+     */
+    public static function getCourseMembers($id, $is_ref_id = true)
+    {
+        $members = array();
+        $ref_id = self::getParentCourseRefId($is_ref_id ? $id : self::lookupRefId($id));
+        if ($ref_id) {
+            global $DIC;
+            $rbacreview = $DIC['rbacreview'];
+            $crs = new ilObjCourse($ref_id);
+            $member_role = $crs->getDefaultMemberRole();
+            $members = $rbacreview->assignedUsers($member_role);
+        }
 
-		return $members;
-	}
+        return $members;
+    }
 
-	public static function deliverMedium(xvmpMedium $medium)
+    public static function deliverMedium(xvmpMedium $medium)
     {
         $medium_url = $medium->getMedium();
         if (is_array($medium_url)) {
@@ -196,10 +203,10 @@ class xvmp {
         $extension = pathinfo($medium_url)['extension'];
         // get filesize
         $ch = curl_init($download_url);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HEADER, TRUE);
-        curl_setopt($ch, CURLOPT_NOBODY, TRUE);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
         curl_exec($ch);
         $size = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
         curl_close($ch);

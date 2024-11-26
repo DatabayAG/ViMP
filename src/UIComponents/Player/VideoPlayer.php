@@ -142,7 +142,7 @@ class VideoPlayer
             $medium = preg_replace('/(_[0-9]{3,4}p)?\.smil/', '.smil', $medium);
         }
         $random = new ilRandom();
-        $id = md5(((string)($random->int(1, 9999999) + str_replace(" ", "", (string) microtime()))));
+        $id = md5(((string) ($random->int(1, 9999999) + str_replace(" ", "", (string) microtime()))));
 
         if (xvmp::ViMPVersionGreaterEquals('4.0.5')) {
             $pathinfo['extension'] = $abr_conf ? 'application/x-mpegURL' : 'video/' . pathinfo($medium)['extension'];
@@ -166,8 +166,10 @@ class VideoPlayer
             foreach ($subtitles as $lang => $url) {
                 $template->setCurrentBlock('captions');
                 $template->setVariable('CAPTION_LANG', $lang);
-                $template->setVariable('CAPTION_SOURCE',
-                    'data:text/vtt;base64,' . base64_encode(xvmpRequest::get($url)->getResponseBody()));
+                $template->setVariable(
+                    'CAPTION_SOURCE',
+                    'data:text/vtt;base64,' . base64_encode(xvmpRequest::get($url)->getResponseBody())
+                );
                 $template->parseCurrentBlock();
             }
         }
@@ -177,8 +179,10 @@ class VideoPlayer
         if (is_array($chapters) && !empty($chapters)) {
             $output = "WEBVTT \n\n";
             foreach ($chapters as $chapter) {
-                $output .= gmdate("H:i:s", $chapter['time']) . ".000 --> " . gmdate("H:i:s",
-                        $chapter['time']) . ".000\n" . $chapter['title'] . "\n\n";
+                $output .= gmdate("H:i:s", $chapter['time']) . ".000 --> " . gmdate(
+                    "H:i:s",
+                    $chapter['time']
+                ) . ".000\n" . $chapter['title'] . "\n\n";
             }
 
             $template->setCurrentBlock('chapters');

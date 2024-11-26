@@ -11,7 +11,6 @@ declare(strict_types=1);
  */
 class xvmpDeletedMedium extends xvmpMedium
 {
-
     public function __construct()
     {
         $this->username = '';

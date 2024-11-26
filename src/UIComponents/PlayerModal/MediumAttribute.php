@@ -9,7 +9,6 @@ namespace srag\Plugins\ViMP\UIComponents\PlayerModal;
  */
 class MediumAttribute
 {
-
     /**
      * @var string
      */
@@ -33,7 +32,7 @@ class MediumAttribute
     /**
      * @return string
      */
-    public function getTitle() : string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -41,7 +40,7 @@ class MediumAttribute
     /**
      * @return string
      */
-    public function getValue() : string
+    public function getValue(): string
     {
         return $this->value;
     }

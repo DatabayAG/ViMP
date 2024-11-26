@@ -14,12 +14,12 @@ use ilTemplateException;
  */
 class TileRenderer extends ContentElementRenderer
 {
-    const TEMPLATE_PATH = __DIR__ . '/../../../templates/default/tpl.content_tiles.html';
+    public const TEMPLATE_PATH = __DIR__ . '/../../../templates/default/tpl.content_tiles.html';
 
     /**
      * @throws ilTemplateException
      */
-    protected function buildTemplate(MediumMetadataDTO $mediumMetadataDTO) : ilTemplate
+    protected function buildTemplate(MediumMetadataDTO $mediumMetadataDTO): ilTemplate
     {
         $tpl = $this->getContainerTemplate();
         if ($mediumMetadataDTO->isAvailable() && !$mediumMetadataDTO->isTranscoding()) {
@@ -33,7 +33,7 @@ class TileRenderer extends ContentElementRenderer
         return $tpl;
     }
 
-    protected function buildInnerTemplate(MediumMetadataDTO $mediumMetadataDTO) : ilTemplate
+    protected function buildInnerTemplate(MediumMetadataDTO $mediumMetadataDTO): ilTemplate
     {
         $tpl = parent::buildInnerTemplate($mediumMetadataDTO);
         $duration_array = array_filter($mediumMetadataDTO->getMediumAttributes(), function ($mediumAttribute) {
@@ -65,7 +65,7 @@ class TileRenderer extends ContentElementRenderer
         $tpl->parseCurrentBlock();
     }
 
-    protected function getInnerTemplate() : ilTemplate
+    protected function getInnerTemplate(): ilTemplate
     {
         return new ilTemplate(self::TEMPLATE_PATH, true, true);
     }

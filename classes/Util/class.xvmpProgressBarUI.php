@@ -53,7 +53,8 @@ class xvmpProgressBarUI
     {
         if (!self::$js_loaded) {
             $this->dic->ui()->mainTemplate()->addJavaScript(
-                $this->plugin->getDirectory() . '/templates/js/xvmp_progress_bar.min.js?v=' . self::$version);
+                $this->plugin->getDirectory() . '/templates/js/xvmp_progress_bar.min.js?v=' . self::$version
+            );
             $this->dic->ui()->mainTemplate()->addOnLoadCode('VimpProgressBar.lng.transcoded = "' .
                 $this->plugin->txt('status_legal') . '";');
             self::$js_loaded = true;
@@ -67,7 +68,7 @@ class xvmpProgressBarUI
      * @return string
      * @throws ilTemplateException
      */
-    public function getHTML() : string
+    public function getHTML(): string
     {
         $this->tpl->setVariable('TEXT_TRANSCODING', $this->plugin->txt('transcoding'));
         $this->tpl->setVariable('MID', $this->mid);

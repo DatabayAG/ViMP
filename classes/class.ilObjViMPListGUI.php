@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright (c) 1998-2009 ILIAS open source, Extended GPL, see docs/LICENSE */
 
 declare(strict_types=1);
@@ -12,30 +13,30 @@ require_once __DIR__ . '/../vendor/autoload.php';
  *
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-class ilObjViMPListGUI extends ilObjectPluginListGUI {
-
+class ilObjViMPListGUI extends ilObjectPluginListGUI
+{
     protected int $obj_id = 0;
-	function getGuiClass(): string
+    public function getGuiClass(): string
     {
-		return ilObjViMPGUI::class;
-	}
+        return ilObjViMPGUI::class;
+    }
 
 
-	function initCommands(): array
+    public function initCommands(): array
     {
-		// Always set
-		$this->timings_enabled = true;
-		$this->subscribe_enabled = true;
-		$this->payment_enabled = false;
-		$this->link_enabled = false;
-		$this->info_screen_enabled = true;
-		$this->delete_enabled = true;
-		$this->notes_enabled = true;
-		$this->comments_enabled = true;
+        // Always set
+        $this->timings_enabled = true;
+        $this->subscribe_enabled = true;
+        $this->payment_enabled = false;
+        $this->link_enabled = false;
+        $this->info_screen_enabled = true;
+        $this->delete_enabled = true;
+        $this->notes_enabled = true;
+        $this->comments_enabled = true;
 
-		// Should be overwritten according to status
-		$this->cut_enabled = true;
-		$this->copy_enabled = true;
+        // Should be overwritten according to status
+        $this->cut_enabled = true;
+        $this->copy_enabled = true;
 
         return array(
             array(
@@ -49,28 +50,29 @@ class ilObjViMPListGUI extends ilObjectPluginListGUI {
                 'lang_var' => 'edit'
             )
         );
-	}
+    }
 
 
-	function initType() {
-		$this->setType(ilViMPPlugin::XVMP);
-	}
+    public function initType()
+    {
+        $this->setType(ilViMPPlugin::XVMP);
+    }
 
-	/**
-	 * get all alert properties
-	 *
-	 * @return array
-	 */
-	public function getAlertProperties(): array
+    /**
+     * get all alert properties
+     *
+     * @return array
+     */
+    public function getAlertProperties(): array
     {
         $alert = [];
-        foreach ((array)$this->getCustomProperties(array()) as $prop) {
+        foreach ((array) $this->getCustomProperties(array()) as $prop) {
             if (isset($prop['alert']) && $prop['alert']) {
                 $alert[] = $prop;
             }
         }
         return $alert;
-	}
+    }
 
 
     /**
@@ -82,33 +84,33 @@ class ilObjViMPListGUI extends ilObjectPluginListGUI {
      *                        'value' (string) => property value
      * @throws arException
      */
-	public function getCustomProperties($a_prop): array
+    public function getCustomProperties($a_prop): array
     {
-		$props = parent::getCustomProperties(array());
+        $props = parent::getCustomProperties(array());
 
-		$settings = xvmpSettings::find($this->obj_id);
-		if (!$settings->getIsOnline()) {
-			$props[] = array(
-				'alert' => true,
-				'newline' => true,
-				'property' => 'Status',
-				'value' => 'Offline',
-				'propertyNameVisible' => true
-			);
-		}
+        $settings = xvmpSettings::find($this->obj_id);
+        if (!$settings->getIsOnline()) {
+            $props[] = array(
+                'alert' => true,
+                'newline' => true,
+                'property' => 'Status',
+                'value' => 'Offline',
+                'propertyNameVisible' => true
+            );
+        }
 
-		if (($count = $settings->getRepositoryPreview()) && ($preview = $this->getVideoPreview($count)) && !$this->isTileView()) {
-			$props[] = array(
-				'alert' => true,
-				'newline' => true,
-				'property' => '',
-				'value' => $preview,
-				'propertyNameVisible' => false
-			);
-		}
+        if (($count = $settings->getRepositoryPreview()) && ($preview = $this->getVideoPreview($count)) && !$this->isTileView()) {
+            $props[] = array(
+                'alert' => true,
+                'newline' => true,
+                'property' => '',
+                'value' => $preview,
+                'propertyNameVisible' => false
+            );
+        }
 
-		return $props;
-	}
+        return $props;
+    }
 
 
     /**
@@ -116,28 +118,28 @@ class ilObjViMPListGUI extends ilObjectPluginListGUI {
      */
     protected function getVideoPreview($count): string
     {
-		$selected_videos = xvmpSelectedMedia::where(['obj_id' => $this->obj_id, 'visible' => 1])->orderBy('sort')->limit(0, (int)$count)->get();
-		$preview = '';
-		foreach ($selected_videos as $selected) {
-			try {
-				$video = xvmpMedium::getObjectAsArray($selected->getMid());
+        $selected_videos = xvmpSelectedMedia::where(['obj_id' => $this->obj_id, 'visible' => 1])->orderBy('sort')->limit(0, (int) $count)->get();
+        $preview = '';
+        foreach ($selected_videos as $selected) {
+            try {
+                $video = xvmpMedium::getObjectAsArray($selected->getMid());
                 $deep_link = ilLink::_getStaticLink(
                     $this->ref_id,
                     'xvmp',
                     true,
                     '_' . $video['mid']
                 );
-				$preview .= '<a href="' . $deep_link . '">';
-				$preview .= '<img style="margin-right:10px;margin-bottom:10px;" height=108px width=170px src="' . $video['thumbnail'] . "&size=170x108" . '">';
-				$preview .= '</a>';
-			} catch (xvmpException $e) {
-//				if ($e->getCode() == 404) {
-//					return $this->getVideoPreview($count + 1);
-//				}
-			}
-		}
-		return $preview;
-	}
+                $preview .= '<a href="' . $deep_link . '">';
+                $preview .= '<img style="margin-right:10px;margin-bottom:10px;" height=108px width=170px src="' . $video['thumbnail'] . "&size=170x108" . '">';
+                $preview .= '</a>';
+            } catch (xvmpException $e) {
+                //				if ($e->getCode() == 404) {
+                //					return $this->getVideoPreview($count + 1);
+                //				}
+            }
+        }
+        return $preview;
+    }
 
     public function getAsCard(
         int $ref_id,
@@ -145,9 +147,8 @@ class ilObjViMPListGUI extends ilObjectPluginListGUI {
         string $type,
         string $title,
         string $description
-    ) : ?RepositoryObject
-    {
-	    /** @var RepositoryObject $card */
+    ): ?RepositoryObject {
+        /** @var RepositoryObject $card */
         $card = parent::getAsCard($ref_id, $obj_id, $type, $title, $description);
         return $card->withObjectIcon(
             $this->ui->factory()->symbol()->icon()->custom(
@@ -157,7 +158,7 @@ class ilObjViMPListGUI extends ilObjectPluginListGUI {
         );
     }
 
-    private function isTileView() : bool
+    private function isTileView(): bool
     {
         global $DIC;
         $parent_ref_id = $DIC->repositoryTree()->getParentId($this->ref_id);

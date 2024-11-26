@@ -12,10 +12,9 @@ use ILIAS\FileUpload\Exception\IllegalStateException;
  */
 abstract class xvmpVideoFormGUI extends xvmpFormGUI
 {
-
-    const F_SOURCE_URL = 'source_url';
-    const F_SUBTITLE_LANGUAGE = 'subtitle_language';
-    const F_SUBTITLE_FILE = 'subtitle_file';
+    public const F_SOURCE_URL = 'source_url';
+    public const F_SUBTITLE_LANGUAGE = 'subtitle_language';
+    public const F_SUBTITLE_FILE = 'subtitle_file';
 
     /**
      * @var xvmpOwnVideosGUI | ilVimpPageComponentPluginGUI
@@ -116,7 +115,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
      * @throws ilWACException
      * @throws xvmpException
      */
-    protected function formatInput(string $post_var) : ?string
+    protected function formatInput(string $post_var): ?string
     {
         $value = $this->getInput($post_var);
         $tmp_id = filter_input(INPUT_GET, 'tmp_id', FILTER_SANITIZE_STRING);
@@ -158,15 +157,15 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
      * @param string $post_var
      * @return string|null
      */
-    protected function mapPostVarToMediumField(string $post_var) : ?string
+    protected function mapPostVarToMediumField(string $post_var): ?string
     {
         switch ($post_var) {
             case xvmpMedium::F_PUBLISHED:
                 return xvmpMedium::PUBLISHED_HIDDEN;
             case self::F_SOURCE_URL:
             case xvmpMedium::F_MID:
-            case xvmpMedium::F_TITLE;
-            case xvmpMedium::F_DESCRIPTION;
+            case xvmpMedium::F_TITLE:
+            case xvmpMedium::F_DESCRIPTION:
             case xvmpMedium::F_CATEGORIES:
             case xvmpMedium::F_TAGS:
             case xvmpMedium::F_MEDIAPERMISSIONS:
@@ -185,7 +184,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
     /**
      * @return bool
      */
-    public function saveForm() : bool
+    public function saveForm(): bool
     {
         if (!$this->checkInput()) {
             return false;
@@ -273,8 +272,12 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
      */
     protected function addFileInput(bool $required = true)
     {
-        $input = new xvmpFileUploadInputGUI($this, xvmpOwnVideosGUI::CMD_CREATE, $this->lng->txt('file'),
-            self::F_SOURCE_URL);
+        $input = new xvmpFileUploadInputGUI(
+            $this,
+            xvmpOwnVideosGUI::CMD_CREATE,
+            $this->lng->txt('file'),
+            self::F_SOURCE_URL
+        );
         $config = xvmpConfig::find('upload_max_size')->getValue();
         if ($config !== null) {
             $max_filesize_vimp = trim($config, "'");
@@ -375,8 +378,10 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
             $radio_item = new ilRadioOption($this->pl->txt(xvmpMedium::PUBLISHED_HIDDEN), xvmpMedium::PUBLISHED_HIDDEN);
             $radio_item->setInfo($this->pl->txt(xvmpMedium::PUBLISHED_HIDDEN . '_info'));
             $input->addOption($radio_item);
-            $radio_item = new ilRadioOption($this->pl->txt(xvmpMedium::PUBLISHED_PRIVATE),
-                xvmpMedium::PUBLISHED_PRIVATE);
+            $radio_item = new ilRadioOption(
+                $this->pl->txt(xvmpMedium::PUBLISHED_PRIVATE),
+                xvmpMedium::PUBLISHED_PRIVATE
+            );
             $radio_item->setInfo($this->pl->txt(xvmpMedium::PUBLISHED_PRIVATE . '_info'));
             $input->addOption($radio_item);
             $input->setRequired(true);
@@ -395,10 +400,12 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
         }
     }
 
-    protected function getMediaPermissionsInput(int $media_permissions) : ilMultiSelectSearchInputGUI
+    protected function getMediaPermissionsInput(int $media_permissions): ilMultiSelectSearchInputGUI
     {
-        $input = new ilMultiSelectSearchInputGUI($this->pl->txt(xvmpConf::F_MEDIA_PERMISSIONS),
-            xvmpMedium::F_MEDIAPERMISSIONS);
+        $input = new ilMultiSelectSearchInputGUI(
+            $this->pl->txt(xvmpConf::F_MEDIA_PERMISSIONS),
+            xvmpMedium::F_MEDIAPERMISSIONS
+        );
         $input->setInfo($this->pl->txt(xvmpConf::F_MEDIA_PERMISSIONS . '_info'));
         $input->setRequired(true);
         $options = [];
@@ -407,8 +414,10 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
             $selectable_roles = xvmpConf::getConfig(xvmpConf::F_MEDIA_PERMISSIONS_SELECTION);
         }
         foreach (xvmpUserRoles::getAll() as $role) {
-            if (!$role->getField('visible') || ($selectable_roles && !in_array((string) $role->getId(),
-                        $selectable_roles))) {
+            if (!$role->getField('visible') || ($selectable_roles && !in_array(
+                (string) $role->getId(),
+                $selectable_roles
+            ))) {
                 continue;
             }
             $options[$role->getId()] = $role->getName();
@@ -427,8 +436,10 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
     protected function addSubtitleInput()
     {
         foreach ($this->getLanguageOptions() as $lang_key => $text) {
-            $input = new xvmpFileInputGUI($this->pl->txt(xvmpMedium::F_SUBTITLES) . ' ' . $text,
-                xvmpMedium::F_SUBTITLES . '_' . $lang_key);
+            $input = new xvmpFileInputGUI(
+                $this->pl->txt(xvmpMedium::F_SUBTITLES) . ' ' . $text,
+                xvmpMedium::F_SUBTITLES . '_' . $lang_key
+            );
             if (isset($this->medium[xvmpMedium::F_SUBTITLES][$lang_key])) {
                 $input->setALlowDeletion(true);
                 $input->setDownloadUrl($this->medium[xvmpMedium::F_SUBTITLES][$lang_key]);
@@ -437,7 +448,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
         }
     }
 
-    protected function getLanguageOptions() : array
+    protected function getLanguageOptions(): array
     {
         $options = [];
         $this->dic->language()->loadLanguageModule('meta');
@@ -465,7 +476,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
         }
     }
 
-    private function getSubtitleLanguages() : array
+    private function getSubtitleLanguages(): array
     {
         return $this->dic->language()->getInstalledLanguages();
     }
@@ -473,7 +484,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
     /**
      * @return int mediumid
      */
-    abstract protected function storeVideo() : int;
+    abstract protected function storeVideo(): int;
 
     abstract public function fillForm();
 

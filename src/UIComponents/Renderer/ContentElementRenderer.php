@@ -17,9 +17,9 @@ use srag\Plugins\ViMP\Content\MediumMetadataParser;
  */
 abstract class ContentElementRenderer
 {
-    const CONTAINER_TEMPLATE_PATH = __DIR__ . '/../../../templates/default/tpl.content_element.html';
-    const DATE_FORMAT = 'd.m.Y';
-    const DESCRIPTION_LENGTH = 30;
+    public const CONTAINER_TEMPLATE_PATH = __DIR__ . '/../../../templates/default/tpl.content_element.html';
+    public const DATE_FORMAT = 'd.m.Y';
+    public const DESCRIPTION_LENGTH = 30;
     /**
      * @var MediumMetadataParser
      */
@@ -49,7 +49,7 @@ abstract class ContentElementRenderer
     /**
      * @throws ilTemplateException
      */
-    protected function buildInnerTemplate(MediumMetadataDTO $mediumMetadataDTO) : ilTemplate
+    protected function buildInnerTemplate(MediumMetadataDTO $mediumMetadataDTO): ilTemplate
     {
         $tpl = $this->getInnerTemplate();
 
@@ -132,19 +132,19 @@ abstract class ContentElementRenderer
     /**
      * @throws ilTemplateException
      */
-    public function render(MediumMetadataDTO $mediumMetadataDTO) : string
+    public function render(MediumMetadataDTO $mediumMetadataDTO): string
     {
         $tpl = $this->buildTemplate($mediumMetadataDTO);
         return $tpl->get();
     }
 
-    protected function getContainerTemplate() : ilTemplate
+    protected function getContainerTemplate(): ilTemplate
     {
         return new ilTemplate(self::CONTAINER_TEMPLATE_PATH, true, true);
     }
 
-    abstract protected function buildTemplate(MediumMetadataDTO $mediumMetadataDTO) : ilTemplate;
+    abstract protected function buildTemplate(MediumMetadataDTO $mediumMetadataDTO): ilTemplate;
 
-    abstract protected function getInnerTemplate() : ilTemplate;
+    abstract protected function getInnerTemplate(): ilTemplate;
 
 }

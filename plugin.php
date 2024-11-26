@@ -1,4 +1,5 @@
 <?php
+
 $id = 'xvmp';
 $version = '1.8.6';
 $ilias_min_version = '9.0';

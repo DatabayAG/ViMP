@@ -11,67 +11,72 @@ require_once('./Services/Logging/classes/class.ilLog.php');
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  * @deprecated use xvmpCurlLog
  */
-class xvmpLog extends ilLog {
+class xvmpLog extends ilLog
+{
+    public const LOG_TITLE = 'vimp.log';
 
-	const LOG_TITLE = 'vimp.log';
+    /**
+     * @var xvmpLog
+     */
+    protected static $instance;
 
-	/**
-	 * @var xvmpLog
-	 */
-	protected static $instance;
-
-	/**
-	 * @return xvmpLog
-	 */
-	public static function getInstance() {
-		if (! isset(self::$instance)) {
+    /**
+     * @return xvmpLog
+     */
+    public static function getInstance()
+    {
+        if (! isset(self::$instance)) {
             if (ILIAS_LOG_DIR === "php:/" && ILIAS_LOG_FILE === "stdout") {
                 // Fix Docker-ILIAS log
                 self::$instance = new self(ILIAS_LOG_DIR, ILIAS_LOG_FILE);
             } else {
                 self::$instance = new self(ILIAS_LOG_DIR, self::LOG_TITLE);
             }
-		}
+        }
 
-		return self::$instance;
-	}
+        return self::$instance;
+    }
 
-	public function writeTrace() {
-		try {
-			throw new Exception();
-		} catch (Exception $e) {
-			parent::write($e->getTraceAsString());
-		}
-	}
+    public function writeTrace()
+    {
+        try {
+            throw new Exception();
+        } catch (Exception $e) {
+            parent::write($e->getTraceAsString());
+        }
+    }
 
 
-	/**
-	 * @return mixed
-	 */
-	public function getLogDir() {
-		return ILIAS_LOG_DIR;
-	}
+    /**
+     * @return mixed
+     */
+    public function getLogDir()
+    {
+        return ILIAS_LOG_DIR;
+    }
 
-	/**
-	 * @return string
-	 */
-	public static function getFullPath() {
-		$log = self::getInstance();
+    /**
+     * @return string
+     */
+    public static function getFullPath()
+    {
+        $log = self::getInstance();
 
-		return $log->getLogDir() . '/' . $log->getLogFile();
-	}
+        return $log->getLogDir() . '/' . $log->getLogFile();
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getLogFile() {
+    /**
+     * @return string
+     */
+    public function getLogFile()
+    {
         if (ILIAS_LOG_DIR === "php:/" && ILIAS_LOG_FILE === "stdout") {
             // Fix Docker-ILIAS log
             return ILIAS_LOG_FILE;
         } else {
             return self::LOG_TITLE;
         }
-	}
+    }
 
 
 }
