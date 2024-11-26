@@ -241,8 +241,8 @@ class xvmpUserLPStatus extends ActiveRecord {
 	/**
 	 *
 	 */
-	public function update()
-	{
+	public function update() : void
+    {
 		$this->updated_at = date('Y-m-d H:i:s');
 		parent::update();
 

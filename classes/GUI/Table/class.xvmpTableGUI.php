@@ -14,46 +14,20 @@ use ILIAS\DI\Container;
 abstract class xvmpTableGUI extends ilTable2GUI {
 
 	const ROW_TEMPLATE = ''; // overwrite with subclass
-    /**
-     * @var Container
-     */
-    protected $dic;
-
+    protected Container $dic;
     protected array $js_files = array();
 	protected array $css_files = array();
-
-	/**
-	 * @var ilViMPPlugin
-	 */
-	protected $pl;
-	/**
-	 * @var ilCtrl
-	 */
+	protected ilViMPPlugin $pl;
 	protected ilCtrl $ctrl;
-	/**
-	 * @var ilObjUser
-	 */
-	protected $user;
-	/**
-	 * @var array
-	 */
+	protected ilObjUser $user;
 	protected array $available_columns = array();
-    /**
-     * @var array
-     */
 	protected array $selectable_columns = array();
-	/**
-	 * @var array
-	 */
 	protected array $available_filters = array();
-	/**
-	 * @var ilTemplate
-	 */
-	protected $tpl_global;
+	protected array $filter = array();
+	protected ilGlobalPageTemplate $tpl_global;
 
 
     /**
-     * xvmpTableGUI constructor.
      * @throws Exception
      */
 	public function __construct($parent_gui, $parent_cmd) {
@@ -87,7 +61,8 @@ abstract class xvmpTableGUI extends ilTable2GUI {
 
 	}
 
-	protected function initColumns() {
+	protected function initColumns() : void
+    {
 		foreach ($this->available_columns as $title => $props) {
 			if (!isset($props['no_header'])) {
 				$this->addColumn($this->pl->txt($title), $props['sort_field'] ?? '');
@@ -112,11 +87,8 @@ abstract class xvmpTableGUI extends ilTable2GUI {
 		}
 	}
 
-    /**
-     * @param ilTableFilterItem $item
-     */
-	protected function addAndReadFilterItem(ilTableFilterItem $item)
-	{
+	protected function addAndReadFilterItem(ilTableFilterItem $item) : void
+    {
 		$this->addFilterItem($item);
 		$item->readFromSession();
 
@@ -140,18 +112,13 @@ abstract class xvmpTableGUI extends ilTable2GUI {
 		}
 	}
 
-    /**
-     * @param $column
-     *
-     * @return bool
-     */
-    public function isColumnSelected($column): bool
+    public function isColumnSelected(string $col): bool
     {
-        if (!array_key_exists($column, $this->getSelectableColumns())) {
+        if (!array_key_exists($col, $this->getSelectableColumns())) {
             return true;
         }
 
-        return in_array($column, $this->getSelectedColumns());
+        return in_array($col, $this->getSelectedColumns());
     }
 
     /**
