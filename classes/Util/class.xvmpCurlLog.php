@@ -2,9 +2,6 @@
 
 declare(strict_types=1);
 
-/* Copyright (c) 1998-2009 ILIAS open source, Extended GPL, see docs/LICENSE */
-require_once('./Services/Logging/classes/class.ilLog.php');
-
 /**
  * Class xvmpCurlLog
  *

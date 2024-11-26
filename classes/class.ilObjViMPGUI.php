@@ -6,8 +6,6 @@ declare(strict_types=1);
 
 use ILIAS\DI\Container;
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
 /**
  * Class ilObjViMPGUI
  *
@@ -257,7 +255,6 @@ class ilObjViMPGUI extends ilObjectPluginGUI
         $this->tpl->setDescription($this->object->getDescription());
 
         if (!xvmpSettings::find($this->obj_id)->getIsOnline()) {
-            require_once('./Services/Object/classes/class.ilObjectListGUIFactory.php');
             /**
              * @var $list_gui ilObjViMPListGUI
              */
@@ -484,7 +481,6 @@ class ilObjViMPGUI extends ilObjectPluginGUI
      */
     public function addUserAutoComplete()
     {
-        include_once './Services/User/classes/class.ilUserAutoComplete.php';
         $auto = new ilUserAutoComplete();
         $auto->setSearchFields(array('login', 'firstname', 'lastname', 'email'));
         $auto->setResultField('login');

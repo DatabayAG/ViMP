@@ -5,8 +5,6 @@ declare(strict_types=1);
 /* Copyright (c) 1998-2009 ILIAS open source, Extended GPL, see docs/LICENSE */
 use srag\Plugins\ViMP\Cron\ViMPJob;
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
 /**
  * Class ilViMPPlugin
  *

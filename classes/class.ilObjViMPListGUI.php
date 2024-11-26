@@ -6,8 +6,6 @@ declare(strict_types=1);
 
 use ILIAS\UI\Component\Card\RepositoryObject;
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
 /**
  * Class ilObjViMPListGUI
  *

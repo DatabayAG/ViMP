@@ -2,9 +2,6 @@
 
 declare(strict_types=1);
 
-require_once("./Services/Form/classes/class.ilMultiSelectInputGUI.php");
-require_once("./Services/User/classes/class.ilObjUser.php");
-
 /**
  * Class ilMultiSelectSearchInputGUI
  *
