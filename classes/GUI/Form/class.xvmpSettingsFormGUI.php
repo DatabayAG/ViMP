@@ -21,7 +21,7 @@ class xvmpSettingsFormGUI extends xvmpFormGUI
      */
     protected ilObjViMP $object;
     /**
-     * @var ActiveRecord
+     * @var ActiveRecord|null
      */
 
     protected ?ActiveRecord $setting;

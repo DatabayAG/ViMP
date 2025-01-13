@@ -90,7 +90,7 @@ abstract class ContentElementRenderer
      * @param ilTemplate $tpl
      * @throws ilTemplateException
      */
-    protected function fillMediumInfos(MediumMetadataDTO $mediumMetadataDTO, ilTemplate $tpl)
+    protected function fillMediumInfos(MediumMetadataDTO $mediumMetadataDTO, ilTemplate $tpl) : void
     {
         foreach ($mediumMetadataDTO->getMediumAttributes() as $mediumAttribute) {
             $tpl->setCurrentBlock('info_paragraph');
@@ -104,7 +104,7 @@ abstract class ContentElementRenderer
     /**
      * @throws ilTemplateException
      */
-    protected function fillAvailabilityInfo(MediumMetadataDTO $mediumMetadataDTO, ilTemplate $tpl)
+    protected function fillAvailabilityInfo(MediumMetadataDTO $mediumMetadataDTO, ilTemplate $tpl) : void
     {
         $tpl->setCurrentBlock('info_paragraph');
         $tpl->setVariable('INFO', $this->metadata_parser->parseAvailability(
@@ -118,7 +118,7 @@ abstract class ContentElementRenderer
     /**
      * @throws ilTemplateException
      */
-    protected function fillAvailabilityOverlay(MediumMetadataDTO $mediumMetadataDTO, ilTemplate $tpl)
+    protected function fillAvailabilityOverlay(MediumMetadataDTO $mediumMetadataDTO, ilTemplate $tpl) : void
     {
         $tpl->setCurrentBlock('not_available_overlay');
         $tpl->setVariable('AVAILABILITY', $this->metadata_parser->parseAvailability(

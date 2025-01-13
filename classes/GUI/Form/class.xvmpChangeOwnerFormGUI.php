@@ -19,10 +19,8 @@ class xvmpChangeOwnerFormGUI extends xvmpFormGUI
      * @var mixed
      */
     protected ?ilGlobalTemplateInterface $global_tpl;
-    /**
-     * @var xvmpOwnVideosGUI
-     */
-    protected ilViMPConfigGUI $parent_gui;
+
+    protected $parent_gui;
 
     /**
      * xvmpChangeOwnerFormGUI constructor.

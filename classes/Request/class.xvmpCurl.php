@@ -326,7 +326,7 @@ class xvmpCurl
 
     /**
      * @param $ch
-     * @throws xvmpException
+     * @return void
      */
     protected function prepare($ch) : void
     {

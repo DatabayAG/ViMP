@@ -445,6 +445,6 @@ class xoctPluploadException extends xvmpException
      */
     public function __construct(string $code, $additional_message)
     {
-        parent::__construct($code, $additional_message);
+        parent::__construct((int) $code, $additional_message);
     }
 }

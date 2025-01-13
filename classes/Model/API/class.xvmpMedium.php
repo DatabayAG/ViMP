@@ -187,7 +187,7 @@ class xvmpMedium extends xvmpObject
 
     /**
      * @param $id
-     * @return bool|mixed|null
+     * @return array
      * @throws xvmpException
      */
     public static function getObjectAsArray($id) : array
@@ -402,7 +402,6 @@ class xvmpMedium extends xvmpObject
     /**
      * @param $video
      * @param $obj_id
-     * @param $tmp_id
      * @param $add_automatically
      * @param $notification
      * @return mixed
@@ -460,8 +459,8 @@ class xvmpMedium extends xvmpObject
 
     /**
      * @param $id
-     * @return xvmpDeletedMedium|static
-     * @throws xvmpException|Exception
+     * @return xvmpObject
+     * @throws Exception
      */
     public static function find($id) : xvmpObject
     {

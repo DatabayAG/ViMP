@@ -15,7 +15,7 @@ class xvmpConfFormGUI extends xvmpFormGUI
     /**
      * @var ilViMPConfigGUI
      */
-    protected ilViMPConfigGUI $parent_gui;
+    protected $parent_gui;
     /**
      * @var ilDB
      */

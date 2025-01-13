@@ -36,7 +36,7 @@ class xvmpSelectedVideosTableGUI extends xvmpTableGUI
     );
 
     /**
-     * @var xvmpSelectedVideosGUI
+     * @var object|null
      */
     protected ?object $parent_obj;
 

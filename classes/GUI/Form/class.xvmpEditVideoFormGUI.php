@@ -11,7 +11,7 @@ declare(strict_types=1);
 class xvmpEditVideoFormGUI extends xvmpVideoFormGUI
 {
     /**
-     * @var xvmpOwnVideosGUI | ilVimpPageComponentPluginGUI
+     * @var ilViMPConfigGUI
      */
     protected ilViMPConfigGUI $parent_gui;
     protected array $medium;

@@ -192,9 +192,6 @@ class xvmpUserProgress extends ActiveRecord
         $this->total_watched = $total_watched;
     }
 
-    /**
-     * @return int
-     */
     public function getId() : ?int
     {
         return $this->id;

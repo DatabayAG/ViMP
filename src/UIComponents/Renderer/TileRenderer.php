@@ -43,7 +43,7 @@ class TileRenderer extends ContentElementRenderer
         return $tpl;
     }
 
-    protected function fillMediumInfos(MediumMetadataDTO $mediumMetadataDTO, ilTemplate $tpl)
+    protected function fillMediumInfos(MediumMetadataDTO $mediumMetadataDTO, ilTemplate $tpl) : void
     {
         foreach ($mediumMetadataDTO->getMediumAttributes() as $mediumAttribute) {
             $tpl->setCurrentBlock('info_paragraph');
@@ -53,7 +53,7 @@ class TileRenderer extends ContentElementRenderer
         }
     }
 
-    protected function fillAvailabilityInfo(MediumMetadataDTO $mediumMetadataDTO, ilTemplate $tpl)
+    protected function fillAvailabilityInfo(MediumMetadataDTO $mediumMetadataDTO, ilTemplate $tpl) : void
     {
         $tpl->setCurrentBlock('info_paragraph');
         $tpl->setVariable('INFO_LABEL', $this->plugin->txt('available'));

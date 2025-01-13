@@ -83,17 +83,11 @@ class ilObjViMPGUI extends ilObjectPluginGUI
         parent::_goto($a_target);
     }
 
-    /**
-     * @return bool
-     */
     protected function supportsCloning() : bool
     {
         return false;
     }
 
-    /**
-     * AJAX call
-     */
     protected function getTranscodingProgress() : void
     {
         try {
@@ -218,9 +212,6 @@ class ilObjViMPGUI extends ilObjectPluginGUI
 
     }
 
-    /**
-     * @param bool $render_locator
-     */
     protected function initHeader(bool $render_locator = true) : void
     {
         if ($render_locator) {
@@ -324,10 +315,6 @@ class ilObjViMPGUI extends ilObjectPluginGUI
         }
     }
 
-    /**
-     * @param string $new_type
-     * @return ilPropertyFormGUI
-     */
     public function initCreateForm(string $new_type) : ilPropertyFormGUI
     {
         $this->tpl->addCss($this->pl->getAssetURL('default/xvmp_settings.css'));
@@ -405,49 +392,31 @@ class ilObjViMPGUI extends ilObjectPluginGUI
         }
     }
 
-    /**
-     * @return string
-     */
     public function getType() : string
     {
         return ilViMPPlugin::XVMP;
     }
 
-    /**
-     * @return string
-     */
     public function getAfterCreationCmd() : string
     {
         return self::CMD_SHOW_CONTENT;
     }
 
-    /**
-     * @return string
-     */
     public function getStandardCmd() : string
     {
         return self::CMD_SHOW_CONTENT;
     }
 
-    /**
-     *
-     */
     public function showContent() : void
     {
         $this->ctrl->redirectByClass(xvmpContentGUI::class, xvmpGUI::CMD_STANDARD);
     }
 
-    /**
-     *
-     */
     public function searchVideos() : void
     {
         $this->ctrl->redirectByClass(xvmpSearchVideosGUI::class, xvmpGUI::CMD_STANDARD);
     }
 
-    /**
-     * ajax
-     */
     public function searchUserAjax()
     {
         $username = $_GET['username'];
@@ -459,18 +428,12 @@ class ilObjViMPGUI extends ilObjectPluginGUI
         exit;
     }
 
-    /**
-     *
-     */
     public function getPicture() : void
     {
         $key = $_GET['key'];
         // TODO: implement picture wrapper, if api action is implemented
     }
 
-    /**
-     * async auto complete method for user filter in search table
-     */
     public function addUserAutoComplete()
     {
         $auto = new ilUserAutoComplete();

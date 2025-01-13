@@ -14,7 +14,7 @@ class xvmpSelectedMedia extends ActiveRecord
 
     public const F_VISIBLE = 'visible';
     /**
-     * @var int
+     * @var int|null
      * @db_has_field        true
      * @db_is_unique        true
      * @db_is_primary       true
@@ -24,7 +24,7 @@ class xvmpSelectedMedia extends ActiveRecord
      */
     protected ?int $id = 0;
     /**
-     * @var int
+     * @var int|null
      * @db_has_field        true
      * @db_fieldtype        integer
      * @db_length           8

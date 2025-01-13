@@ -44,7 +44,7 @@ class xvmpLearningProgressTableGUI extends xvmpTableGUI
     );
 
     /**
-     * @var ilObject
+     * @var object|null
      */
     protected ?object $parent_obj;
 

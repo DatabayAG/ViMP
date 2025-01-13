@@ -31,7 +31,8 @@ abstract class xvmpVideosGUI extends xvmpGUI
 
     /**
      * @param $cmd
-     * @throws xvmpException|ilCtrlException
+     * @return void
+     * @throws ilCtrlException
      */
     protected function performCommand($cmd) : void
     {

@@ -12,6 +12,10 @@ use ILIAS\UI\Component\Card\RepositoryObject;
  */
 class ilObjViMPListGUI extends ilObjectPluginListGUI
 {
+    /**
+     * @var false
+     */
+    private bool $payment_enabled;
     protected int $obj_id = 0;
 
     public function getGuiClass() : string

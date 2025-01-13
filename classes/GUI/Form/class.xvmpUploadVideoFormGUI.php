@@ -22,27 +22,20 @@ class xvmpUploadVideoFormGUI extends xvmpVideoFormGUI
      */
     protected ilViMPPlugin $pl;
     /**
-     * @var xvmpOwnVideosGUI
-     */
-    protected ilViMPConfigGUI $parent_gui;
-    /**
      * @var ?ilObjUser
      */
     protected ?ilObjUser $user;
 
-    /**
-     * xvmpUploadVideoFormGUI constructor.
-     * @param $parent_gui
-     */
     public function __construct($parent_gui)
     {
         global $DIC;
         $ilUser = $DIC['ilUser'];
         $this->user = $ilUser;
+        $this->parent_gui = $parent_gui;
 
         $this->setId('xoct_event');
-
         parent::__construct($parent_gui);
+
 
         $this->setTitle($this->pl->txt('upload_video'));
         $this->setTarget('_top');

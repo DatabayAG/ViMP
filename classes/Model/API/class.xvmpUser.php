@@ -14,50 +14,24 @@ class xvmpUser extends xvmpObject
      * @var int
      */
     protected int $uid;
-    /**
-     * @var String
-     */
     protected string $status;
-    /**
-     * @var String
-     */
     protected string $username;
-    /**
-     * @var String
-     */
+    protected string $firstname;
+    protected string $lastname;
     protected string $email;
-    /**
-     * @var String
-     */
     protected string $avatar;
-    /**
-     * @var String
-     */
     protected string $cover;
-    /**
-     * @var String
-     */
     protected string $last_login_at;
-    /**
-     * @var String
-     */
-    protected string $last_access_at;
-    /**
-     * @var String
-     */
+    protected ?string $last_access_at;
     protected string $created_at;
-    /**
-     * @var String
-     */
+    protected int $external;
+    protected string $authenticator;
     protected string $updated_at;
-    /**
-     * @var array
-     */
     protected array $roles;
 
     /**
      * @param ilObjUser $ilObjUser
-     * @return xvmpUser
+     * @return xvmpUser|bool
      * @throws xvmpException
      */
     public static function getOrCreateVimpUser(ilObjUser $ilObjUser) : xvmpUser|bool

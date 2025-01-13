@@ -91,8 +91,8 @@ class xvmpContentGUI extends xvmpGUI
     }
 
     /**
-     * async
-     * @throws xvmpException
+     * @return void
+     * @throws ilTemplateException
      */
     public function renderListItem()
     {
@@ -109,8 +109,8 @@ class xvmpContentGUI extends xvmpGUI
     }
 
     /**
-     * async
-     * @throws xvmpException
+     * @return void
+     * @throws ilTemplateException
      */
     public function renderTile()
     {
@@ -127,8 +127,8 @@ class xvmpContentGUI extends xvmpGUI
     }
 
     /**
-     * async
-     * @throws xvmpException
+     * @return void
+     * @throws ilTemplateException
      */
     public function renderTileSmall()
     {

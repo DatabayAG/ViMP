@@ -18,6 +18,7 @@ use xvmpConfig;
 use xvmpChapters;
 use ilObjViMPGUI;
 use xvmpDeletedMedium;
+use Exception;
 
 /**
  * Class xvmpVideoPlayer
@@ -67,7 +68,7 @@ class VideoPlayer
      * @param      $video
      * @param bool $embed
      * @param bool $increase_view_count
-     * @throws xvmpException
+     * @throws xvmpException|Exception
      */
     public function __construct($video, bool $embed = false, bool $increase_view_count = true)
     {

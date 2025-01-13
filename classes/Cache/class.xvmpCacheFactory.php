@@ -14,7 +14,7 @@ class xvmpCacheFactory
 
     /**
      * Generates a new instance of the service.
-     * @return xvmpCache
+     * @return xvmpCache|null
      */
     public static function getInstance() : ?xvmpCache
     {

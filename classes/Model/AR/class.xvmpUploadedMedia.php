@@ -12,7 +12,7 @@ class xvmpUploadedMedia extends ActiveRecord
 {
     public const DB_TABLE_NAME = 'xvmp_uploaded_media';
     /**
-     * @var int
+     * @var int|null
      * @db_has_field        true
      * @db_is_unique        true
      * @db_is_primary       true
@@ -21,7 +21,7 @@ class xvmpUploadedMedia extends ActiveRecord
      */
     protected ?int $mid = 0;
     /**
-     * @var String
+     * @var string|int
      * @db_has_field        true
      * @db_is_unique        true
      * @db_fieldtype        text
@@ -29,7 +29,7 @@ class xvmpUploadedMedia extends ActiveRecord
      */
     protected string|int $tmp_id = 0;
     /**
-     * @var int
+     * @var int|null
      * @db_has_field        true
      * @db_fieldtype        integer
      * @db_length           8
@@ -78,9 +78,6 @@ class xvmpUploadedMedia extends ActiveRecord
         $this->mid = $mid;
     }
 
-    /**
-     * @return String
-     */
     public function getTmpId() : int|string
     {
         return $this->tmp_id;
@@ -126,9 +123,6 @@ class xvmpUploadedMedia extends ActiveRecord
         $this->user_id = $user_id;
     }
 
-    /**
-     * @return int
-     */
     public function getEmail() : string
     {
         return $this->email;

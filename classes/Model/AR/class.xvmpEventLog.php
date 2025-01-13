@@ -64,10 +64,7 @@ class xvmpEventLog extends ActiveRecord
      */
     protected int $mid;
     /**
-     * @var String
-     * @db_has_field        true
-     * @db_fieldtype        text
-     * @db_length           256
+     * @var string|null
      */
     protected ?string $title;
     /**
@@ -223,10 +220,7 @@ class xvmpEventLog extends ActiveRecord
         return $this->title;
     }
 
-    /**
-     * @param String $title
-     */
-    public function setTitle(?string $title) : void
+    public function setTitle(string $title) : void
     {
         $this->title = $title;
     }

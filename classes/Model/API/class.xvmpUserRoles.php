@@ -15,7 +15,7 @@ class xvmpUserRoles extends xvmpObject
     /**
      * @var int
      */
-    protected int $id;
+    protected string|int $id;
     /**
      * @var String
      */

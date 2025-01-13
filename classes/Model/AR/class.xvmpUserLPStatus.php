@@ -12,7 +12,7 @@ class xvmpUserLPStatus extends ActiveRecord
 {
     public const TABLE_NAME = 'xvmp_lp_status';
     /**
-     * @var int
+     * @var int|null
      * @db_has_field    true
      * @db_fieldtype    integer
      * @db_length       8

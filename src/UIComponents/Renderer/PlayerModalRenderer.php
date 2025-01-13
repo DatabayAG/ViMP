@@ -99,7 +99,7 @@ class PlayerModalRenderer
      * @param bool $available
      * @throws ilTemplateException
      */
-    protected function renderInfoMessage(PlayerContainerDTO $playerContainerDTO, ilTemplate $tpl, bool $available)
+    protected function renderInfoMessage(PlayerContainerDTO $playerContainerDTO, ilTemplate $tpl, bool $available) : void
     {
         if ($available === false) {
             $tpl->setCurrentBlock('info_paragraph');

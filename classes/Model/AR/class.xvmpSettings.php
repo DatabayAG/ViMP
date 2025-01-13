@@ -17,7 +17,7 @@ class xvmpSettings extends ActiveRecord
     public const LAYOUT_TYPE_PLAYER = 3;
 
     /**
-     * @var int
+     * @var int|null
      * @db_has_field        true
      * @db_is_unique        true
      * @db_is_primary       true

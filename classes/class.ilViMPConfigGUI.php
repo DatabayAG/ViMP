@@ -60,9 +60,8 @@ class ilViMPConfigGUI extends ilPluginConfigGUI
     }
 
     /**
+     * @return void
      * @throws ilCtrlException
-     * @throws JsonException
-     * @throws Exception
      */
     protected function applyFilter() : void
     {
@@ -73,9 +72,8 @@ class ilViMPConfigGUI extends ilPluginConfigGUI
     }
 
     /**
+     * @return void
      * @throws ilCtrlException
-     * @throws JsonException
-     * @throws Exception
      */
     protected function resetFilter() : void
     {
@@ -109,7 +107,8 @@ class ilViMPConfigGUI extends ilPluginConfigGUI
     }
 
     /**
-     * @throws ilCtrlException|JsonException
+     * @return void
+     * @throws ilCtrlException
      */
     protected function update() : void
     {

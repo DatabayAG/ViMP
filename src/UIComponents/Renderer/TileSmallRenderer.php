@@ -37,7 +37,7 @@ class TileSmallRenderer extends TileRenderer
         return $tpl;
     }
 
-    protected function fillAvailabilityOverlay(MediumMetadataDTO $mediumMetadataDTO, ilTemplate $tpl)
+    protected function fillAvailabilityOverlay(MediumMetadataDTO $mediumMetadataDTO, ilTemplate $tpl) : void
     {
         $tpl->setCurrentBlock('not_available_overlay');
         $tpl->setVariable('AVAILABILITY', $this->metadata_parser->parseAvailability(

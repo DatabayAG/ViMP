@@ -12,7 +12,7 @@ use ILIAS\DI\Container;
  */
 abstract class xvmpFormGUI extends ilPropertyFormGUI
 {
-    protected ilViMPConfigGUI $parent_gui;
+    protected $parent_gui;
     protected ilViMPPlugin $pl;
     protected ilCtrl $ctrl;
     protected ilLanguage $lng;

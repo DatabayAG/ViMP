@@ -16,9 +16,9 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
     public const F_SUBTITLE_FILE = 'subtitle_file';
 
     /**
-     * @var xvmpOwnVideosGUI | ilVimpPageComponentPluginGUI
+     * @var ilViMPConfigGUI
      */
-    protected ilViMPConfigGUI $parent_gui;
+    protected $parent_gui;
     /**
      * @var array
      */
@@ -382,7 +382,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
     protected function formatInput(string $post_var) : ?string
     {
         $value = $this->getInput($post_var);
-        $tmp_id = filter_input(INPUT_GET, 'tmp_id', FILTER_SANITIZE_STRING);
+        $tmp_id = filter_input(INPUT_GET, 'tmp_id', FILTER_SANITIZE_STRING2);
         switch ($post_var) {
             case self::F_SOURCE_URL:
                 /** @var array $value */
@@ -441,7 +441,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
      */
     protected function processSubtitles(int $mid) : void
     {
-        $tmp_id = filter_input(INPUT_GET, 'tmp_id', FILTER_SANITIZE_STRING);
+        $tmp_id = filter_input(INPUT_GET, 'tmp_id', FILTER_SANITIZE_STRING2);
         foreach ($this->getSubtitleLanguages() as $lang_key) {
             $input = $this->getInput(xvmpMedium::F_SUBTITLES . '_' . $lang_key);
             if (is_array($input) && $input['error'] === 0) {

@@ -12,7 +12,7 @@ class xvmpObject
 {
     protected static array $cache_initialized = array();
     protected static array $cache = array();
-    protected int $id;
+    protected int|string $id;
 
     /**
      * returns a single object via id

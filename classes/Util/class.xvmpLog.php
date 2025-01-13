@@ -34,7 +34,7 @@ class xvmpLog extends ilLog
         return self::$instance;
     }
 
-    public function getLogDir()
+    public function getLogDir() : string
     {
         return ILIAS_LOG_DIR;
     }
