@@ -92,8 +92,8 @@ class xvmpMedium extends xvmpObject
     protected string $tags;
     protected ?array $subtitles = [];
     protected bool $download_allowed = false;
-    protected ?DateTime $startdate;
-    protected ?DateTime $enddate;
+    protected ?DateTime $startdate = null;
+    protected ?DateTime $enddate = null;
 
     /**
      * @param null  $ilObjUser

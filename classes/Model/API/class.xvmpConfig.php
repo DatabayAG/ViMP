@@ -11,11 +11,11 @@ class xvmpConfig extends xvmpObject
     /**
      * @var string
      */
-    protected string $name;
+    protected $name;
     /**
      * @var string
      */
-    protected string $value;
+    protected $value;
 
     /**
      * @param $id
@@ -52,12 +52,12 @@ class xvmpConfig extends xvmpObject
     /**
      * @return string
      */
-    public function getName() : string
+    public function getName()
     {
         return $this->name;
     }
 
-    public function getValue() : string
+    public function getValue()
     {
         return $this->value;
     }
