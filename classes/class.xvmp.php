@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /* Copyright (c) 1998-2009 ILIAS open source, Extended GPL, see docs/LICENSE */
-define('FILTER_SANITIZE_STRING2', 513);
+const FILTER_SANITIZE_STRING2 = 513;
 /**
  * Class xvmp
  * @author  Theodor Truffer <tt@studer-raimann.ch>
