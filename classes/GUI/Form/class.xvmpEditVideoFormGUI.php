@@ -13,7 +13,7 @@ class xvmpEditVideoFormGUI extends xvmpVideoFormGUI
     /**
      * @var ilViMPConfigGUI
      */
-    protected ilViMPConfigGUI $parent_gui;
+    protected $parent_gui;
     protected array $medium;
 
     /**
