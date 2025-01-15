@@ -1,4 +1,7 @@
 # Changelog
+## [1.9.0]
+- ILIAS 9 support
+
 ## [v1.8.6]
 - Feature: updated VideoJS to 8.10.2
 - Feature: added playback rates 0.75 and 2.0
