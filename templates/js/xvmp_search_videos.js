@@ -25,9 +25,14 @@ var VimpSearch = {
 		}).always(function(response) {
 			try {
 				response = JSON.parse(response);
+				console.log(response);
+
 			} catch (error) {
 				response = '{"success" = false}';
+				console.log(response);
+
 			}
+
 
 			if (response.success) {
 				xoctWaiter.hide();
