@@ -16,7 +16,7 @@ abstract class xvmpTableGUI extends ilTable2GUI
     protected Container $dic;
     protected array $js_files = array();
     protected array $css_files = array();
-    protected ilViMPPlugin $pl;
+    protected $pl;
     protected ilCtrl $ctrl;
     protected ilObjUser $user;
     protected array $available_columns = array();

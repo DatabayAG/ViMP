@@ -237,7 +237,7 @@ class xvmpMedium extends xvmpObject
         $response['title'] = (string) $response['title'];
         $response['slug'] = (string) $response['slug'];
 
-        if (isset($response['mediapermissions']['rid']) && is_array($response['mediapermissions']['rid'])) {
+        if (isset($response['mediapermissions']) && isset($response['mediapermissions']['rid']) && is_array($response['mediapermissions']['rid'])) {
             $response['mediapermissions'] = $response['mediapermissions']['rid'];
         }
 
