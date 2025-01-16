@@ -94,17 +94,23 @@ class xvmpEventLog extends ActiveRecord
         switch ($action) {
             case self::ACTION_EDIT:
                 foreach (self::$logged_media_fields as $field) {
-                    if ($old_data[$field] != $data[$field]) {
-                        $eventlog_data[$field] = array($old_data[$field], $data[$field]);
+                    if(isset($old_data[$field]) && isset($data[$field])) {
+                        if ($old_data[$field] != $data[$field]) {
+                            $eventlog_data[$field] = array($old_data[$field], $data[$field]);
+                        }
                     }
                 }
                 break;
             case self::ACTION_CHANGE_OWNER:
-                $eventlog_data['owner'] = $data['owner'];
+                    if(isset($data['owner'])) {
+                        $eventlog_data['owner'] = $data['owner'];
+                    }
                 break;
             default:
                 foreach (self::$logged_media_fields as $field) {
-                    $eventlog_data[$field] = $data[$field];
+                    if(isset($data[$field])) {
+                        $eventlog_data[$field] = $data[$field];
+                    }
                 }
                 break;
         }
