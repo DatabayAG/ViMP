@@ -159,7 +159,7 @@ class xvmpCurl
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->getHeaders());
         $this->debug($ch);
         $resp_orig = curl_exec($ch);
-        if (false && $resp_orig === false) {
+        if ($resp_orig === false) {
             $this->setResponseError(new xvmpCurlError($ch));
         }
         $this->setResponseBody((string) $resp_orig);
