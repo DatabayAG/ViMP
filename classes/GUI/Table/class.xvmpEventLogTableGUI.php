@@ -104,8 +104,11 @@ class xvmpEventLogTableGUI extends xvmpTableGUI
                 }
                 break;
             case xvmpEventLog::ACTION_CHANGE_OWNER:
-                $new_owner = $data['owner'];
-                $string .= $this->pl->txt('new_owner') . ': ' . $new_owner;
+                if(isset($data['owner']))
+                {
+                    $new_owner = $data['owner'];
+                    $string .= $this->pl->txt('new_owner') . ': ' . $new_owner;
+                }
         }
 
         return $string;

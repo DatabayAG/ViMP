@@ -40,9 +40,15 @@ class xvmpUploadFile
         $file = $_POST[$name];
 
         $inst = new self();
-        $inst->setTitle($file['name']);
-        $inst->setFilePath($file['tmp_name']);
-        $inst->setFileSize($file['size']);
+        if(isset($file['name'])) {
+            $inst->setTitle($file['name']);
+        }
+        if(isset($file['tmp_name'])) {
+            $inst->setFilePath($file['tmp_name']);
+        }
+        if(isset($file['size'])) {
+            $inst->setFileSize($file['size']);
+        }
         $inst->setPostVar($name);
 
         return $inst;
