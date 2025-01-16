@@ -151,7 +151,7 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
             'uid' => $xvmpUser->getUid(),
             'mediapermissions' => implode(',',
                 array_filter(
-                    isset($medium['mediapermissions']) ?: [],
+                    $medium['mediapermissions'] ?? [],
                     'is_numeric')
             ),
         ];
