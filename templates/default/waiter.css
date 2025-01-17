@@ -20,6 +20,10 @@ div.xoct_waiter {
 	background-position: center center;
 }
 
+#xoct_progress {
+	height: 100%;
+}
+
 div.xoct_percentage div.progress {
 	margin-left:  20%;
 	margin-right: 20%;
