@@ -80,7 +80,7 @@ class xvmpOwnVideosTableGUI extends xvmpTableGUI
 
         parent::initColumns();
 
-        $this->addColumn('', '', "75", true);
+        $this->addColumn('', '', "100", true);
     }
 
     /**
