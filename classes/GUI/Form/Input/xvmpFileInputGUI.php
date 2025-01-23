@@ -111,8 +111,4 @@ class xvmpFileInputGUI extends ilFileInputGUI
 
         return $f_tpl->get();
     }
-    /**
-     * Render html
-     * @throws ilTemplateException
-     */
 }
