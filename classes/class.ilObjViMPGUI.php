@@ -112,7 +112,8 @@ class ilObjViMPGUI extends ilObjectPluginGUI
         $cmd = $this->ctrl->getCmd();
         if (!ilObjViMPAccess::hasReadAccess() && $next_class != "ilinfoscreengui" && $cmd != "infoScreen" && $cmd != xvmpGUI::CMD_FILL_MODAL) {
             $this->dic->ui()->mainTemplate()->setOnScreenMessage('failure', $this->pl->txt('access_denied'), true);
-            $this->ctrl->returnToParent($this);
+            parent::viewObject();
+            return;
         }
 
         $this->tpl->loadStandardTemplate();
