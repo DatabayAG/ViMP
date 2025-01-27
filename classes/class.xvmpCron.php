@@ -116,35 +116,36 @@ class xvmpCron
         $subject = xvmpConf::getConfig($transcoding_succeeded ? xvmpConf::F_NOTIFICATION_SUBJECT_SUCCESSFULL : xvmpConf::F_NOTIFICATION_SUBJECT_FAILED);
         $body = xvmpConf::getConfig($transcoding_succeeded ? xvmpConf::F_NOTIFICATION_BODY_SUCCESSFULL : xvmpConf::F_NOTIFICATION_BODY_FAILED);
 
-        // replace placeholders
-        $ilObjUser = new ilObjUser($uploaded_medium->getUserId());
-        $body = str_replace('{FIRSTNAME}', $ilObjUser->getFirstname(), $body);
-        $body = str_replace('{LASTNAME}', $ilObjUser->getLastname(), $body);
+        if(ilObjUser::_exists($uploaded_medium->getUserId())){
+            $ilObjUser = new ilObjUser($uploaded_medium->getUserId());
+            $body = str_replace('{FIRSTNAME}', $ilObjUser->getFirstname(), $body);
+            $body = str_replace('{LASTNAME}', $ilObjUser->getLastname(), $body);
 
-        $body = str_replace('{TITLE}', $medium->getTitle(), $body);
-        $body = str_replace('{DESCRIPTION}', $medium->getDescription(), $body);
+            $body = str_replace('{TITLE}', $medium->getTitle(), $body);
+            $body = str_replace('{DESCRIPTION}', $medium->getDescription(), $body);
 
-        $deep_link = ilLink::_getStaticLink(
-            $uploaded_medium->getRefId(),
-            'xvmp',
-            true,
-            '_' . $uploaded_medium->getMid()
-        );
-        $body = str_replace('{VIDEO_LINK}', $deep_link, $body);
+            $deep_link = ilLink::_getStaticLink(
+                $uploaded_medium->getRefId(),
+                'xvmp',
+                true,
+                '_' . $uploaded_medium->getMid()
+            );
+            $body = str_replace('{VIDEO_LINK}', $deep_link, $body);
 
-        // send mail
-        $notification = new ilMail(ANONYMOUS_USER_ID);
-        $notification->sendMail(
-            new MailDeliveryData(
-                $ilObjUser->getLogin(),
-                '',
-                '',
-                $subject,
-                $body,
-                array(),
-                true
-            )
-        );
+            // send mail
+            $notification = new ilMail(ANONYMOUS_USER_ID);
+            $notification->sendMail(
+                new MailDeliveryData(
+                    $ilObjUser->getLogin(),
+                    '',
+                    '',
+                    $subject,
+                    $body,
+                    array(),
+                    true
+                )
+            );
+        }
         //		xvmpLog::getInstance()->write('Notification sent to user: ' . ilObjUser::_lookupLogin($uploaded_medium->getUserId()) . ' (' . $uploaded_medium->getUserId() . ')');
     }
 }
