@@ -13,6 +13,7 @@ cd Customizing/global/plugins/Services/Repository/RepositoryObject
 git clone https://github.com/DatabayAG/ViMP
 ```
 Note: vtt files must be added to the "File Suffixes: Positive List (Additions)" in the Administration of your ILIAS installation.
+  => [ Administration => System Settings and Maintenance => File Services => File Suffixes: Positive List (Additions) ]
 
 ## Related Plugins
 * ViMPCron: https://github.com/DatabayAG/ViMPCron
