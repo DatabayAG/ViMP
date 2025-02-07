@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
+use ILIAS\UI\Implementation\Component\Input\UploadLimitResolver;
+
 class xvmpFileInputGUI extends ilFileInputGUI
 {
     protected string $download_url;
+    protected UploadLimitResolver $upload_limit;
 
     public function setDownloadUrl(string $download_url) : void
     {
