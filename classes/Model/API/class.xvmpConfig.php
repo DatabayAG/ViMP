@@ -16,6 +16,8 @@ class xvmpConfig extends xvmpObject
      * @var string
      */
     protected $value;
+    protected $data_type;
+    protected $value_clean;
 
     /**
      * @param $id

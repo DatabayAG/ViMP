@@ -21,6 +21,9 @@ class xvmpUser extends xvmpObject
     protected string $email;
     protected string $avatar;
     protected string $cover;
+    protected ?string $displayname;
+    protected ?string $edited_at;
+
     protected string $last_login_at;
     protected ?string $last_access_at;
     protected string $created_at;
