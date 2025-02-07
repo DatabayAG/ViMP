@@ -7,7 +7,17 @@ use ILIAS\UI\Implementation\Component\Input\UploadLimitResolver;
 class xvmpFileInputGUI extends ilFileInputGUI
 {
     protected string $download_url;
-    protected UploadLimitResolver $upload_limit;
+
+    public function __construct(
+        string $a_title = "",
+        string $a_postvar = ""
+    ) {
+        global $DIC;
+        $this->upload_limit = $DIC['ui.upload_limit_resolver'] ?? 0;
+
+        parent::__construct($a_title, $a_postvar);
+
+    }
 
     public function setDownloadUrl(string $download_url) : void
     {
