@@ -359,7 +359,12 @@ class ilObjViMPGUI extends ilObjectPluginGUI
         ) {
             /** @var xvmpSettings $settings */
             $settings = xvmpSettings::find($new_object->getId());
-            $settings->setIsOnline((int) $_POST[xvmpSettingsFormGUI::F_ONLINE]) ?? 0;
+            if(isset($_POST[xvmpSettingsFormGUI::F_ONLINE])) {
+                $settings->setIsOnline((int) $_POST[xvmpSettingsFormGUI::F_ONLINE]);
+            } else {
+                $settings->setIsOnline(0);
+            }
+
             $settings->setLayoutType((int) $_POST[xvmpSettingsFormGUI::F_LAYOUT]) ?? 0;
             $settings->update();
         }
