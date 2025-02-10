@@ -351,7 +351,11 @@ class ilObjViMPGUI extends ilObjectPluginGUI
 
     public function afterSave(ilObject $new_object) : void
     {
-        if ($_POST[xvmpSettingsFormGUI::F_ONLINE] || $_POST[xvmpSettingsFormGUI::F_LAYOUT]) {
+        if (
+            (isset($_POST[xvmpSettingsFormGUI::F_ONLINE]) && $_POST[xvmpSettingsFormGUI::F_ONLINE])
+            ||
+            (isset($_POST[xvmpSettingsFormGUI::F_LAYOUT]) && $_POST[xvmpSettingsFormGUI::F_LAYOUT])
+        ) {
             /** @var xvmpSettings $settings */
             $settings = xvmpSettings::find($new_object->getId());
             $settings->setIsOnline((int) $_POST[xvmpSettingsFormGUI::F_ONLINE]);
