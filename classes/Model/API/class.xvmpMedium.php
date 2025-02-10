@@ -371,8 +371,10 @@ class xvmpMedium extends xvmpObject
             return array(self::formatResponse($response['media']['medium']));
         }
         $return = array();
-        foreach ($response['media']['medium'] as $medium) {
-            $return[] = self::formatResponse($medium);
+        if (isset($response['media']['medium'])) {
+            foreach ($response['media']['medium'] as $medium) {
+                $return[] = self::formatResponse($medium);
+            }
         }
         return $return;
     }
