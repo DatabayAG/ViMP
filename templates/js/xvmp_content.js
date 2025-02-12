@@ -107,7 +107,7 @@ var VimpContent = {
 
   copyDirectLinkWithTime: function (link_tpl) {
     let player_instance = videojs.getPlayers();
-    let currentTime = '_' + Math.floor(player_instance.currentTime());
+    let currentTime = '_' + Math.floor(Object.values(player_instance)[0].currentTime());
     let link = link_tpl.replace('_0.', currentTime + '.').replace('_0&', currentTime + '&');
     this.copyToClipboard(link);
   },
