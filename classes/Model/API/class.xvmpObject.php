@@ -41,7 +41,9 @@ class xvmpObject
     public function buildObjectFromArray(array $array) : void
     {
         foreach ($array as $key => $value) {
-            $this->{$key} = $value;
+            if($key !== null && $value !== null) {
+                $this->{$key} = $value;
+            }
         }
     }
 
