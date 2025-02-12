@@ -11,6 +11,8 @@ declare(strict_types=1);
 class xvmpCron
 {
     public const DEBUG = false;
+    private ilDBInterface $db;
+    private ilCtrl $ctrl;
     /**
      * @var Ilias
      */
