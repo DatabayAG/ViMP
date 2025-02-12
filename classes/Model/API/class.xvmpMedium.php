@@ -257,7 +257,7 @@ class xvmpMedium extends xvmpObject
             if (isset($response[$labels[0]][$labels[1]][$labels[2]])) {
                 $response[$labels[0]][$labels[1]] = array($response[$labels[0]][$labels[1]]);
             }
-            if (is_array($response[$labels[0]][$labels[1]])) {
+            if (isset($response[$labels[0]]) && is_array($response[$labels[0]][$labels[1]])) {
                 foreach ($response[$labels[0]][$labels[1]] as $item) {
                     $result[$item[$labels[2]]] = $item['name'];
                 }
