@@ -13,7 +13,7 @@ class xvmpCategory extends xvmpObject
     public const DEFAULT_CACHE_TTL = 86400; // 1 day
     protected int $cid;
     protected int $pid;
-    protected ?int $parent;
+    protected ?int $parent = null;
     protected string $culture;
     protected string $name;
     protected ?string $description;
