@@ -29,7 +29,7 @@ class xvmpUser extends xvmpObject
     protected ?string $last_access_at;
     protected string $created_at;
     protected int $external;
-    protected string $authenticator;
+    protected string|array $authenticator;
     protected string $updated_at;
     protected array $roles;
 
