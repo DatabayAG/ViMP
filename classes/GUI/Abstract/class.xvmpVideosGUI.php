@@ -122,6 +122,7 @@ abstract class xvmpVideosGUI extends xvmpGUI
         /** @var xvmpTableGUI $table_gui */
         $table_gui = new $class_name($this, self::CMD_SHOW_FILTERED);
         $table_gui->parseData();
+        $table_gui->setExternalSorting(true);
         $table_gui->determineOffsetAndOrder();
         $this->dic->ui()->mainTemplate()->setContent($table_gui->getHTML() . $this->getModalPlayer()->getHTML());
     }
