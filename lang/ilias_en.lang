@@ -1,30 +1,30 @@
 conf_object_title#:#Object Title in Repository
 conf_object_title_info#:#This term will be used when creating a new object in the repository.
 conf_api_key#:#API Key
-conf_api_key_info#:#An API key can be generated in the ViMP backend configuration.
+conf_api_key_info#:#An API key can be generated in the VIMP backend configuration.
 conf_api_user#:#API User
-conf_api_user_info#:#The API user must exist in ViMP and must be authorized to upload, edit and delete videos.
+conf_api_user_info#:#The API user must exist in VIMP and must be authorized to upload, edit and delete videos.
 conf_api_password#:#API Password
 conf_api_password_info#:#Password of the above user.
 conf_api_url#:#API URL
-conf_api_url_info#:#Base URL of the ViMP API. E.g.: https://my-vimp.com/api
+conf_api_url_info#:#Base URL of the VIMP API. E.g.: https://my-vimp.com/api
 conf_user_mapping_ext#:#User Mapping (external users)
-conf_user_mapping_ext_info#:#The formula, with which the ViMP logins of external ILIAS users are composed. The following placeholders can be used:<br>&#123LOGIN}: username<br>&#123EXT_ID}: external ID<br>&#123CLIENT_ID}: client ID of this ILIAS platform
+conf_user_mapping_ext_info#:#The formula, with which the VIMP logins of external ILIAS users are composed. The following placeholders can be used:<br>&#123LOGIN}: username<br>&#123EXT_ID}: external ID<br>&#123CLIENT_ID}: client ID of this ILIAS platform
 conf_user_mapping_local#:#User Mapping (local users)
-conf_user_mapping_local_info#:#The formula, with which the ViMP logins of local ILIAS users are composed. The following placeholders can be used:<br>&#123LOGIN}: username<br>&#123EXT_ID}: external ID<br>&#123CLIENT_ID}: client ID of this ILIAS platform
+conf_user_mapping_local_info#:#The formula, with which the VIMP logins of local ILIAS users are composed. The following placeholders can be used:<br>&#123LOGIN}: username<br>&#123EXT_ID}: external ID<br>&#123CLIENT_ID}: client ID of this ILIAS platform
 conf_allow_public#:#Allow setting videos public
 conf_allow_public_info#:#Defines if users with the permission "Edit Settings" are authorized to set uploaded videos "Public". If deactivated, videos uploaded are always set "Hidden".
 conf_allow_public_upload#:#Permission „Upload“ can set Videos public
 conf_allow_public_upload_info#:#Defines if users with the permission "Upload" are authorized to set uploaded videos "Public". If deactivated, videos uploaded by such users are always set "Hidden".
 conf_form_fields#:#Additional Form Fields
-conf_form_fields_info#:#Additional in ViMP defined media fields can be configured here and will thereby be available in the form for editing and uploading videos.<br>Textfield 1: Field name<br>Textfield 2: Display name<br>Checkbox 1: Required<br>Checkbox 2: Fill field automatically with username<br>Checkbox 3: Show below video player<br>Selection: Field Type
+conf_form_fields_info#:#Additional in VIMP defined media fields can be configured here and will thereby be available in the form for editing and uploading videos.<br>Textfield 1: Field name<br>Textfield 2: Display name<br>Checkbox 1: Required<br>Checkbox 2: Fill field automatically with username<br>Checkbox 3: Show below video player<br>Selection: Field Type
 conf_filter_fields#:#Additional Table Filters
 conf_filter_fields_info#:#The additional media fields can be configured here to make them available as filters in tables.<br>Textfield 1: Field name<br>Textfield 2: Display name
 conf_media_permissions#:#Use Media Permissions
 conf_media_permissions_info#:#Defines if and which media permissions can be set when uploading or editing a video.
 conf_media_permissions_preselected#:#Preselection
 conf_media_permissions_preselected_info#:#Preselect these permissions in the upload dialog.
-conf_media_permissions_0_info#:#Warning: can lead to errors if no default media permissions are selected in ViMP (see ViMP Backend > Configuration > Media > Media Permission)
+conf_media_permissions_0_info#:#Warning: can lead to errors if no default media permissions are selected in VIMP (see VIMP Backend > Configuration > Media > Media Permission)
 conf_mapping_priority#:#Mapping Priority
 conf_mapping_priority_info#:#Defines which way the plugin tries to find a user first. If no user is found this way, the plugin will search for the other field. If again nothing is found, a user will be created.
 conf_mapping_priority_0#:#Email
@@ -50,9 +50,9 @@ conf_cache_ttl_token_info#:#Time-To-Live in seconds
 conf_cache_ttl_config#:#TTL Config
 conf_cache_ttl_config_info#:#Time-To-Live in seconds
 conf_cache#:#Caching
-conf_cache_info#:#Objects are cached to improve performance. After the TTL of an object is expired, it will be removed and reloaded (if TTL = 0, the object will not be removed automatically). Flush the whole cache with the button on top of this form or flush only the video cache inside a ViMP Object.
+conf_cache_info#:#Objects are cached to improve performance. After the TTL of an object is expired, it will be removed and reloaded (if TTL = 0, the object will not be removed automatically). Flush the whole cache with the button on top of this form or flush only the video cache inside a VIMP Object.
 conf_embed_player#:#Embedded Video Player
-conf_embed_player_info#:#Use ViMP's embedded video player. If the learning progress is active, the plugin will still use it's own player, since the learning progress can not be tracked with the embedded player.
+conf_embed_player_info#:#Use VIMP's embedded video player. If the learning progress is active, the plugin will still use it's own player, since the learning progress can not be tracked with the embedded player.
 conf_text#:#Text Field
 conf_checkbox#:#Checkbox
 conf_form_field_type_0#:#Text Field
@@ -60,7 +60,7 @@ conf_form_field_type_1#:#Checkbox
 conf_upload_limit#:#Upload Limit (MB)
 conf_upload_limit_info#:#Limit for the uploaded filesize in MB. Enter '0' for no limit.
 conf_disable_verify_peer#:#Disable Peer Verification
-conf_disable_verify_peer_info#:#Deactivates the verification of the SSL certificate owner when communicating with the ViMP server.
+conf_disable_verify_peer_info#:#Deactivates the verification of the SSL certificate owner when communicating with the VIMP server.
 conf_default_publication#:#Default access
 conf_default_publication_info#:#Select default access of videos during upload
 msg_success#:#Changes saved successfully.
@@ -122,10 +122,10 @@ to#:#To
 category#:#Category
 views#:#Views
 save_settings#:#Save Settings
-exception_message#:#A connection with the ViMP server could not be established
+exception_message#:#A connection with the VIMP server could not be established
 not_available#:#Not Available
-not_available_description#:#This video was not found in ViMP, it may have been deleted from the platform.
-confirm_delete_text#:#Warning: this action will delete the video in ViMP and make the video unavailable in every ILIAS object using it. Are you sure that you want to delete this video?
+not_available_description#:#This video was not found in VIMP, it may have been deleted from the platform.
+confirm_delete_text#:#Warning: this action will delete the video in VIMP and make the video unavailable in every ILIAS object using it. Are you sure that you want to delete this video?
 video_deleted#:#Video deleted successfully.
 media_permissions#:#Media Permissions
 media_permissions_info#:#Restrict public and hidden videos to certain roles.
@@ -153,7 +153,7 @@ form_msg_select#:#Please choose a file to upload.
 form_msg_not_supported#:#File type not supported.
 form_incomplete#:#Some of this forms fields are mandatory and need to be filled out. Please complete these fields.
 msg_incomplete#:#Some of this forms fields are mandatory and need to be filled out. Please complete these fields.
-object_title#:#ViMP-Object
+object_title#:#VIMP-Object
 video_title#:#Video Title
 msg_username_not_found#:#The username could not be found.
 msg_warning_change_owner#:#Warning: You are changing the owner of one of your videos. After this action you are not able to edit this video anymore. Do you want to continue?
@@ -162,18 +162,18 @@ msg_no_videos#:#There are currently no videos in this object.
 msg_error_login_not_found#:#No user with the given username could be found in ILIAS.
 confirmation_new_owner#:#Video title: "%s", new owner: %s
 new_owner#:#New Owner
-xvmp_new#:#Create new ViMP object
+xvmp_new#:#Create new VIMP object
 xvmp_add#:#Create
-cat_create_xvmp#:#Create ViMP
-crs_create_xvmp#:#Create ViMP
-fold_create_xvmp#:#Create ViMP
-grp_create_xvmp#:#Create ViMP
-root_create_xvmp#:#Create ViMP
-xvmp_visible#:#Visible: ViMP is visible
+cat_create_xvmp#:#Create VIMP
+crs_create_xvmp#:#Create VIMP
+fold_create_xvmp#:#Create VIMP
+grp_create_xvmp#:#Create VIMP
+root_create_xvmp#:#Create VIMP
+xvmp_visible#:#Visible: VIMP is visible
 xvmp_read#:#Read: User can watch the videos
 xvmp_rep_robj_xvmp_perm_upload#:#Upload: User can upload videos
-xvmp_write#:#Edit Settings: User can edit content and settings of ViMP object
-xvmp_delete#:#Delete: User can delete ViMP object
+xvmp_write#:#Edit Settings: User can edit content and settings of VIMP object
+xvmp_delete#:#Delete: User can delete VIMP object
 xvmp_edit_permission#:#Change Permissions: User can change permission settings
 form_title_change_owner#:#Search User
 search#:#Search
@@ -210,7 +210,7 @@ availability_between_short#:#%s - %s
 availability_from_short#:#%s
 availability_to_short#:#Until %s
 available#:#Available
-obj_xvmp#:#ViMP
-objs_xvmp#:#ViMP
+obj_xvmp#:#VIMP
+objs_xvmp#:#VIMP
 change_owner#:#Change Owner
 auto_subtitle#:#Automatic subtitle creation<br><br><div class="help-block">Using this functionality results in a transfer of the <br>audio track to the third-party service Amberscript. <br>Please note the corresponding <a href="https://www.amberscript.com/en/privacy-policy/">privacy policy</a>.</div>
