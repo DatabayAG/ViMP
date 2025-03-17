@@ -121,7 +121,7 @@ class xvmpCache extends ilGlobalCache
      */
     public function flush(bool $complete = false) : bool
     {
-        if (!$this->global_cache instanceof ilGlobalCacheService || !$this->isActive()) {
+        if (!$this->isActive()) {
             return false;
         }
 
@@ -159,7 +159,7 @@ class xvmpCache extends ilGlobalCache
      */
     public function delete($key) : bool
     {
-        if (!$this->global_cache instanceof ilGlobalCacheService || !$this->isActive()) {
+        if (!$this->isActive()) {
             return false;
         }
 
@@ -175,7 +175,7 @@ class xvmpCache extends ilGlobalCache
     public function set($key, $value, $ttl = null) : bool
     {
         //		$ttl = $ttl ? $ttl : 480;
-        if (!$this->global_cache instanceof ilGlobalCacheService || !$this->isActive()) {
+        if (!$this->isActive()) {
             return false;
         }
 
@@ -188,7 +188,7 @@ class xvmpCache extends ilGlobalCache
      */
     public function get($key) : mixed
     {
-        if (!$this->global_cache instanceof ilGlobalCacheService || !$this->isActive()) {
+        if (!$this->isActive()) {
             return false;
         }
         $unserialized_return = $this->global_cache->unserialize($this->global_cache->get($key));
