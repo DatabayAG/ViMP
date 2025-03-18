@@ -56,12 +56,16 @@ class xvmpUser extends xvmpObject
      */
     public static function getVimpUser(ilObjUser $ilObjUser) : xvmpUser|bool
     {
+        global $DIC;
         $key = self::class . '-' . $ilObjUser->getId();
-        $existing = xvmpCacheFactory::getInstance()->get($key);
+        $existing = xvmpCacheFactory::getInstance()->get($key, $DIC->refinery()->to()->string());
 
         if ($existing) {
             xvmpCurlLog::getInstance()->write('CACHE: used cached: ' . $key, xvmpCurlLog::DEBUG_LEVEL_2);
-            return $existing;
+            if($existing instanceof xvmpUser) {
+                return $existing;
+            }
+            return false;
         }
 
         xvmpCurlLog::getInstance()->write('CACHE: cache not used: ' . $key, xvmpCurlLog::DEBUG_LEVEL_2);
@@ -82,7 +86,8 @@ class xvmpUser extends xvmpObject
         }
 
         if ($xvmpUser) {
-            self::cache($key, $xvmpUser, xvmpConf::getConfig(xvmpConf::F_CACHE_TTL_USERS));
+            $xvmpUserArray = get_object_vars($xvmpUser);
+            xvmpCacheFactory::getInstance()->set($key, $xvmpUserArray);
         }
 
         return $xvmpUser;

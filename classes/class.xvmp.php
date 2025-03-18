@@ -29,8 +29,9 @@ class xvmp
      */
     public static function getViMPVersion() : mixed
     {
+        global $DIC;
         $key = 'version';
-        $existing = xvmpCacheFactory::getInstance()->get($key);
+        $existing = xvmpCacheFactory::getInstance()->get($key, $DIC->refinery()->to()->string());
         if ($existing) {
             xvmpCurlLog::getInstance()->write('CACHE: used cached: ' . $key, xvmpCurlLog::DEBUG_LEVEL_2);
             return $existing;
@@ -184,7 +185,8 @@ class xvmp
      */
     public static function getToken() : mixed
     {
-        $token = xvmpCacheFactory::getInstance()->get(self::TOKEN);
+        global $DIC;
+        $token = xvmpCacheFactory::getInstance()->get(self::TOKEN, $DIC->refinery()->to()->string());
         if ($token) {
             xvmpCurlLog::getInstance()->write('CACHE: used cached: ' . self::TOKEN, xvmpCurlLog::DEBUG_LEVEL_2);
 
@@ -197,8 +199,7 @@ class xvmp
             xvmpConf::getConfig(xvmpConf::F_API_PASSWORD))
                                ->getResponseArray();
         $token = $response[self::TOKEN];
-        xvmpCacheFactory::getInstance()->set(self::TOKEN, $token,
-            (int) xvmpConf::getConfig(xvmpConf::F_CACHE_TTL_TOKEN));
+        xvmpCacheFactory::getInstance()->set(self::TOKEN, $token);
 
         return $token;
     }
