@@ -15,7 +15,7 @@ class xvmpCache extends ILIAS\Cache\Container\BaseRequest
 {
     const CACHE_KEY_VIMP = 'VIMP';
     private Factory $refinery;
-    private static $instance = null;
+    private static ?xvmpCache $instance = null;
 
     public function __construct()
     {
@@ -30,10 +30,6 @@ class xvmpCache extends ILIAS\Cache\Container\BaseRequest
             self::$instance = new self();
         }
         return self::$instance;
-    }
-
-    public function getContainer() {
-        return $this->container;
     }
 
     public function getContainerKey() : string
