@@ -13,12 +13,12 @@ class xvmpUser extends xvmpObject
     /**
      * @var int
      */
-    protected int $uid;
+    public int $uid;
     protected string $status;
     protected string $username;
     protected string $firstname;
     protected string $lastname;
-    protected string $email;
+    public string $email;
     protected string $avatar;
     protected string $cover;
     protected ?string $displayname;
@@ -31,14 +31,14 @@ class xvmpUser extends xvmpObject
     protected int $external;
     protected string|array $authenticator;
     protected string $updated_at;
-    protected array $roles;
+    public array $roles;
 
     /**
      * @param ilObjUser $ilObjUser
      * @return xvmpUser|bool
      * @throws xvmpException
      */
-    public static function getOrCreateVimpUser(ilObjUser $ilObjUser) : xvmpUser|bool
+    public static function getOrCreateVimpUser(ilObjUser $ilObjUser) : xvmpUser|array|bool
     {
         $xvmpUser = self::getVimpUser($ilObjUser);
         if (!$xvmpUser) {
@@ -54,7 +54,7 @@ class xvmpUser extends xvmpObject
      * @throws xvmpException
      * @internal param bool $omit_creation
      */
-    public static function getVimpUser(ilObjUser $ilObjUser) : xvmpUser|bool
+    public static function getVimpUser(ilObjUser $ilObjUser) : xvmpUser|array|bool
     {
         global $DIC;
         $key = self::class . '-' . $ilObjUser->getId();
@@ -62,7 +62,8 @@ class xvmpUser extends xvmpObject
 
         if ($existing) {
             xvmpCurlLog::getInstance()->write('CACHE: used cached: ' . $key, xvmpCurlLog::DEBUG_LEVEL_2);
-            if($existing instanceof xvmpUser) {
+            $existing = json_decode($existing, true);
+            if(sizeof($existing) > 1) {
                 return $existing;
             }
             return false;
@@ -86,7 +87,8 @@ class xvmpUser extends xvmpObject
         }
 
         if ($xvmpUser) {
-            $xvmpUserArray = get_object_vars($xvmpUser);
+
+            $xvmpUserArray = json_encode($xvmpUser);
             xvmpCacheFactory::getInstance()->set($key, $xvmpUserArray);
         }
 
