@@ -44,6 +44,10 @@ class xvmpUserRoles extends xvmpObject
      * @var String
      */
     protected string $updated_at;
+    protected bool $livestream_perm_access;
+    protected bool $livestream_perm_default;
+    protected bool $channel_perm_access;
+    protected bool $channel_perm_default;
 
     /**
      * @inheritdoc

@@ -90,10 +90,14 @@ class xvmpMedium extends xvmpObject
     protected string $updated_at;
     protected array $categories;
     protected string $tags;
+    protected bool $accept_comment;
+    protected string $slug;
+    protected int $count_likes;
     protected ?array $subtitles = [];
     protected bool $download_allowed = false;
     protected ?DateTime $startdate = null;
     protected ?DateTime $enddate = null;
+    protected string $edited_at;
 
     /**
      * @param null  $ilObjUser
