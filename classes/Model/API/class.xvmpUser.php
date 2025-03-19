@@ -89,7 +89,7 @@ class xvmpUser extends xvmpObject
         if ($xvmpUser) {
 
             $xvmpUserArray = json_encode($xvmpUser);
-            xvmpCacheFactory::getInstance()->set($key, $xvmpUserArray);
+            xvmpCacheFactory::getInstance()->set($key, $xvmpUserArray, xvmpConf::getConfig(xvmpConf::F_CACHE_TTL_USERS));
         }
 
         return $xvmpUser;

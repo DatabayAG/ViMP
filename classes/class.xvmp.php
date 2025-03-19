@@ -199,7 +199,7 @@ class xvmp
             xvmpConf::getConfig(xvmpConf::F_API_PASSWORD))
                                ->getResponseArray();
         $token = $response[self::TOKEN];
-        xvmpCacheFactory::getInstance()->set(self::TOKEN, $token);
+        xvmpCacheFactory::getInstance()->set(self::TOKEN, $token, (int) xvmpConf::getConfig(xvmpConf::F_CACHE_TTL_TOKEN));
 
         return $token;
     }
