@@ -64,8 +64,10 @@ class xvmpUserRoles extends xvmpObject
      */
     public static function getAllAsArray() : array
     {
-        $existing = xvmpCacheFactory::getInstance()->get(self::class);
+        global $DIC;
+        $existing = xvmpCacheFactory::getInstance()->get(self::class, $DIC->refinery()->to()->string());
         if ($existing) {
+            $existing = json_decode($existing, true);
             xvmpCurlLog::getInstance()->write('CACHE: used cached: ' . self::class, xvmpCurlLog::DEBUG_LEVEL_2);
             return $existing;
         }

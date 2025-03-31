@@ -113,7 +113,7 @@ class xvmpMedium extends xvmpObject
             $ilObjUser = $ilUser;
         }
 
-        $uid = xvmpUser::getOrCreateVimpUser($ilObjUser)->getUid();
+        $uid = xvmpUser::getOrCreateVimpUser($ilObjUser)['uid'];
         $response = xvmpRequest::getUserMedia($uid, $filter)->getResponseArray()['media']['medium'] ?? array();
         if (!$response) {
             return array();
@@ -197,9 +197,11 @@ class xvmpMedium extends xvmpObject
      */
     public static function getObjectAsArray($id) : array
     {
+        global $DIC;
         $key = self::class . '-' . $id;
-        $existing = xvmpCacheFactory::getInstance()->get($key);
+        $existing = xvmpCacheFactory::getInstance()->get($key, $DIC->refinery()->to()->string());
         if ($existing) {
+            $existing = json_decode($existing, true);
             xvmpCurlLog::getInstance()->write('CACHE: used cached: ' . $key, xvmpCurlLog::DEBUG_LEVEL_2);
             return $existing;
         }
@@ -575,7 +577,7 @@ class xvmpMedium extends xvmpObject
         global $DIC;
         $user = $DIC['ilUser'];
         $vimp_user = xvmpUser::getVimpUser($user);
-        return ($vimp_user && ($vimp_user->getUid() == $this->getUid()));
+        return ($vimp_user && ($vimp_user['uid'] == $this->getUid()));
     }
 
     /**
