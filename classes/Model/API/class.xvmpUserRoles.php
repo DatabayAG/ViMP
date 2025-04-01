@@ -83,7 +83,7 @@ class xvmpUserRoles extends xvmpObject
             $cache_array[$item['id']] = $item;
         }
 
-        self::cache(self::class, $cache_array);
+        self::cache(self::class, $cache_array, (int) xvmpConf::getConfig(xvmpConf::F_CACHE_TTL_CONFIG));
         return $cache_array;
     }
 

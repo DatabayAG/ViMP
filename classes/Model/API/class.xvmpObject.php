@@ -154,7 +154,7 @@ class xvmpObject
     {
         //		self::$cache[$key] = $object;
         xvmpCurlLog::getInstance()->write('CACHE: added to cache: ' . $identifier, xvmpCurlLog::DEBUG_LEVEL_1);
-        xvmpCacheFactory::getInstance()->set($identifier, json_encode($object));
+        xvmpCacheFactory::getInstance()->set($identifier, json_encode($object), $ttl);
     }
 
     /**

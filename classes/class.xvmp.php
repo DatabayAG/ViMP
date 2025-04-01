@@ -41,7 +41,7 @@ class xvmp
         $vimp_version = substr($response, 0, strpos($response, ' '));
 
         xvmpCurlLog::getInstance()->write('CACHE: added to cache: ' . $key, xvmpCurlLog::DEBUG_LEVEL_1);
-        xvmpCacheFactory::getInstance()->set($key, $vimp_version);
+        xvmpCacheFactory::getInstance()->set($key, $vimp_version, (int) xvmpConf::getConfig(xvmpConf::F_CACHE_TTL_CONFIG));
 
         return $vimp_version;
     }
