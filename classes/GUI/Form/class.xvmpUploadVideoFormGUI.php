@@ -149,6 +149,7 @@ class xvmpUploadVideoFormGUI extends xvmpVideoFormGUI
             // the object has to be loaded again, since the response from "upload" has another format for the categories
             // also, this adds it to the cache
             $video = xvmpMedium::getObjectAsArray($this->data[xvmpMedium::F_MID]);
+            xvmpCacheFactory::getInstance()->delete(xvmpMedium::F_USER_MEDIA . '-' . $video['uid']);
             xvmpEventLog::logEvent(xvmpEventLog::ACTION_UPLOAD, $this->parent_gui->getObjId(), $video);
             return true;
         }
