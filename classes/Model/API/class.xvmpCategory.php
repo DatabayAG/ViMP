@@ -26,12 +26,19 @@ class xvmpCategory extends xvmpObject
 
     public static function getObjectAsArray($id) : array
     {
+        global $DIC;
         $key = self::class;
-        $existing = xvmpCacheFactory::getInstance()->get($key);
-        if ($existing && isset($existing[$id])) {
-            xvmpCurlLog::getInstance()->write('CACHE: used cached: ' . $key . '-' . $id, xvmpCurlLog::DEBUG_LEVEL_2);
-            return $existing[$id];
+        $existing = xvmpCacheFactory::getInstance()->get($key, $DIC->refinery()->to()->string());
+        if($existing !== null) {
+            $existing = json_decode($existing, true);
+            if ( isset($existing[$id])) {
+                xvmpCurlLog::getInstance()->write('CACHE: used cached: ' . $key . '-' . $id, xvmpCurlLog::DEBUG_LEVEL_2);
+                return $existing[$id];
+            } else {
+                xvmpCurlLog::getInstance()->write('CACHE: NO used cached: ' . $key . '-' . $id, xvmpCurlLog::DEBUG_LEVEL_2);
+            }
         }
+
 
         $response = xvmpRequest::getCategory($id)->getResponseArray()['category'];
 
@@ -54,13 +61,18 @@ class xvmpCategory extends xvmpObject
 
     public static function getAllAsArray() : array
     {
+        global $DIC;
         $key = self::class;
-        $existing = xvmpCacheFactory::getInstance()->get($key);
-        if ($existing && ($existing['loaded'] == 1)) {
-            unset($existing['loaded']);
-            xvmpCurlLog::getInstance()->write('CACHE: used cached: ' . $key, xvmpCurlLog::DEBUG_LEVEL_2);
-            return $existing;
+        $existing = xvmpCacheFactory::getInstance()->get($key, $DIC->refinery()->to()->string());
+        if($existing !== null) {
+            $existing = json_decode($existing, true);
+            if ($existing['loaded'] == 1) {
+                unset($existing['loaded']);
+                xvmpCurlLog::getInstance()->write('CACHE: used cached: ' . $key, xvmpCurlLog::DEBUG_LEVEL_2);
+                return $existing;
+            }
         }
+
 
         xvmpCurlLog::getInstance()->write('CACHE: cached not used: ' . $key, xvmpCurlLog::DEBUG_LEVEL_2);
 

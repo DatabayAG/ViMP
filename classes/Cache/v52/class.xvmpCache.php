@@ -2,201 +2,44 @@
 
 declare(strict_types=1);
 
+use ILIAS\Refinery\Transformation;
+use ILIAS\Refinery\Factory;
+use ILIAS\Cache\Container\BaseRequest;
+
 /**
  * Class xvmpCache
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  * @version 1.0.0
  */
-class xvmpCache extends ilGlobalCache
+class xvmpCache extends ILIAS\Cache\Container\BaseRequest
 {
-    public const TYPE_STATIC = 0;
-    public const TYPE_MEMCACHED = 2;
-    public const TYPE_APC = 3;
-    public const COMP_PREFIX = 'xvmp';
-    /**
-     * @var bool
-     */
-    protected static bool $override_active = false;
-    /**
-     * @var array
-     */
-    protected static array $active_components = array(
-        self::COMP_PREFIX,
-    );
+    const CACHE_KEY_VIMP = 'VIMP';
+    private Factory $refinery;
+    private static ?xvmpCache $instance = null;
 
-    /**
-     * @return xvmpCache
-     */
-    public static function getInstance($component) : ilGlobalCache
+    public function __construct()
     {
-        $service_type = self::getSettings()->getService();
-        $xvmpCache = new self($service_type);
-
-        $xvmpCache->setActive(false);
-        self::setOverrideActive(false);
-
-        return $xvmpCache;
+        global $DIC;
+        $this->refinery = $DIC->refinery();
+        parent::__construct(self::CACHE_KEY_VIMP);
     }
 
-
-    //	/**
-    //	 * @param null $component
-    //	 *
-    //	 * @return ilGlobalCache|void
-    //	 * @throws ilException
-    //	 */
-    //	public static function getInstance($component) {
-    //		throw new ilException('xvmpCache::getInstance() should not be called. Please call xvmpCache::getCacheInstance() instead.');
-    //	}
-
-    public function init() : void
+    public static function getInstance()
     {
-        $this->initCachingService();
-        $this->setActive(true);
-        self::setOverrideActive(true);
-    }
-
-    protected function initCachingService() : void
-    {
-        /**
-         * @var $ilGlobalCacheService ilGlobalCacheService
-         */
-        if (!$this->getComponent()) {
-            $this->setComponent('ViMP');
+        if(self::$instance === null) {
+            self::$instance = new self();
         }
-
-        if ($this->isVimpCacheEnabled()) {
-            $serviceName = self::lookupServiceClassName($this->getServiceType());
-            $ilGlobalCacheService = new $serviceName(self::$unique_service_id, $this->getComponent());
-            $ilGlobalCacheService->setServiceType($this->getServiceType());
-        } else {
-            $serviceName = self::lookupServiceClassName(self::TYPE_STATIC);
-            $ilGlobalCacheService = new $serviceName(self::$unique_service_id, $this->getComponent());
-            $ilGlobalCacheService->setServiceType(self::TYPE_STATIC);
-        }
-
-        $this->global_cache = $ilGlobalCacheService;
-        $this->setActive(in_array($this->getComponent(), self::getActiveComponents()));
+        return self::$instance;
     }
 
-    /**
-     * Checks if live voting is able to use the global cache.
-     * @return bool
-     */
-    private function isVimpCacheEnabled() : bool
+    public function getContainerKey() : string
+    {
+        return self::CACHE_KEY_VIMP;
+    }
+
+    public function isForced() : bool
     {
         return true;
     }
 
-    /**
-     * @param $service_type
-     * @return string
-     */
-    public static function lookupServiceClassName($service_type) : string
-    {
-        switch ($service_type) {
-            case self::TYPE_APC:
-                return 'ilApc';
-            case self::TYPE_MEMCACHED:
-                return 'ilMemcache';
-            case self::TYPE_STATIC:
-                return 'ilStaticCache';
-            default:
-                return 'ilStaticCache';
-        }
-    }
-
-    /**
-     * @return array
-     */
-    public static function getActiveComponents() : array
-    {
-        return self::$active_components;
-    }
-
-    /**
-     * @param bool $complete
-     * @return bool
-     * @throws RuntimeException
-     */
-    public function flush(bool $complete = false) : bool
-    {
-        if (!$this->isActive()) {
-            return false;
-        }
-
-        return parent::flush(true);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isActive() : bool
-    {
-        return self::isOverrideActive();
-    }
-
-    /**
-     * @return boolean
-     */
-    public static function isOverrideActive() : bool
-    {
-        return self::$override_active;
-    }
-
-    /**
-     * @param boolean $override_active
-     */
-    public static function setOverrideActive(bool $override_active) : void
-    {
-        self::$override_active = $override_active;
-    }
-
-    /**
-     * @param $key
-     * @return bool
-     * @throws RuntimeException
-     */
-    public function delete($key) : bool
-    {
-        if (!$this->isActive()) {
-            return false;
-        }
-
-        return parent::delete($key);
-    }
-
-    /**
-     * @param      $key
-     * @param      $value
-     * @param null $ttl
-     * @return bool
-     */
-    public function set($key, $value, $ttl = null) : bool
-    {
-        //		$ttl = $ttl ? $ttl : 480;
-        if (!$this->isActive()) {
-            return false;
-        }
-
-        return $this->global_cache->set($key, $this->global_cache->serialize($value), (int) $ttl);
-    }
-
-    /**
-     * @param $key
-     * @return bool|mixed|null
-     */
-    public function get($key) : mixed
-    {
-        if (!$this->isActive()) {
-            return false;
-        }
-        $unserialized_return = $this->global_cache->unserialize($this->global_cache->get($key));
-
-        if ($unserialized_return) {
-            return $unserialized_return;
-        }
-
-        return null;
-    }
 }

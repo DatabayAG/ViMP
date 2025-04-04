@@ -49,6 +49,7 @@ class xvmpMedium extends xvmpObject
     public const F_TAGS = 'tags';
     public const F_CATEGORIES = 'categories';
     public const F_SUBTITLES = 'subtitles';
+    public const F_USER_MEDIA = 'xvmpUserMedia';
 
     public static array $published_id_mapping = array(
         'public' => "0",
@@ -90,10 +91,15 @@ class xvmpMedium extends xvmpObject
     protected string $updated_at;
     protected array $categories;
     protected string $tags;
+    protected bool $accept_comment;
+    protected string $slug;
+    protected string $streaming;
+    protected int $count_likes;
     protected ?array $subtitles = [];
     protected bool $download_allowed = false;
     protected ?DateTime $startdate = null;
     protected ?DateTime $enddate = null;
+    protected string $edited_at;
 
     /**
      * @param null  $ilObjUser
@@ -102,13 +108,23 @@ class xvmpMedium extends xvmpObject
      */
     public static function getUserMedia($ilObjUser = null, array $filter = array()) : array
     {
+        global $DIC;
         if (!$ilObjUser) {
-            global $DIC;
             $ilUser = $DIC['ilUser'];
             $ilObjUser = $ilUser;
         }
 
         $uid = xvmpUser::getOrCreateVimpUser($ilObjUser)->getUid();
+        $key = self::F_USER_MEDIA . '-' . $uid;
+        $existing = xvmpCacheFactory::getInstance()->get($key, $DIC->refinery()->to()->string());
+        if ($existing) {
+            $existing = json_decode($existing, true);
+            xvmpCurlLog::getInstance()->write('CACHE: used cached: ' . $key, xvmpCurlLog::DEBUG_LEVEL_2);
+            return $existing;
+        }
+
+        xvmpCurlLog::getInstance()->write('CACHE: cached not used: ' . $key, xvmpCurlLog::DEBUG_LEVEL_2);
+
         $response = xvmpRequest::getUserMedia($uid, $filter)->getResponseArray()['media']['medium'] ?? array();
         if (!$response) {
             return array();
@@ -118,11 +134,13 @@ class xvmpMedium extends xvmpObject
             $response = array($response);
         }
 
-        foreach ($response as $key => $medium) {
+        foreach ($response as $id => $medium) {
             if ($medium['mediatype'] != 'video') {
-                unset($response[$key]);
+                unset($response[$id]);
             }
         }
+
+        self::cache($key, $response, xvmpConf::getConfig(xvmpConf::F_CACHE_TTL_VIDEOS));
         return $response;
     }
 
@@ -192,9 +210,11 @@ class xvmpMedium extends xvmpObject
      */
     public static function getObjectAsArray($id) : array
     {
+        global $DIC;
         $key = self::class . '-' . $id;
-        $existing = xvmpCacheFactory::getInstance()->get($key);
+        $existing = xvmpCacheFactory::getInstance()->get($key, $DIC->refinery()->to()->string());
         if ($existing) {
+            $existing = json_decode($existing, true);
             xvmpCurlLog::getInstance()->write('CACHE: used cached: ' . $key, xvmpCurlLog::DEBUG_LEVEL_2);
             return $existing;
         }
@@ -569,8 +589,8 @@ class xvmpMedium extends xvmpObject
     {
         global $DIC;
         $user = $DIC['ilUser'];
-        $vimp_user = xvmpUser::getVimpUser($user);
-        return ($vimp_user && ($vimp_user->getUid() == $this->getUid()));
+        $vimp_user = (array) xvmpUser::getVimpUser($user);
+        return ($vimp_user && ($vimp_user['uid'] == $this->getUid()));
     }
 
     /**

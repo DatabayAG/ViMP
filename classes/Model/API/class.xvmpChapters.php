@@ -23,9 +23,11 @@ class xvmpChapters extends xvmpObject
      */
     public static function getObjectAsArray($id) : array
     {
+        global $DIC;
         $key = self::class . '-' . $id;
-        $existing = xvmpCacheFactory::getInstance()->get($key);
+        $existing = xvmpCacheFactory::getInstance()->get($key, $DIC->refinery()->to()->string());
         if ($existing) {
+            $existing = json_decode($existing, true);
             xvmpCurlLog::getInstance()->write('CACHE: used cached: ' . $key, xvmpCurlLog::DEBUG_LEVEL_2);
             return $existing;
         }

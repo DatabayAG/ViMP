@@ -101,6 +101,7 @@ class xvmpEditVideoFormGUI extends xvmpVideoFormGUI
         if (parent::saveForm()) {
             // changelog entry
             xvmpCacheFactory::getInstance()->delete(xvmpMedium::class . '-' . $this->medium['mid']);
+            xvmpCacheFactory::getInstance()->delete(xvmpMedium::F_USER_MEDIA . '-' . $this->medium['uid']);
             $new = xvmpMedium::getObjectAsArray($this->medium['mid']);
 
             xvmpEventLog::logEvent(xvmpEventLog::ACTION_EDIT, $this->parent_gui->getObjId(), $new, $this->medium);

@@ -449,7 +449,9 @@ class xvmpCurl
         }
         $backtrace = "Backtrace: \n";
         foreach (debug_backtrace() as $b) {
-            $backtrace .= $b['file'] . ': ' . $b["function"] . "\n";
+            if(isset($b['file']) && isset($b['function'])) {
+                $backtrace .= $b['file'] . ': ' . $b["function"] . "\n";
+            }
         }
         $xvmpCurlLog->write($backtrace, xvmpCurlLog::DEBUG_LEVEL_4);
         if (xvmpCurlLog::getLogLevel() >= xvmpCurlLog::DEBUG_LEVEL_3) {
