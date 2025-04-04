@@ -114,7 +114,7 @@ class xvmpMedium extends xvmpObject
             $ilObjUser = $ilUser;
         }
 
-        $uid = xvmpUser::getOrCreateVimpUser($ilObjUser)['uid'];
+        $uid = xvmpUser::getOrCreateVimpUser($ilObjUser)->getUid();
         $key = self::F_USER_MEDIA . '-' . $uid;
         $existing = xvmpCacheFactory::getInstance()->get($key, $DIC->refinery()->to()->string());
         if ($existing) {

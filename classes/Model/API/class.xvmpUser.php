@@ -38,12 +38,16 @@ class xvmpUser extends xvmpObject
      * @return xvmpUser|bool
      * @throws xvmpException
      */
-    public static function getOrCreateVimpUser(ilObjUser $ilObjUser) : xvmpUser|array|bool
+    public static function getOrCreateVimpUser(ilObjUser $ilObjUser) : xvmpUser
     {
         $xvmpUser = self::getVimpUser($ilObjUser);
         if (!$xvmpUser) {
             $uid = self::createShadowUser($ilObjUser);
             $xvmpUser = self::getVimpUserById($uid);
+        } elseif(is_array($xvmpUser)) {
+            $ArrayUser = $xvmpUser;
+            $xvmpUser = new self();
+            $xvmpUser->buildObjectFromArray($ArrayUser);
         }
         return $xvmpUser;
     }
@@ -184,14 +188,16 @@ class xvmpUser extends xvmpObject
     {
         if (isset($array['roles']['role']['id'])) {
             $array['roles'] = array($array['roles']['role']['id'] => $array['roles']['role']['name']);
-        } else {
+        } elseif(isset($array['roles']['role'])) {
             foreach ($array['roles']['role'] as $key => $value) {
                 $array['roles'][$value['id']] = $value['name'];
             }
             unset($array['roles']['role']);
         }
         foreach ($array as $key => $value) {
-            $this->{$key} = $value;
+            if(property_exists($this, $key)) {
+                $this->{$key} = $value;
+            }
         }
     }
 
