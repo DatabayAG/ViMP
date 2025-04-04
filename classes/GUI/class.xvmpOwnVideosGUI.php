@@ -130,7 +130,8 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
         $login = filter_input(INPUT_POST, 'login');
 
         $medium = xvmpMedium::getObjectAsArray($mid);
-        if ($medium['uid'] !== xvmpUser::getVimpUser($this->dic->user())->getUid()) {
+        $current_user_id = $medium['uid'];
+        if ($medium['uid'] !== xvmpUser::getVimpUser($this->dic->user())['uid']) {
             $this->dic->ui()->mainTemplate()->setOnScreenMessage('failure', $this->pl->txt('permission_denied'), true);
             $this->dic->ctrl()->redirect($this, self::CMD_STANDARD);
         }
@@ -172,6 +173,8 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
         if ($response) {
             $this->dic->ui()->mainTemplate()->setOnScreenMessage('success', $this->pl->txt('form_saved'), true);
             xvmpCacheFactory::getInstance()->delete(xvmpMedium::class . '-' . $mid);
+            xvmpCacheFactory::getInstance()->delete(xvmpMedium::F_USER_MEDIA . '-' . $medium['uid']);
+            xvmpCacheFactory::getInstance()->delete(xvmpMedium::F_USER_MEDIA . '-' . $current_user_id);
             xvmpMedium::cache(xvmpMedium::class . '-' . $mid, $medium);
             xvmpEventLog::logEvent(xvmpEventLog::ACTION_CHANGE_OWNER, $this->getObjId(), array(
                 'owner' => $login,
@@ -262,6 +265,7 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
         // fetch the video for logging purposes
         $video = xvmpMedium::getObjectAsArray($mid);
 
+        xvmpCacheFactory::getInstance()->delete(xvmpMedium::F_USER_MEDIA . '-' . $video['uid']);
         xvmpMedium::deleteObject($mid);
 
         xvmpEventLog::logEvent(xvmpEventLog::ACTION_DELETE, $this->getObjId(), $video);
