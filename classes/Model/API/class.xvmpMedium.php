@@ -100,6 +100,8 @@ class xvmpMedium extends xvmpObject
     protected ?DateTime $startdate = null;
     protected ?DateTime $enddate = null;
     protected string $edited_at;
+    protected string $smil;
+    protected string $smil_preview;
 
     /**
      * @param null  $ilObjUser
