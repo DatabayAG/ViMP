@@ -203,6 +203,7 @@ btn_copy_link#:#Link kopieren
 btn_copy_link_w_time#:#Link mit Zeitangabe kopieren
 btn_download#:#Download
 popover_link_copied#:#Link in Zwischenablage kopiert
+perm_readlink#:#Link zum ViMP-Video
 availability_between#:#Verfügbar %s - %s
 availability_from#:#Verfügbar ab %s
 availability_to#:#Verfügbar bis %s
