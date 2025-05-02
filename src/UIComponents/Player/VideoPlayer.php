@@ -115,12 +115,7 @@ class VideoPlayer
      */
     public function getHTML(): string
     {
-        if (xvmp::ViMPVersionGreaterEquals('4.4.0')
-            && $this->increase_view_count
-            && !($this->video instanceof xvmpDeletedMedium)) {
-            xvmpRequest::addMediumCount($this->video->getMid());
-        }
-
+        
         if ($this->embed) {
             $width = $this->options['width'] ?? 0;
             $height = $this->options['height'] ?? 0;
@@ -221,6 +216,12 @@ class VideoPlayer
             $videojs_script .= "player.mediainfo.projection = '360';";
             $videojs_script .= "player.vr();";
         }
+
+        $this->ctrl->setParameterByClass(ilObjViMPGUI::class, 'mid', $this->video->getMid());
+        $link = $this->ctrl->getLinkTargetByClass(ilObjViMPGUI::class, 'count_views', null, true);
+        $count_views_script = "player.on('play', function(){var xhr = new XMLHttpRequest(); xhr.open('GET', '$link', true); " . 
+            "xhr.onreadystatechange = () => { if (xhr.readyState === 4 && xhr.status === 200) try { JSON.parse(xhr.responseText); } catch (error) {} }; xhr.send();}) ";
+        $videojs_script  .= $count_views_script;
 
         $template->setCurrentBlock('script');
         $template->setVariable('SCRIPT', 'if (typeof videojs === "undefined") { document.addEventListener("DOMContentLoaded", function() { ' . $videojs_script . ' });} else {  ' . $videojs_script . ' }');
