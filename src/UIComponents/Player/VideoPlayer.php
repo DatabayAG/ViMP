@@ -146,10 +146,20 @@ class VideoPlayer
         $id = md5(((string) ($random->int(1, 9999999) + str_replace(" ", "", (string) microtime()))));
 
         if (xvmp::ViMPVersionGreaterEquals('4.0.5')) {
-            $pathinfo['extension'] = $abr_conf ? 'application/x-mpegURL' : 'video/' . pathinfo($medium)['extension'];
+            $extension = '';
+            $path_info = pathinfo($medium);
+            if(isset($path_info['extension'])){
+                $extension = $path_info['extension'];
+            }
+            $pathinfo['extension'] = $abr_conf ? 'application/x-mpegURL' : 'video/' . $extension;
             $medium = urldecode($medium);
         } else {
-            $pathinfo['extension'] = 'video/' . pathinfo($medium)['extension'];
+            $extension = '';
+            $path_info = pathinfo($medium);
+            if(isset($path_info['extension'])){
+                $extension = $path_info['extension'];
+            }
+            $pathinfo['extension'] = 'video/' . $extension;
 
             $sources = xvmp::ViMPVersionEquals('4.0.4') ?
                 xvmpRequest::getVideoSources($this->video->getMediakey(), $_SERVER['HTTP_HOST'])->getResponseArray() :
