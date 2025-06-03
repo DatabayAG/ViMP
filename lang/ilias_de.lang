@@ -1,32 +1,32 @@
 conf_object_title#:#Objektbezeichnung im Magazin
 conf_object_title_info#:#Diese Bezeichnung wird beim Erstellen eines neuen Objektes im Magazin verwendet.
 conf_api_key#:#API-Key
-conf_api_key_info#:#Ein API-Key kann in VIMP im Backend unter dem Punkt "API-Keys" generiert werden.
+conf_api_key_info#:#Ein API-Key kann in ViMP im Backend unter dem Punkt "API-Keys" generiert werden.
 conf_api_user#:#API-Benutzername
-conf_api_user_info#:#Der API-Benutzer muss in VIMP existieren und dort über genügend Rechte verfügen, um neue Videos hochzuladen und beliebige Videos zu editieren und zu löschen.
+conf_api_user_info#:#Der API-Benutzer muss in ViMP existieren und dort über genügend Rechte verfügen, um neue Videos hochzuladen und beliebige Videos zu editieren und zu löschen.
 conf_api_password#:#API-Passwort
 conf_api_password_info#:#Passwort des obigen Benutzers.
 conf_api_url#:#API-URL
 conf_api_url_info#:#Basis Adresse der API. Z.B.: https://my-vimp.com/api
 conf_user_mapping_ext#:#User­Mapping (externe Benutzer)
-conf_user_mapping_ext_info#:#Nach dieser Formel werden die VIMP-Benutzernamen von externen ILIAS-Benutzern zusammengestellt. Folgende Platzhalter können verwendet werden:<br>&#123LOGIN}: Benutzername<br>&#123EXT_ID}: externe ID des Benutzers<br>&#123CLIENT_ID}: Client-ID dieser ILIAS-Installation
+conf_user_mapping_ext_info#:#Nach dieser Formel werden die ViMP-Benutzernamen von externen ILIAS-Benutzern zusammengestellt. Folgende Platzhalter können verwendet werden:<br>&#123LOGIN}: Benutzername<br>&#123EXT_ID}: externe ID des Benutzers<br>&#123CLIENT_ID}: Client-ID dieser ILIAS-Installation
 conf_user_mapping_local#:#User­Mapping (lokale Benutzer)
-conf_user_mapping_local_info#:#Nach dieser Formel werden die VIMP-Benutzernamen von lokalen ILIAS-Benutzern zusammengestellt. Folgende Platzhalter können verwendet werden:<br>&#123LOGIN}: Benutzername<br>&#123EXT_ID}: externe ID des Benutzers<br>&#123CLIENT_ID}: Client-ID dieser ILIAS-Installation
+conf_user_mapping_local_info#:#Nach dieser Formel werden die ViMP-Benutzernamen von lokalen ILIAS-Benutzern zusammengestellt. Folgende Platzhalter können verwendet werden:<br>&#123LOGIN}: Benutzername<br>&#123EXT_ID}: externe ID des Benutzers<br>&#123CLIENT_ID}: Client-ID dieser ILIAS-Installation
 conf_allow_public#:#Videos öffentlich schalten aktivieren
 conf_allow_public_info#:#Wenn aktiviert: Benutzer mit dem Recht "Einstellungen bearbeiten" dürfen beim Hochladen eines Videos auswählen, ob das Video den Status "Öffentlich" oder "Versteckt" hat. Ansonsten wird automatisch der Status "Versteckt" gesetzt.
 conf_allow_public_upload#:#Recht „Upload“ darf Videos öffentlich schalten
 conf_allow_public_upload_info#:#Wenn aktiviert: Benutzer mit dem Recht "Upload" dürfen ebenfalls Videos öffentlich schalten
 conf_form_fields#:#Zusätzliche Formular-Felder
-conf_form_fields_info#:#Zusätzliche in VIMP konfigurierte Medienfelder können hier angegeben werden, um diese im Formular zum Hochladen und Bearbeiten eines Videos zur Verfügung zu stellen.<br>Textfeld 1: Feld-Name<br>Textfeld 2: Anzeige-Name<br>Checkbox 1: Pflichtfeld<br>Checkbox 2: Feld wird beim Hochladeformular automatisch mit dem Benutzernamen gefüllt<br>Checkbox 3: Beim Video-Player anzeigen<br>Auswahlfeld: Feldtyp
+conf_form_fields_info#:#Zusätzliche in ViMP konfigurierte Medienfelder können hier angegeben werden, um diese im Formular zum Hochladen und Bearbeiten eines Videos zur Verfügung zu stellen.<br>Textfeld 1: Feld-Name<br>Textfeld 2: Anzeige-Name<br>Checkbox 1: Pflichtfeld<br>Checkbox 2: Feld wird beim Hochladeformular automatisch mit dem Benutzernamen gefüllt<br>Checkbox 3: Beim Video-Player anzeigen<br>Auswahlfeld: Feldtyp
 conf_filter_fields#:#Zusätzliche Tabellen-Filter
 conf_filter_fields_info#:#Werden die zusätzlichen Medienfelder hier angegeben, stehen Sie anschliessend als Filter in Tabellen zur Verfügung.<br>Textfeld 1: Feld-Name<br>Textfeld 2: Anzeige-Name
 conf_media_permissions#:#Medienberechtigungen nutzen
 conf_media_permissions_info#:#Definiert, ob und welche Medienberechtigungen beim Upload und beim Editieren von Videos gesetzt werden dürfen.
 conf_media_permissions_preselected#:#Vorauswahl
 conf_media_permissions_preselected_info#:#Angegebene Medienberechtigungen im Upload-Dialog vorauswählen.
-conf_media_permissions_0_info#:#Achtung: Kann zu Fehler führen, falls in VIMP keine Standardmedienrechte aktiv sind (siehe VIMP Backend > Konfiguration > Medien > Medienrecht)
+conf_media_permissions_0_info#:#Achtung: Kann zu Fehler führen, falls in ViMP keine Standardmedienrechte aktiv sind (siehe ViMP Backend > Konfiguration > Medien > Medienrecht)
 conf_mapping_priority#:#Priorität Mapping
-conf_mapping_priority_info#:#Definiert, auf welche Art zuerst nach dem Benutzer in VIMP gesucht wird. Wird dabei kein Benutzer gefunden, wird nach dem anderen Feld gesucht. Wird erneut nichts gefunden, wird ein entsprechender Benutzer erstellt.
+conf_mapping_priority_info#:#Definiert, auf welche Art zuerst nach dem Benutzer in ViMP gesucht wird. Wird dabei kein Benutzer gefunden, wird nach dem anderen Feld gesucht. Wird erneut nichts gefunden, wird ein entsprechender Benutzer erstellt.
 conf_mapping_priority_0#:#Email
 conf_mapping_priority_1#:#User-Mapping (wie oben definiert)
 conf_api_settings#:#API
@@ -50,9 +50,9 @@ conf_cache_ttl_token_info#:#Time-To-Live in Sekunden
 conf_cache_ttl_config#:#TTL Config
 conf_cache_ttl_config_info#:#Time-To-Live in Sekunden
 conf_cache#:#Caching
-conf_cache_info#:#Objekte werden zur Verbesserung der Performanz zwischengespeichert. Nach Ablauf der TTL wird ein Objekt aus dem Cache entfernt und neu geladen (bei Eingabe von 0 werden sie nicht automatisch entfernt). Der gesamte Cache kann mithilfe der Schaltfläche oben auf dieser Seite geleert werden. Innerhalb von VIMP-Objekten im Magazin können ausserdem die Videos dieser Objekte aus dem Cache entfernt und neu geladen werden.
+conf_cache_info#:#Objekte werden zur Verbesserung der Performanz zwischengespeichert. Nach Ablauf der TTL wird ein Objekt aus dem Cache entfernt und neu geladen (bei Eingabe von 0 werden sie nicht automatisch entfernt). Der gesamte Cache kann mithilfe der Schaltfläche oben auf dieser Seite geleert werden. Innerhalb von ViMP-Objekten im Magazin können ausserdem die Videos dieser Objekte aus dem Cache entfernt und neu geladen werden.
 conf_embed_player#:#Embedded Videoplayer nutzen
-conf_embed_player_info#:#Wenn aktiviert, wird der eingebettete Videoplayer von VIMP genutzt. Wenn der Lernfortschritt für ein Objekt aktiviert ist, wird jedoch dennoch der Plugin-eigene Player verwendet, da der Lernfortschritt mit dem eingebetteten Player nicht gemessen werden kann.
+conf_embed_player_info#:#Wenn aktiviert, wird der eingebettete Videoplayer von ViMP genutzt. Wenn der Lernfortschritt für ein Objekt aktiviert ist, wird jedoch dennoch der Plugin-eigene Player verwendet, da der Lernfortschritt mit dem eingebetteten Player nicht gemessen werden kann.
 conf_text#:#Textfeld
 conf_checkbox#:#Checkbox
 conf_form_field_type_0#:#Textfeld
@@ -60,7 +60,7 @@ conf_form_field_type_1#:#Checkbox
 conf_upload_limit#:#Upload Limit (MB)
 conf_upload_limit_info#:#Begrenzung der Dateigröße in MB. Geben Sie '0' ein, um keine Begrenzung festzulegen.
 conf_disable_verify_peer#:#Peer-Verifizierung deaktivieren
-conf_disable_verify_peer_info#:#Deaktiviert für die Kommunikation mit VIMP die Verifizierung des Zertifikat-Herstellers.
+conf_disable_verify_peer_info#:#Deaktiviert für die Kommunikation mit ViMP die Verifizierung des Zertifikat-Herstellers.
 conf_default_publication#:#Voreingestellter Zugriff
 conf_default_publication_info#:#Vorauswahl des Feldes "Zugriff" beim Upload
 msg_success#:#Änderungen erfolgreich gespeichert.
@@ -110,6 +110,7 @@ flush_video_cache_tooltip#:#Die Videodaten werden in ILIAS zwischengespeichert, 
 repository_preview#:#Vorschau im Magazin
 no_preview#:#Keine Vorschau
 perm_upload#:#Upload
+perm_readlink#:#Link zum ViMP-Video
 access_denied#:#Zugriff verweigert.
 status_legal#:#Transkodierung abgeschlossen
 status_converting#:#Transkodierung läuft
@@ -122,10 +123,10 @@ to#:#Bis
 category#:#Kategorie
 views#:#Aufrufe
 save_settings#:#Einstellungen Speichern
-exception_message#:#Es konnte keine Verbindung mit dem VIMP-Server hergestellt werden
+exception_message#:#Es konnte keine Verbindung mit dem ViMP-Server hergestellt werden
 not_available#:#Nicht verfügbar
-not_available_description#:#Dieses Video wurde in VIMP nicht gefunden. Möglicherweise wurde es von der Plattform entfernt.
-confirm_delete_text#:#Achtung: Durch diese Aktion wird das Video endgültig in VIMP gelöscht und kann in keinem ILIAS-Objekt mehr verwendet werden. Sind Sie sicher, dass Sie das Video löschen möchten?
+not_available_description#:#Dieses Video wurde in ViMP nicht gefunden. Möglicherweise wurde es von der Plattform entfernt.
+confirm_delete_text#:#Achtung: Durch diese Aktion wird das Video endgültig in ViMP gelöscht und kann in keinem ILIAS-Objekt mehr verwendet werden. Sind Sie sicher, dass Sie das Video löschen möchten?
 video_deleted#:#Video erfolgreich gelöscht.
 media_permissions#:#Medienberechtigungen
 media_permissions_info#:#Öffentliche und Versteckte Videos auf bestimmte Rollen einschränken.
@@ -153,7 +154,7 @@ form_msg_select#:#Bitte wählen Sie eine Datei zum Hochladen aus.
 form_msg_not_supported#:#Dateityp nicht unterstützt.
 msg_incomplete#:#Einige Felder dieses Formulares sind Pflichtfelder und müssen ausgefüllt werden. Bitte ergänzen Sie diese Felder.
 form_incomplete#:#Einige Felder dieses Formulares sind Pflichtfelder und müssen ausgefüllt werden. Bitte ergänzen Sie diese Felder.
-object_title#:#VIMP-Objekt
+object_title#:#ViMP-Objekt
 video_title#:#Video-Titel
 msg_username_not_found#:#Der Benutzername konnte nicht gefunden werden.
 msg_warning_change_owner#:#Achtung: Sie sind im Begriff, den Besitzer eines Ihrer Videos zu ändern. Nach dem Besitzerwechsel können Sie dieses Video nicht mehr bearbeiten. Sind Sie sicher, dass Sie fortfahren möchten?
@@ -162,16 +163,19 @@ msg_no_videos#:#Diesem Objekt wurden noch keine Videos hinzugefügt.
 msg_error_login_not_found#:#Es konnte kein Benutzer mit diesem Benutzernamen in ILIAS gefunden werden.
 confirmation_new_owner#:#Video Titel: "%s", neuer Besitzer: %s
 new_owner#:#Neuer Besitzer
-xvmp_new#:#Neues VIMP-Objekt anlegen
+xvmp_new#:#Neues ViMP-Objekt anlegen
 xvmp_add#:#Erstellen
-cat_create_xvmp#:#VIMP Erstellen
-crs_create_xvmp#:#VIMP Erstellen
-fold_create_xvmp#:#VIMP Erstellen
-grp_create_xvmp#:#VIMP Erstellen
-root_create_xvmp#:#VIMP Erstellen
-xvmp_visible#:#Anzeigen: VIMP ist sichtbar
+cat_create_xvmp#:#ViMP Erstellen
+crs_create_xvmp#:#ViMP Erstellen
+fold_create_xvmp#:#ViMP Erstellen
+grp_create_xvmp#:#ViMP Erstellen
+root_create_xvmp#:#ViMP Erstellen
+xvmp_visible#:#Anzeigen: ViMP ist sichtbar
 xvmp_read#:#Lesezugriff: Videos können angezeigt werden
 xvmp_rep_robj_xvmp_perm_upload#:#Upload: Videos können hochgeladen werden
+xvmp_rep_robj_xvmp_perm_readlink#:#Link zum Video kann angezeigt und kopiert werden
+xvmp_edit_learning_progress#:#Lernfortschrittseinstellungen bearbeiten
+xvmp_read_learning_progress#:#Lernfortschritt von anderen Benutzern einsehen
 xvmp_write#:#Einstellungen bearbeiten: Einstellungen und Inhalte können bearbeitet werden
 xvmp_delete#:#Löschen: Objekt kann gelöscht werden
 xvmp_edit_permission#:#Rechteeinstellungen ändern: Rechteeinstellungen ändern
@@ -203,7 +207,6 @@ btn_copy_link#:#Link kopieren
 btn_copy_link_w_time#:#Link mit Zeitangabe kopieren
 btn_download#:#Download
 popover_link_copied#:#Link in Zwischenablage kopiert
-perm_readlink#:#Link zum ViMP-Video
 availability_between#:#Verfügbar %s - %s
 availability_from#:#Verfügbar ab %s
 availability_to#:#Verfügbar bis %s
@@ -211,7 +214,5 @@ availability_between_short#:#%s - %s
 availability_from_short#:#%s
 availability_to_short#:#Bis %s
 available#:#Verfügbar
-obj_xvmp#:#VIMP
-objs_xvmp#:#VIMP
-change_owner#:#Besitzer ändern
-auto_subtitle#:#Automatische Untertitel generieren<br><br><div class="help-block">Bei Nutzung dieser Funktion erfolgt eine Übertragung <br>der Tonspur an den externen Dienst "Amberscript".<br> Bitte beachten Sie die dazugehörige <a href="https://www.amberscript.com/de/datenschutzerklaerung/">Datenschutzerklärung</a></div>
+obj_xvmp#:#ViMP
+objs_xvmp#:#ViMP
