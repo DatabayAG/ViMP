@@ -188,7 +188,12 @@ class xvmpCurl
             xvmpCurlLog::getInstance()->write('ERROR ' . $this->getResponseStatus(), xvmpCurlLog::DEBUG_LEVEL_1);
             xvmpCurlLog::getInstance()->write('Response:' . $resp_orig, xvmpCurlLog::DEBUG_LEVEL_3);
 
-            $error_msg = $this->getResponseArray()['errors']['error'];
+            $response = $this->getResponseArray();
+            $error_msg = '';
+            if(isset($response['error'])) {
+                $error_msg = $response['errors']['error'];
+            }
+
             $error_msg = is_array($error_msg) ? implode(".\n", $error_msg) : $error_msg;
 
             if ($error_msg == "Medium doesn't exist") {
