@@ -184,7 +184,7 @@ class xvmpCurl
         xvmpCurlLog::getInstance()->write('CURLINFO_TOTAL_TIME: ' . round(curl_getinfo($ch, CURLINFO_TOTAL_TIME) * $i,
                 2) . ' ms', xvmpCurlLog::DEBUG_LEVEL_1);
 
-        if ($this->getResponseStatus() > 299 || isset($this->getResponseArray()['errors']) && is_array($this->getResponseArray()['errors'])) {
+        if ($this->getResponseStatus() > 299 || (isset($this->getResponseArray()['errors']) && is_array($this->getResponseArray()['errors']))) {
             xvmpCurlLog::getInstance()->write('ERROR ' . $this->getResponseStatus(), xvmpCurlLog::DEBUG_LEVEL_1);
             xvmpCurlLog::getInstance()->write('Response:' . $resp_orig, xvmpCurlLog::DEBUG_LEVEL_3);
 
