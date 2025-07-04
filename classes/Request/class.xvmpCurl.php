@@ -126,14 +126,14 @@ class xvmpCurl
             if (self::$ssl_version) {
                 curl_setopt($ch, CURLOPT_SSLVERSION, self::$ssl_version);
             }
-            if ($this->getUsername() and $this->getPassword()) {
-                curl_setopt($ch, CURLOPT_USERPWD, $this->getUsername() . ':' . $this->getPassword());
+            if (self::getUsername() and self::getPassword()) {
+                curl_setopt($ch, CURLOPT_USERPWD, self::getUsername() . ':' . self::getPassword());
             }
 
-            if (!$this->isVerifyHost()) {
+            if (!self::isVerifyHost()) {
                 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
             }
-            if (!$this->isVerifyPeer()) {
+            if (!self::isVerifyPeer()) {
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             }
         }
@@ -196,7 +196,7 @@ class xvmpCurl
 
             $error_msg = is_array($error_msg) ? implode(".\n", $error_msg) : $error_msg;
 
-            if ($error_msg == "Medium doesn't exist") {
+            if ($error_msg === "Medium doesn't exist") {
                 throw new xvmpException(xvmpException::API_CALL_STATUS_404, $error_msg);
             }
 
