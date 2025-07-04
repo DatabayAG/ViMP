@@ -83,7 +83,7 @@ class xvmpUser extends xvmpObject
                 }
                 break;
             case xvmpConf::PRIORITIZE_MAPPING:
-                $xvmpUser = self::getVimpUserByMapping($ilObjUser);
+                 $xvmpUser = self::getVimpUserByMapping($ilObjUser);
                 if (!$xvmpUser) {
                     $xvmpUser = self::getVimpUserByEmail($ilObjUser);
                 }
@@ -134,7 +134,10 @@ class xvmpUser extends xvmpObject
             'token' => xvmp::getToken(),
             'searchrange' => 'user',
             'title' => $ilObjUser->getEmail(),
-        ))->getResponseArray();
+        ));
+        if($response) {
+            $response->getResponseArray();
+        }
 
         $users = $response['users'];
         if (!$users) {
