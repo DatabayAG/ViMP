@@ -136,7 +136,7 @@ class xvmpUser extends xvmpObject
             'title' => $ilObjUser->getEmail(),
         ));
         if($response) {
-            $response->getResponseArray();
+            $response = $response->getResponseArray();
         }
 
         $users = $response['users'];
@@ -144,7 +144,7 @@ class xvmpUser extends xvmpObject
             return false;
         }
 
-        if ($uid = $users['user']['uid']) {
+        if (isset($users['user']['uid']) && $uid = $users['user']['uid']) {
 
             return self::getVimpUserById($uid);
         }

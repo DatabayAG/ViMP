@@ -58,7 +58,6 @@ var VimpContent = {
 	},
 
 	playVideo: function (mid) {
-		console.log('playVideo ' + mid)
 		var $modal = $('#xvmp_modal_player');
 		$modal.find('h4.modal-title').html('');
 		$modal.find('div#xvmp_video_container').html('');
