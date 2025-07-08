@@ -190,7 +190,7 @@ class xvmpCurl
 
             $response = $this->getResponseArray();
             $error_msg = '';
-            if(isset($response['errors'])) {
+            if(isset($response['errors']['error'])) {
                 $error_msg = $response['errors']['error'];
             }
 
