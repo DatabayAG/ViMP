@@ -144,7 +144,7 @@ class xvmpUser extends xvmpObject
             return false;
         }
 
-        if ($uid = $users['user']['uid']) {
+        if (isset($users['user']['uid']) && $uid = $users['user']['uid']) {
 
             return self::getVimpUserById($uid);
         }
