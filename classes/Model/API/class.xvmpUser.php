@@ -136,7 +136,7 @@ class xvmpUser extends xvmpObject
             'title' => $ilObjUser->getEmail(),
         ));
         if($response) {
-            $response->getResponseArray();
+            $response = $response->getResponseArray();
         }
 
         $users = $response['users'];
