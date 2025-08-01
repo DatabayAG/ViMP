@@ -5,6 +5,7 @@ declare(strict_types=1);
 /* Copyright (c) 1998-2009 ILIAS open source, Extended GPL, see docs/LICENSE */
 
 use srag\Plugins\ViMP\Cron\ViMPJob;
+use Cron\VIMPCronJob;
 
 /**
  * Class ilViMPPlugin
@@ -22,11 +23,13 @@ class ilViMPPlugin extends ilRepositoryObjectPlugin implements ilCronJobProvider
      * @var ilViMPPlugin
      */
     protected static ilViMPPlugin $instance;
+    private \ILIAS\DI\LoggingServices $log;
 
     public function __construct()
     {
         global $DIC;
         $this->db = $DIC->database();
+        $this->log = $DIC->logger();
         parent::__construct($this->db, $DIC["component.repository"], self::XVMP);
     }
 
@@ -171,12 +174,12 @@ class ilViMPPlugin extends ilRepositoryObjectPlugin implements ilCronJobProvider
     public function getCronJobInstances() : array
     {
         return [
-            new ViMPJob()
+            new VIMPCronJob($this, $this->log)
         ];
     }
 
     public function getCronJobInstance(string $jobId) : ilCronJob
     {
-        return new ViMPJob();
+        return new VIMPCronJob($this, $this->log);
     }
 }
