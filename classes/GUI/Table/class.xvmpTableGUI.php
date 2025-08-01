@@ -134,14 +134,14 @@ abstract class xvmpTableGUI extends ilTable2GUI
                 if (strlen($value) > 95) {
                     $value = mb_substr($value, 0, 90) . '...';
                 }
-                return $value;
+                return (string) $value;
             case 'title':
                 if (strlen($value) > 45) {
                     $value = mb_substr($value, 0, 90) . '...';
                 }
-                return $value;
+                return (string) $value;
             default:
-                return $value ?: '&nbsp';
+                return (string) $value ?: '&nbsp';
         }
     }
 
