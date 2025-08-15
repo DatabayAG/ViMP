@@ -100,6 +100,8 @@ class xvmpMedium extends xvmpObject
     protected ?DateTime $startdate = null;
     protected ?DateTime $enddate = null;
     protected string $edited_at;
+    protected string $smil;
+    protected string $smil_preview;
 
     /**
      * @param null  $ilObjUser
@@ -590,7 +592,7 @@ class xvmpMedium extends xvmpObject
         global $DIC;
         $user = $DIC['ilUser'];
         $vimp_user = (array) xvmpUser::getVimpUser($user);
-        return ($vimp_user && ($vimp_user['uid'] == $this->getUid()));
+        return ($vimp_user && isset($vimp_user['uid']) && ($vimp_user['uid'] == $this->getUid()));
     }
 
     /**

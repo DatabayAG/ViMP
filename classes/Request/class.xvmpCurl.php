@@ -126,14 +126,14 @@ class xvmpCurl
             if (self::$ssl_version) {
                 curl_setopt($ch, CURLOPT_SSLVERSION, self::$ssl_version);
             }
-            if ($this->getUsername() and $this->getPassword()) {
-                curl_setopt($ch, CURLOPT_USERPWD, $this->getUsername() . ':' . $this->getPassword());
+            if (self::getUsername() and self::getPassword()) {
+                curl_setopt($ch, CURLOPT_USERPWD, self::getUsername() . ':' . self::getPassword());
             }
 
-            if (!$this->isVerifyHost()) {
+            if (!self::isVerifyHost()) {
                 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
             }
-            if (!$this->isVerifyPeer()) {
+            if (!self::isVerifyPeer()) {
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             }
         }
@@ -184,14 +184,19 @@ class xvmpCurl
         xvmpCurlLog::getInstance()->write('CURLINFO_TOTAL_TIME: ' . round(curl_getinfo($ch, CURLINFO_TOTAL_TIME) * $i,
                 2) . ' ms', xvmpCurlLog::DEBUG_LEVEL_1);
 
-        if ($this->getResponseStatus() > 299 || isset($this->getResponseArray()['errors']) && is_array($this->getResponseArray()['errors'])) {
+        if ($this->getResponseStatus() > 299 || (isset($this->getResponseArray()['errors']) && is_array($this->getResponseArray()['errors']))) {
             xvmpCurlLog::getInstance()->write('ERROR ' . $this->getResponseStatus(), xvmpCurlLog::DEBUG_LEVEL_1);
             xvmpCurlLog::getInstance()->write('Response:' . $resp_orig, xvmpCurlLog::DEBUG_LEVEL_3);
 
-            $error_msg = $this->getResponseArray()['errors']['error'];
+            $response = $this->getResponseArray();
+            $error_msg = '';
+            if(isset($response['errors']['error'])) {
+                $error_msg = $response['errors']['error'];
+            }
+
             $error_msg = is_array($error_msg) ? implode(".\n", $error_msg) : $error_msg;
 
-            if ($error_msg == "Medium doesn't exist") {
+            if ($error_msg === "Medium doesn't exist") {
                 throw new xvmpException(xvmpException::API_CALL_STATUS_404, $error_msg);
             }
 
