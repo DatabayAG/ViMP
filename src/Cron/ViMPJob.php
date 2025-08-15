@@ -29,51 +29,40 @@ class ViMPJob extends ilCronJob
         $this->pl = ilViMPPlugin::getInstance();
     }
 
-
     public function getId(): string
     {
         return self::CRON_JOB_ID;
     }
 
-
-    /**
-     * @inheritDoc
-     */
     public function hasAutoActivation(): bool
     {
         return true;
     }
-
 
     public function hasFlexibleSchedule(): bool
     {
         return true;
     }
 
-
     public function getDefaultScheduleType(): CronJobScheduleType
     {
         return CronJobScheduleType::SCHEDULE_TYPE_IN_MINUTES;
     }
-
 
     public function getDefaultScheduleValue(): ?int
     {
         return 1;
     }
 
-
     public function getTitle(): string
     {
         return ilViMPPlugin::PLUGIN_NAME . ": " . $this->pl->txt("cron_title");
     }
 
-
     public function getDescription(): string
     {
         return $this->pl->txt("cron_description");
     }
-
 
     public function run(): ilCronJobResult
     {
