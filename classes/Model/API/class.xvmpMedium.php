@@ -102,11 +102,14 @@ class xvmpMedium extends xvmpObject
     protected string $edited_at;
     protected string $smil;
     protected string $smil_preview;
+    protected $embed_code_responsive;
+    protected $downloadable_formats;
 
     /**
      * @param null  $ilObjUser
      * @param array $filter
      * @return array
+     * @throws xvmpException
      */
     public static function getUserMedia($ilObjUser = null, array $filter = array()) : array
     {
