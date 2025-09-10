@@ -74,7 +74,7 @@ class xvmpMedium extends xvmpObject
     protected ?string $duration_formatted;
     protected ?string $thumbnail;
     protected ?string $embed_code;
-    protected string|array $medium;
+    protected string|array $medium = [];
     protected ?string $source;
     protected ?string $meta_title;
     protected ?string $meta_description;
