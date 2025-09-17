@@ -35,6 +35,7 @@ class xvmpLearningProgressGUI extends xvmpGUI
             $selected_medium->update();
         }
         xvmpUserLPStatus::updateLPStatuses($this->getObjId(), false);
+        ilLPStatusWrapper::_refreshStatus($this->getObjId());
         $this->dic->ui()->mainTemplate()->setOnScreenMessage('success', $this->pl->txt('form_saved'), true);
         $this->dic->ctrl()->redirect($this, self::CMD_STANDARD);
     }
