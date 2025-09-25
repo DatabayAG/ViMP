@@ -28,7 +28,10 @@ class xvmpContentGUI extends xvmpGUI
             case self::CMD_RENDER_LIST_ITEM:
             case self::CMD_RENDER_TILE:
             case self::CMD_RENDER_TILE_SMALL:
-                $mid = $_GET['mid'];
+                $mid = false;
+                if(isset($_GET['mid'])) {
+                    $mid = $_GET['mid'];
+                }
                 if (!$mid || !xvmpSelectedMedia::isSelected($mid, $this->getObjId())) {
                     $this->accessDenied();
                 }
