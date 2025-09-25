@@ -112,9 +112,11 @@ abstract class xvmpGUI
     {
         switch ($cmd) {
             case self::CMD_FILL_MODAL:
-                $mid = $_GET['mid'];
-                $medium = xvmpMedium::find($mid);
-                ilObjViMPAccess::checkAction(ilObjViMPAccess::ACTION_PLAY_VIDEO, $this, $medium);
+                if(isset($_GET['mid'])) {
+                    $mid = $_GET['mid'];
+                    $medium = xvmpMedium::find($mid);
+                    ilObjViMPAccess::checkAction(ilObjViMPAccess::ACTION_PLAY_VIDEO, $this, $medium);
+                }
                 break;
         }
 
