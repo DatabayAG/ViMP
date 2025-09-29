@@ -29,11 +29,11 @@ class ilMultiSelectSearchInputGUI extends ilMultiSelectInputGUI
         parent::__construct($title, $post_var);
 
         $this->lng = $lng;
-        $tpl->addJavaScript("./Customizing/global/plugins/Services/Repository/RepositoryObject/ViMP/templates/default/form/select2/select2.min.js");
+        $tpl->addJavaScript("./public/Customizing/global/plugins/Services/Repository/RepositoryObject/ViMP/templates/default/form/select2/select2.min.js");
         //$tpl->addJavaScript("./Customizing/global/plugins/Services/Repository/RepositoryObject/ViMP/templates/default/form/select2/select2_locale_".$ilUser->getCurrentLanguage().".js");
-        $tpl->addCss("./Customizing/global/plugins/Services/Repository/RepositoryObject/ViMP/templates/default/form/select2/select2.css");
+        $tpl->addCss("./public/Customizing/global/plugins/Services/Repository/RepositoryObject/ViMP/templates/default/form/select2/select2.css");
         $this->setInputTemplate(new ilTemplate("tpl.multiple_select.html", true, true,
-            "Customizing/global/plugins/Services/Repository/RepositoryObject/ViMP"));
+            "./public/Customizing/global/plugins/Services/Repository/RepositoryObject/ViMP"));
         $this->setWidth(308);
         $this->setHeight(100);
     }

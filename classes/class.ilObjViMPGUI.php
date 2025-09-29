@@ -316,14 +316,14 @@ class ilObjViMPGUI extends ilObjectPluginGUI
         }
     }
 
-    public function initCreateForm(string $new_type) : ilPropertyFormGUI
+    public function initCreateForm(string $new_type) : ilPropertyFormGUI|array|\ILIAS\UI\Component\Input\Container\Form\Standard
     {
         $this->tpl->addCss($this->pl->getAssetURL('default/xvmp_settings.css'));
 
         $form = parent::initCreateForm($new_type);
 
         // ONLINE
-        $input = new ilCheckboxInputGUI($this->lng->txt(xvmpSettingsFormGUI::F_ONLINE), xvmpSettingsFormGUI::F_ONLINE);
+       /* $input = new ilCheckboxInputGUI($this->lng->txt(xvmpSettingsFormGUI::F_ONLINE), xvmpSettingsFormGUI::F_ONLINE);
         $form->addItem($input);
 
         // LAYOUT
@@ -345,7 +345,7 @@ class ilObjViMPGUI extends ilObjectPluginGUI
         $input->addOption($option);
         $input->setValue((string) xvmpSettings::LAYOUT_TYPE_LIST);
         $form->addItem($input);
-
+*/
         return $form;
     }
 
@@ -375,9 +375,10 @@ class ilObjViMPGUI extends ilObjectPluginGUI
      */
     public function testConnectionAjax() : void
     {
+        global $DIC;
+
         $apikey = $_POST['apikey'];
         $apiurl = $_POST['apiurl'];
-
         $xvmpCurl = new xvmpCurl(rtrim($apiurl, '/') . '/' . ltrim(xvmpRequest::VERSION, '/'));
         $xvmpCurl->addPostField('apikey', $apikey);
         try {

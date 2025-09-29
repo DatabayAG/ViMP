@@ -69,7 +69,7 @@ class xvmpFileUploadInputGUI extends ilSubEnabledFormPropertyGUI
      */
     public function render() : string
     {
-        $tpl = new ilTemplate('./Customizing/global/plugins/Services/Repository/RepositoryObject/ViMP/templates/default/form/tpl.uploader.html',
+        $tpl = new ilTemplate('./public/Customizing/global/plugins/Services/Repository/RepositoryObject/ViMP/templates/default/form/tpl.uploader.html',
             false, true);
         $this->initJS();
         $tpl->setVariable('BUTTON_SELECT', $this->pl->txt('upload_select'));

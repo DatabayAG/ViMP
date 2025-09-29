@@ -63,6 +63,7 @@ class xvmpUser extends xvmpObject
         global $DIC;
         $key = self::class . '-' . $ilObjUser->getId();
         $existing = xvmpCacheFactory::getInstance()->get($key, $DIC->refinery()->to()->string());
+        $xvmpUser = null;
 
         if ($existing) {
             xvmpCurlLog::getInstance()->write('CACHE: used cached: ' . $key, xvmpCurlLog::DEBUG_LEVEL_2);
@@ -94,6 +95,8 @@ class xvmpUser extends xvmpObject
 
             $xvmpUserArray = json_encode($xvmpUser);
             xvmpCacheFactory::getInstance()->set($key, $xvmpUserArray, xvmpConf::getConfig(xvmpConf::F_CACHE_TTL_USERS));
+        } else {
+            return false;
         }
 
         return $xvmpUser;

@@ -97,15 +97,15 @@ class VideoPlayer
         }
         $tpl->addCss($ilViMPPlugin->getAssetURL('default/video.css'));
 
-        $tpl->addJavaScript($ilViMPPlugin->getDirectory() . '/node_modules/video.js/dist/video.min.js');
-        $tpl->addCss($ilViMPPlugin->getDirectory() . '/node_modules/video.js/dist/video-js.min.css');
-        $tpl->addJavaScript($ilViMPPlugin->getDirectory()
-            . '/node_modules/videojs-contrib-quality-levels/dist/videojs-contrib-quality-levels.min.js');
-        $tpl->addJavaScript($ilViMPPlugin->getDirectory()
-            . '/node_modules/videojs-hls-quality-selector/dist/videojs-hls-quality-selector.min.js');
-        $tpl->addCss($ilViMPPlugin->getDirectory() . '/node_modules/videojs-vr/dist/videojs-vr.css');
-        $tpl->addJavaScript($ilViMPPlugin->getDirectory()
-            . '/node_modules/videojs-vr/dist/videojs-vr.min.js');
+        $tpl->addJavaScript($ilViMPPlugin->getExternAssetURL('/node_modules/video.js/dist/video.min.js'));
+        $tpl->addCss($ilViMPPlugin->getExternAssetURL( '/node_modules/video.js/dist/video-js.min.css'));
+        $tpl->addJavaScript($ilViMPPlugin->getExternAssetURL(
+             '/node_modules/videojs-contrib-quality-levels/dist/videojs-contrib-quality-levels.min.js'));
+        $tpl->addJavaScript($ilViMPPlugin->getExternAssetURL(
+             '/node_modules/videojs-hls-quality-selector/dist/videojs-hls-quality-selector.min.js'));
+        $tpl->addCss($ilViMPPlugin->getExternAssetURL( '/node_modules/videojs-vr/dist/videojs-vr.css'));
+        $tpl->addJavaScript($ilViMPPlugin->getExternAssetURL(
+            '/node_modules/videojs-vr/dist/videojs-vr.min.js'));
     }
 
     /**

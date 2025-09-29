@@ -298,7 +298,7 @@ class srGenericMultiInputGUI extends ilFormPropertyGUI
     public function render(int $iterator_id = 0, bool $clean_render = false) : string
     {
         $tpl = new ilTemplate("tpl.prop_generic_multi_line.html", true, true,
-            'Customizing/global/plugins/Services/Repository/RepositoryObject/ViMP');
+            'public/Customizing/global/plugins/Services/Repository/RepositoryObject/ViMP');
 
         $class = 'multi_input_line';
 

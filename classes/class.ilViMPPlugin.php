@@ -124,9 +124,25 @@ class ilViMPPlugin extends ilRepositoryObjectPlugin implements ilCronJobProvider
     public function getAssetURL(string $relative_path, bool $versioned = true) : string
     {
         $version_suffix = $versioned ? '?version=' . str_replace('.', '-', $this->getVersion()) : '';
-        return $this->getDirectory() . '/templates/' . ltrim($relative_path, '/') . $version_suffix;
+        $url =  $this->getDirectory() . '/templates/' . ltrim($relative_path, '/') . $version_suffix;
+        return $this->buildHttpUrl($url);
     }
 
+    public function getExternAssetURL(string $relative_path, bool $versioned = true) : string
+    {
+        $version_suffix = $versioned ? '?version=' . str_replace('.', '-', $this->getVersion()) : '';
+        $url =  $this->getDirectory() . '/' . ltrim($relative_path, '/') . $version_suffix;
+        return $this->buildHttpUrl($url);
+    }
+
+    protected function buildHttpUrl(string $path): string {
+        $cleaned_url = explode("public", $path);
+        if(isset($cleaned_url[1])) {
+            $cleaned_url = $cleaned_url[1];
+        }
+        $http_path = ilUtil::_getHttpPath();
+        return $http_path . $cleaned_url;
+    }
     /**
      * @param $lang_var
      * @return string
