@@ -42,6 +42,7 @@ class xvmpEventLogGUI extends xvmpGUI
     public function executeCommand() : void
     {
         if (!ilObjViMPAccess::hasWriteAccess()) {
+            xvmpCurlLog::getInstance()->write(sprintf('Access denied: User has no write access. (event log)'));
             $this->accessDenied();
         }
         parent::executeCommand();

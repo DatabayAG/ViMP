@@ -18,6 +18,7 @@ class xvmpSearchVideosGUI extends xvmpVideosGUI
     public function executeCommand() : void
     {
         if (!ilObjViMPAccess::hasWriteAccess()) {
+            xvmpCurlLog::getInstance()->write('Access denied: User has no write access. (xvmpSearchVideosGUI)');
             $this->accessDenied();
         }
 

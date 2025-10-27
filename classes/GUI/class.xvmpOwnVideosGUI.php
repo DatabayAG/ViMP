@@ -47,6 +47,7 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
                 break;
             default:
                 if (!ilObjViMPAccess::hasWriteAccess() && !ilObjViMPAccess::hasUploadPermission()) {
+                    xvmpCurlLog::getInstance()->write('Access denied: User has no write access or upload permission. (xvmpLearningProgressGUI)');
                     $this->accessDenied();
                 }
         }
