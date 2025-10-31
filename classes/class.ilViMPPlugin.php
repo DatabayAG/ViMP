@@ -43,7 +43,7 @@ class ilViMPPlugin extends ilRepositoryObjectPlugin implements ilCronJobProvider
     }
 
     /**
-     *
+     * @throws arException
      */
     protected function uninstallCustom() : void
     {
@@ -109,11 +109,7 @@ class ilViMPPlugin extends ilRepositoryObjectPlugin implements ilCronJobProvider
     {
         global $ilCtrl;
         $cmd = $ilCtrl->getCmd();
-        switch ($cmd) {
-            default:
-                $this->{$cmd}();
-                break;
-        }
+        $this->{$cmd}();
     }
 
     /**
@@ -168,9 +164,9 @@ class ilViMPPlugin extends ilRepositoryObjectPlugin implements ilCronJobProvider
     public function getImagePath(string $a_img) : string
     {
         return self::_getImagePath(
-            "Services",
+            ilComponentInfo::TYPES[0],
             "Repository",
-            self::getPluginInfo()->getPluginSlot()->getId(),
+            $this->getPluginInfo()->getPluginSlot()->getId(),
             $this->getPluginName(),
             $a_img
         );
