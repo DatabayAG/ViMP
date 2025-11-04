@@ -31,6 +31,7 @@ class xvmpSettingsGUI extends xvmpGUI
     public function executeCommand() : void
     {
         if (!ilObjViMPAccess::hasWriteAccess()) {
+            xvmpCurlLog::getInstance()->write('Access denied: User has no write access. (xvmpSettingsGUI)');
             $this->accessDenied();
         }
         parent::executeCommand();

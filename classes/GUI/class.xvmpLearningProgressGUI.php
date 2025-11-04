@@ -47,6 +47,7 @@ class xvmpLearningProgressGUI extends xvmpGUI
     {
         VideoPlayer::loadVideoJSAndCSS(false);
         if (!ilObjViMPAccess::hasWriteAccess()) {
+            xvmpCurlLog::getInstance()->write('Access denied: User has no write access (learning process).');
             $this->accessDenied();
         }
         parent::executeCommand();
