@@ -33,12 +33,12 @@ class xvmpContentGUI extends xvmpGUI
                     $mid = $_GET['mid'];
                 }
                 if (!$mid || !xvmpSelectedMedia::isSelected($mid, $this->getObjId())) {
-                    xvmpCurlLog::getInstance()->write(sprintf('Access denied: , no mid found for this obj_id %s, with following command %s', $this->getObjId(), self::CMD_RENDER_LIST_ITEM));
-                    $this->accessDenied();
+                    $is_selected = xvmpSelectedMedia::isSelected($mid, $this->getObjId());
+                    xvmpCurlLog::getInstance()->write(sprintf('Access denied: no mid found for this obj_id %s (is selected: %s), with following command %s', $this->getObjId(), $is_selected, self::CMD_RENDER_LIST_ITEM));
                 }
                 break;
             case self::CMD_DELIVER_VIDEO:
-                xvmpCurlLog::getInstance()->write(sprintf('Access denied: , no mid found for this obj_id %s, with following command %s', $this->getObjId(), self::CMD_DELIVER_VIDEO));
+                xvmpCurlLog::getInstance()->write(sprintf('Access denied: no mid found for this obj_id %s, with following command %s', $this->getObjId(), self::CMD_DELIVER_VIDEO));
                 $this->accessDenied();
                 break;
         }
