@@ -45,8 +45,8 @@ abstract class xvmpGUI
 
     protected function addJavaScript() : void
     {
-        $this->dic->ui()->mainTemplate()->addJavaScript('./node_modules/webui-popover/dist/jquery.webui-popover.js');
-        $this->dic->ui()->mainTemplate()->addJavaScript('./src/UI/templates/js/Popover/popover.js');
+        $this->dic->ui()->mainTemplate()->addJavaScript('./assets/js/jquery.webui-popover.min.js');
+        $this->dic->ui()->mainTemplate()->addJavaScript('./assets/js/popover.js');
     }
 
     /**
