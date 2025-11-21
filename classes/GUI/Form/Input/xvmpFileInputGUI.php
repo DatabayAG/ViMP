@@ -29,7 +29,7 @@ class xvmpFileInputGUI extends ilFileInputGUI
 
         $quota_exceeded = $quota_legend = false;
 
-        $f_tpl = new ilTemplate("tpl.prop_file.html", true, true, "Services/Form");
+        $f_tpl = new ilTemplate("tpl.prop_file.html", true, true, "components/ILIAS/Form");
 
 
         // show filename selection if enabled

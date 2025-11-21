@@ -377,8 +377,8 @@ class ilObjViMPGUI extends ilObjectPluginGUI
     {
         global $DIC;
 
-        $apikey = $_POST['apikey'];
-        $apiurl = $_POST['apiurl'];
+        $apikey = $_GET['api_key'];
+        $apiurl = $_GET['api_url'];
         $xvmpCurl = new xvmpCurl(rtrim($apiurl, '/') . '/' . ltrim(xvmpRequest::VERSION, '/'));
         $xvmpCurl->addPostField('apikey', $apikey);
         try {

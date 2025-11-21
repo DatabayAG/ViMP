@@ -80,10 +80,17 @@ class xvmpConfFormGUI extends xvmpFormGUI
         // Test Connection Button
         $input = new ilCustomInputGUI();
         $input->setTitle('');
+
+        $api_key = xvmpConf::getConfig('api_key');
+        $api_url = xvmpConf::getConfig('api_url');
+        $this->ctrl->setParameter(new ilObjViMPGUI(), 'api_key', $api_key);
+        $this->ctrl->setParameter(new ilObjViMPGUI(), 'api_url', $api_url);
+        $url = $this->ctrl->getLinkTargetByClass(array('ilAdministrationGUI',
+                                                          'ilObjViMPGUI'
+    ), 'testConnectionAjax', '', true) ;
+        $this->ctrl->clearParameters(new ilObjViMPGUI());
         $input->setHtml(
-            "<a class='btn btn-default' id='xvmp_test_connection' onclick='VimpConfig.test_connection(event)' href='" . $this->ctrl->getLinkTargetByClass(array('ilAdministrationGUI',
-                                                                                                                                                                'ilObjViMPGUI'
-            ), 'testConnectionAjax', '', true) . "'>Test Connection</a>
+            "<a class='btn btn-default' id='xvmp_test_connection' onclick='VimpConfig.test_connection(event)' href='". $url ."'>Test Connection</a>
 					<span id='xvmp_connection_status' style='margin-left: 5px'></span>"
         );
         $this->addItem($input);
