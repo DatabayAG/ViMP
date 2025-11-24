@@ -13,13 +13,13 @@ use ilTemplateException;
  */
 class ListElementRenderer extends ContentElementRenderer
 {
-    public const TEMPLATE_PATH = __DIR__ . '/../../../templates/default/tpl.content_list.html';
+    public const TEMPLATE = 'tpl.content_list.html';
     public const DESCRIPTION_LENGTH = 0;
 
 
     protected function getInnerTemplate(): ilTemplate
     {
-        return new ilTemplate(self::TEMPLATE_PATH, true, true);
+        return new ilTemplate(self::TEMPLATE, true, true, $this->plugin->getDirectory());
     }
 
     /**

@@ -17,7 +17,7 @@ use srag\Plugins\ViMP\Content\MediumMetadataParser;
  */
 abstract class ContentElementRenderer
 {
-    public const CONTAINER_TEMPLATE_PATH = __DIR__ . '/../../../templates/default/tpl.content_element.html';
+    public const TEMPLATE = 'tpl.content_element.html';
     public const DATE_FORMAT = 'd.m.Y';
     public const DESCRIPTION_LENGTH = 30;
     /**
@@ -140,7 +140,7 @@ abstract class ContentElementRenderer
 
     protected function getContainerTemplate(): ilTemplate
     {
-        return new ilTemplate(self::CONTAINER_TEMPLATE_PATH, true, true);
+        return new ilTemplate(self::TEMPLATE, true, true, $this->plugin->getDirectory());
     }
 
     abstract protected function buildTemplate(MediumMetadataDTO $mediumMetadataDTO): ilTemplate;
