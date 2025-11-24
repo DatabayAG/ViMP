@@ -60,6 +60,7 @@ abstract class xvmpGUI
         $modal->setId('xvmp_modal_player');
         $modal->setType(ilModalGUI::TYPE_LARGE);
         $modal->setBody('<section><div id="xvmp_video_container"></div></section>');
+        ilModalGUI::initJS($tpl);
         return $modal;
     }
 

@@ -16,6 +16,7 @@ class xvmpSettingsFormGUI extends xvmpFormGUI
     public const F_LAYOUT = 'layout';
     public const F_REPOSITORY_PREVIEW = 'repository_preview';
     public const F_LEARNING_PROGRESS = 'enable_learning_progress';
+    private const IMAGE_PATH = 'Customizing/global/plugins/Services/Repository/RepositoryObject/ViMP/templates/images/';
     /**
      * @var ilObjViMP
      */
@@ -78,13 +79,13 @@ class xvmpSettingsFormGUI extends xvmpFormGUI
 
         // LAYOUT
         $input = new ilRadioGroupInputGUI($this->pl->txt(self::F_LAYOUT), self::F_LAYOUT);
-        $option = new ilRadioOption(ilUtil::img($this->pl->getImagePath(self::F_LAYOUT . '_' . xvmpSettings::LAYOUT_TYPE_LIST . '.png')),
+        $option = new ilRadioOption(ilUtil::img(self::IMAGE_PATH . self::F_LAYOUT . '_' . xvmpSettings::LAYOUT_TYPE_LIST . '.png'),
             (string) xvmpSettings::LAYOUT_TYPE_LIST);
         $input->addOption($option);
-        $option = new ilRadioOption(ilUtil::img($this->pl->getImagePath(self::F_LAYOUT . '_' . xvmpSettings::LAYOUT_TYPE_TILES . '.png')),
+        $option = new ilRadioOption(ilUtil::img(self::IMAGE_PATH . self::F_LAYOUT . '_' . xvmpSettings::LAYOUT_TYPE_TILES . '.png'),
             (string) xvmpSettings::LAYOUT_TYPE_TILES);
         $input->addOption($option);
-        $option = new ilRadioOption(ilUtil::img($this->pl->getImagePath(self::F_LAYOUT . '_' . xvmpSettings::LAYOUT_TYPE_PLAYER . '.png')),
+        $option = new ilRadioOption(ilUtil::img(self::IMAGE_PATH . self::F_LAYOUT . '_' . xvmpSettings::LAYOUT_TYPE_PLAYER . '.png'),
             (string) xvmpSettings::LAYOUT_TYPE_PLAYER);
         $input->addOption($option);
         $this->addItem($input);
