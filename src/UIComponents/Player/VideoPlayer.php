@@ -97,6 +97,8 @@ class VideoPlayer
         }
         $tpl->addCss($ilViMPPlugin->getAssetURL('default/video.css'));
 
+        $tpl->addJavaScript($ilViMPPlugin->getExternAssetURL('/node_modules/bootstrap/dist/css/bootstrap.css'));
+        $tpl->addJavaScript($ilViMPPlugin->getExternAssetURL('/node_modules/bootstrap/dist/js/bootstrap.js'));
         $tpl->addJavaScript($ilViMPPlugin->getExternAssetURL('/node_modules/video.js/dist/video.min.js'));
         $tpl->addCss($ilViMPPlugin->getExternAssetURL( '/node_modules/video.js/dist/video-js.min.css'));
         $tpl->addJavaScript($ilViMPPlugin->getExternAssetURL(
