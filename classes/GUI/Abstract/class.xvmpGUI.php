@@ -304,6 +304,7 @@ abstract class xvmpGUI
      */
     public function buildPermLinkUI(xvmpMedium $video) : array
     {
+        $items = [];
         $link_tpl = ilLink::_getStaticLink(
             $this->parent_gui->getRefId(),
             $this->parent_gui->getType(),
