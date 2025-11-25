@@ -124,7 +124,7 @@ abstract class xvmpVideosGUI extends xvmpGUI
         $table_gui->parseData();
         $table_gui->setExternalSorting(true);
         $table_gui->determineOffsetAndOrder();
-        $this->dic->ui()->mainTemplate()->setContent($table_gui->getHTML() . $this->getModalPlayer()->getHTML());
+        $this->dic->ui()->mainTemplate()->setContent($table_gui->getHTML() . self::getModalPlayer()->getHTML());
     }
 
     protected function getVideoPlayer($video, int $obj_id) : VideoPlayer

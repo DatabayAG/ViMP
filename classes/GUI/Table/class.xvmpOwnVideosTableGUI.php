@@ -168,18 +168,18 @@ class xvmpOwnVideosTableGUI extends xvmpTableGUI
      */
     protected function buildActionList($a_set) : string
     {
-        $actions = new ilAdvancedSelectionListGUI();
-        $actions->setListTitle($this->lng->txt('actions'));
+        global $DIC;
+        $f = $DIC->ui()->factory();
+        $renderer = $DIC->ui()->renderer();
         $this->ctrl->setParameter($this->parent_obj, 'mid', $a_set['mid']);
+        $items = [];
         if ($a_set['status'] == 'legal') {
-            $actions->addItem($this->lng->txt('edit'), 'edit',
-                $this->ctrl->getLinkTarget($this->parent_obj, xvmpOwnVideosGUI::CMD_EDIT_VIDEO));
-            $actions->addItem($this->pl->txt('change_owner'), 'change_owner',
-                $this->ctrl->getLinkTarget($this->parent_obj, xvmpOwnVideosGUI::CMD_CHANGE_OWNER));
+            $items[] = $f->button()->shy($this->lng->txt('edit'), $this->ctrl->getLinkTarget($this->parent_obj, xvmpOwnVideosGUI::CMD_EDIT_VIDEO));
+            $items[] = $f->button()->shy($this->lng->txt('change_owner'), $this->ctrl->getLinkTarget($this->parent_obj, xvmpOwnVideosGUI::CMD_CHANGE_OWNER));
         }
-        $actions->addItem($this->lng->txt('delete'), 'delete',
-            $this->ctrl->getLinkTarget($this->parent_obj, xvmpOwnVideosGUI::CMD_DELETE_VIDEO));
-        return $actions->getHTML();
+        $items[] = $f->button()->shy($this->lng->txt('delete'), $this->ctrl->getLinkTarget($this->parent_obj, xvmpOwnVideosGUI::CMD_DELETE_VIDEO));
+
+        return $renderer->render($f->dropdown()->standard($items)->withLabel($this->lng->txt('actions')));
     }
 
     public function initFilter() : void

@@ -100,6 +100,12 @@ class xvmpMedium extends xvmpObject
     protected ?DateTime $startdate = null;
     protected ?DateTime $enddate = null;
     protected string $edited_at;
+    protected array $downloadable_formats;
+    protected string $embed_code_responsive;
+    protected string $smil;
+    protected int $count_views_portal;
+    protected int $count_views_embed;
+    protected int $count_views_api;
 
     /**
      * @param null  $ilObjUser
