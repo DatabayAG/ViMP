@@ -20,8 +20,8 @@ use srag\Plugins\ViMP\Content\MediumMetadataParser;
  */
 class PlayerModalRenderer
 {
-    public const TEMPLATE_PATH = __DIR__ . '/../../../templates/default/tpl.player_modal.html';
-    public const TEMPLATE_PATH_UNAVAILABLE = __DIR__ . '/../../../templates/default/tpl.video_not_available.html';
+    public const TEMPLATE_PATH = 'tpl.player_modal.html';
+    public const TEMPLATE_PATH_UNAVAILABLE = 'tpl.video_not_available.html';
     /**
      * @var ilViMPPlugin
      */
@@ -54,7 +54,7 @@ class PlayerModalRenderer
      */
     public function render(PlayerContainerDTO $playerContainerDTO, bool $async, bool $show_unavailable = false): string
     {
-        $tpl = new ilTemplate(self::TEMPLATE_PATH, true, true);
+        $tpl = new ilTemplate(self::TEMPLATE_PATH, true, true, $this->plugin->getDirectory());
         $is_available = $playerContainerDTO->getMediumMetadata()->isAvailable() | $show_unavailable;
         $tpl->setVariable('VIDEO_PLAYER', $is_available ?
             $playerContainerDTO->getVideoPlayer()->getHTML()
@@ -121,7 +121,7 @@ class PlayerModalRenderer
      */
     private function renderUnavailablePlayer(PlayerContainerDTO $playerContainerDTO): string
     {
-        $tpl = new ilTemplate(self::TEMPLATE_PATH_UNAVAILABLE, true, true);
+        $tpl = new ilTemplate(self::TEMPLATE_PATH_UNAVAILABLE, true, true, $this->plugin->getDirectory());
         $tpl->setVariable('THUMBNAIL', $playerContainerDTO->getMediumMetadata()->getThumbnailUrl());
         return $tpl->get();
     }
