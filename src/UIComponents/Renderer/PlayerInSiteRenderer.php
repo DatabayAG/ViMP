@@ -19,8 +19,8 @@ use srag\Plugins\ViMP\Content\MediumMetadataParser;
  */
 class PlayerInSiteRenderer
 {
-    public const TEMPLATE_PATH = __DIR__ . '/../../../templates/default/tpl.player_in_site.html';
-    public const TEMPLATE_PATH_UNAVAILABLE = __DIR__ . '/../../../templates/default/tpl.video_not_available.html';
+    public const TEMPLATE_PATH = 'tpl.player_in_site.html';
+    public const TEMPLATE_PATH_UNAVAILABLE =  'tpl.video_not_available.html';
     public const DATE_FORMAT = 'd.m.Y';
 
     /**
@@ -55,7 +55,7 @@ class PlayerInSiteRenderer
      */
     public function render(PlayerContainerDTO $playerContainerDTO, bool $deleted): string
     {
-        $tpl = new ilTemplate(self::TEMPLATE_PATH, true, true);
+        $tpl = new ilTemplate(self::TEMPLATE_PATH, true, true, $this->plugin->getDirectory());
         $tpl->setVariable('VIDEO_PLAYER', $playerContainerDTO->getMediumMetadata()->isAvailable() && !$deleted && !$playerContainerDTO->getMediumMetadata()->isTranscoding() ?
             $playerContainerDTO->getVideoPlayer()->getHTML()
             : $this->renderUnavailablePlayer($playerContainerDTO));
@@ -118,7 +118,7 @@ class PlayerInSiteRenderer
      */
     private function renderUnavailablePlayer(PlayerContainerDTO $playerContainerDTO): string
     {
-        $tpl = new ilTemplate(self::TEMPLATE_PATH_UNAVAILABLE, true, true);
+        $tpl = new ilTemplate(self::TEMPLATE_PATH_UNAVAILABLE, true, true, $this->plugin->getDirectory());
         $tpl->setVariable('THUMBNAIL', $playerContainerDTO->getMediumMetadata()->getThumbnailUrl());
         return $tpl->get();
     }

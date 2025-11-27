@@ -14,7 +14,7 @@ use ilTemplateException;
  */
 class TileRenderer extends ContentElementRenderer
 {
-    public const TEMPLATE_PATH = __DIR__ . '/../../../templates/default/tpl.content_tiles.html';
+    public const TEMPLATE_PATH = 'tpl.content_tiles.html';
 
     /**
      * @throws ilTemplateException
@@ -67,6 +67,6 @@ class TileRenderer extends ContentElementRenderer
 
     protected function getInnerTemplate(): ilTemplate
     {
-        return new ilTemplate(self::TEMPLATE_PATH, true, true);
+        return new ilTemplate(self::TEMPLATE_PATH, true, true, $this->plugin->getDirectory());
     }
 }
