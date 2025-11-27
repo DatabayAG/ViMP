@@ -48,7 +48,8 @@ class xvmpUploadService
      */
     public function moveUploadToWebDir(string $tmp_name, string $tmp_id) : string
     {
-        $dir = '/vimp/' . $tmp_id;
+        $path = '/public' . ilFileUtils::getWebspaceDir() . '/vimp/';
+        $dir = $path . $tmp_id;
         $this->createDirIfNotExists($dir);
         if (!$this->file_upload->hasBeenProcessed()) {
             $this->file_upload->process();
@@ -82,7 +83,8 @@ class xvmpUploadService
      */
     public function getSignedUrl(string $tmp_name, string $tmp_id) : string
     {
-        $dir = '/vimp/' . $tmp_id;
+        $vimp_path = '/public' . ilFileUtils::getWebspaceDir() . '/vimp/';
+        $dir = $vimp_path . $tmp_id;
         $path = $dir . '/' . rawurlencode($tmp_name);
         $this->temp_directories[] = $dir;
         $path = $this->signWithWAC($path);
@@ -97,7 +99,7 @@ class xvmpUploadService
     protected function signWithWAC(string $path) : string
     {
         ilWACSignedPath::setTokenMaxLifetimeInSeconds(ilWACSignedPath::MAX_LIFETIME);
-        $thumbnail_path = ilWACSignedPath::signFile(ilFileUtils::getWebspaceDir() . $path);
+        $thumbnail_path = ilWACSignedPath::signFile($path);
         $thumbnail_path .= '&' . ilWebAccessChecker::DISPOSITION . '=' . ilFileDelivery::DISP_ATTACHMENT;
         return $thumbnail_path;
     }

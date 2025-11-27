@@ -68,8 +68,7 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
         $filter_sanitize_string = 513;
         $xoctPlupload = new xoctPlupload();
         $tmp_id = filter_input(INPUT_GET, 'tmp_id', $filter_sanitize_string);
-
-        $dir = ILIAS_ABSOLUTE_PATH . ltrim(ilFileUtils::getWebspaceDir(), '.') . '/vimp/' . $tmp_id;
+        $dir = ILIAS_ABSOLUTE_PATH . '/public' . ltrim(ilFileUtils::getWebspaceDir(), '.') . '/vimp/' . $tmp_id;
         if (!is_dir($dir)) {
             ilFileUtils::makeDir($dir);
         }
