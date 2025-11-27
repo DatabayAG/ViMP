@@ -358,7 +358,7 @@ class xoctPlupload
             $fileName = uniqid("file_");
         }
 
-        $filePath = $targetDir . DIRECTORY_SEPARATOR . urlencode($fileName);
+        $filePath = $targetDir . DIRECTORY_SEPARATOR . rawurlencode($fileName);
         global $DIC;
         $ilLog = $DIC['ilLog'];
         $ilLog->write('plupload chunks');
