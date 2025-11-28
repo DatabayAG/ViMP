@@ -199,4 +199,9 @@ class ilViMPPlugin extends ilRepositoryObjectPlugin implements ilCronJobProvider
         $filename = preg_replace('/[\W;]/', '_', $filename);
         return $filename;
     }
+
+    public static function _getIcon(string $a_type) : string
+    {
+        return './Customizing/global/plugins/Services/Repository/RepositoryObject/ViMP/templates/images/icon_xvmp.svg';
+    }
 }
