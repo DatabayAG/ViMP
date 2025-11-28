@@ -268,6 +268,7 @@ class xvmpFileUploadInputGUI extends ilSubEnabledFormPropertyGUI
  */
 class xoctPlupload
 {
+    private ilViMPPlugin $pl;
     protected bool $finished = false;
     protected string $target_dir = '';
     protected string $file_path = '';
@@ -278,6 +279,7 @@ class xoctPlupload
      */
     public function __construct()
     {
+        $this->pl = ilViMPPlugin::getInstance();
         $this->setTargetDir(ilFileUtils::getDataDir() . "/temp/plupload");
     }
 
@@ -358,7 +360,7 @@ class xoctPlupload
             $fileName = uniqid("file_");
         }
 
-        $filePath = $targetDir . DIRECTORY_SEPARATOR . rawurlencode($fileName);
+        $filePath = $targetDir . DIRECTORY_SEPARATOR . $this->pl->cleanUpFilename($fileName);
         global $DIC;
         $ilLog = $DIC['ilLog'];
         $ilLog->write('plupload chunks');

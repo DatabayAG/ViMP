@@ -14,6 +14,7 @@ use ILIAS\FileUpload\Exception\IllegalStateException;
  */
 class xvmpUploadService
 {
+    private ilViMPPlugin $pl;
     /**
      * @var Filesystems
      */
@@ -34,6 +35,7 @@ class xvmpUploadService
      */
     public function __construct(Filesystems $file_system, FileUpload $file_upload)
     {
+        $this->pl = ilViMPPlugin::getInstance();
         $this->file_system = $file_system;
         $this->file_upload = $file_upload;
     }
@@ -83,9 +85,9 @@ class xvmpUploadService
      */
     public function getSignedUrl(string $tmp_name, string $tmp_id) : string
     {
-        $vimp_path = '/public' . ilFileUtils::getWebspaceDir() . '/vimp/';
+        $vimp_path = ILIAS_ABSOLUTE_PATH . '/public/' . ilFileUtils::getWebspaceDir() . '/vimp/';
         $dir = $vimp_path . $tmp_id;
-        $path = $dir . '/' . rawurlencode($tmp_name);
+        $path = $dir . '/' . $this->pl->cleanUpFilename($tmp_name);
         $this->temp_directories[] = $dir;
         $path = $this->signWithWAC($path);
         return ILIAS_HTTP_PATH . ltrim($path, '.');

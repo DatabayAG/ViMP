@@ -191,4 +191,12 @@ class ilViMPPlugin extends ilRepositoryObjectPlugin implements ilCronJobProvider
     {
         return new ViMPJob();
     }
+
+    public function cleanUpFilename(string $filename): string
+    {
+        global $DIC;
+        $filename = (new \ilFileServicesPolicy($DIC->fileServiceSettings()))->ascii($filename);
+        $filename = preg_replace('/[\W;]/', '_', $filename);
+        return $filename;
+    }
 }
