@@ -5,6 +5,8 @@ declare(strict_types=1);
 /* Copyright (c) 1998-2009 ILIAS open source, Extended GPL, see docs/LICENSE */
 
 use ILIAS\DI\Container;
+use ILIAS\HTTP\Response\ResponseHeader;
+use ILIAS\Filesystem\Stream\Streams;
 
 /**
  * Class ilObjViMPGUI
@@ -447,19 +449,29 @@ class ilObjViMPGUI extends ilObjectPluginGUI
 
     public function addUserAutoComplete()
     {
+        $container = $GLOBALS['DIC'];
         $auto = new ilUserAutoComplete();
         $auto->setSearchFields(array('login', 'firstname', 'lastname', 'email'));
         $auto->setResultField('login');
         $auto->enableFieldSearchableCheck(false);
         $auto->setMoreLinkAvailable(true);
 
-        if (($_REQUEST['fetchall'])) {
+        if ($container->http()->wrapper()->query()->has('fetchall')) {
             $auto->setLimit(ilUserAutoComplete::MAX_ENTRIES);
         }
 
-        $list = $auto->getList($_REQUEST['term']);
+        if ($container->http()->wrapper()->query()->has('term')) {
+            $query = ilUtil::stripSlashes(
+                $container->http()->wrapper()->query()->retrieve('term', $container->refinery()->kindlyTo()->string())
+            );
+            $response = $container->http()
+                                        ->response()
+                                        ->withHeader(ResponseHeader::CONTENT_TYPE, 'application/json')
+                                        ->withBody(Streams::ofString($auto->getList($query)));
+            $container->http()->saveResponse($response);
+        }
 
-        echo $list;
-        exit();
+        $container->http()->sendResponse();
+        $container->http()->close();
     }
 }

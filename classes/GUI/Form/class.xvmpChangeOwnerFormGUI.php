@@ -50,7 +50,7 @@ class xvmpChangeOwnerFormGUI extends xvmpFormGUI
     {
         $input = new ilTextInputGUI($this->pl->txt('username'), 'login');
         $input->setRequired(true);
-        $input->setInfo($this->pl->txt('info_autocomplete'));
+        #$input->setInfo($this->pl->txt('info_autocomplete'));
         $input->setDataSource($this->dic->ctrl()->getLinkTarget($this, 'addUserAutoComplete', "", true));
         $this->addItem($input);
     }
