@@ -108,6 +108,9 @@ class VideoPlayer
         $tpl->addCss($ilViMPPlugin->getExternAssetURL( '/node_modules/videojs-vr/dist/videojs-vr.css'));
         $tpl->addJavaScript($ilViMPPlugin->getExternAssetURL(
             '/node_modules/videojs-vr/dist/videojs-vr.min.js'));
+        $tpl->addJavaScript($ilViMPPlugin->getExternAssetURL('/node_modules/jquery-ui/dist/jquery-ui.js'));
+        $tpl->addJavaScript($ilViMPPlugin->getExternAssetURL('/node_modules/sortablejs/Sortable.js'));
+        $tpl->addJavaScript($ilViMPPlugin->getExternAssetURL('/node_modules/jquery-sortablejs/jquery-sortable.js'));
     }
 
     /**

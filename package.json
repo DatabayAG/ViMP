@@ -20,5 +20,9 @@
     "videojs-contrib-quality-levels": "^4.1.0",
     "videojs-hls-quality-selector": "^2.0.0",
     "videojs-vr": "^2.0.0"
+  },
+  "devDependencies": {
+    "jquery-sortablejs": "^1.0.1",
+    "jquery-ui": "^1.14.1"
   }
 }
