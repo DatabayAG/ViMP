@@ -28,6 +28,6 @@ $(document).ready(function () {
 	$("div.ilTableOuter table tbody").sortable({
 		helper: fixHelper,
 		items: '.xvmpSortable',
-		stop: reSort
+		onEnd: reSort
 	}).disableSelection();
 });
