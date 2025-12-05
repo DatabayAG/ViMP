@@ -93,7 +93,7 @@ class xvmpMedium extends xvmpObject
     protected string $tags;
     protected bool $accept_comment;
     protected string $slug;
-    protected string $streaming;
+    protected array|string $streaming;
     protected int $count_likes;
     protected ?array $subtitles = [];
     protected bool $download_allowed = false;
