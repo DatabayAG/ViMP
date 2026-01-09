@@ -50,16 +50,18 @@ class xvmpUploadService
      */
     public function moveUploadToWebDir(string $tmp_name, string $tmp_id) : string
     {
-        $path = '/public' . ilFileUtils::getWebspaceDir() . '/vimp/';
-        $dir = $path . $tmp_id;
-        $this->createDirIfNotExists($dir);
+        $vimp = '/vimp/';
+        $path = ilFileUtils::getWebspaceDir() . $vimp;
+        $abs_dir = $path . $tmp_id;
+        $rel_dir = $vimp . $tmp_id;
+        $this->createDirIfNotExists($rel_dir);
         if (!$this->file_upload->hasBeenProcessed()) {
             $this->file_upload->process();
         }
         $uploadResult = $this->file_upload->getResults()[$tmp_name];
         $this->file_upload->moveOneFileTo(
             $uploadResult,
-            $dir,
+            $rel_dir,
             Location::WEB,
             $uploadResult->getName()
         );
@@ -87,7 +89,8 @@ class xvmpUploadService
     {
         $vimp_path = ILIAS_ABSOLUTE_PATH . '/public/' . ilFileUtils::getWebspaceDir() . '/vimp/';
         $dir = $vimp_path . $tmp_id;
-        $path = $dir . '/' . $this->pl->cleanUpFilename($tmp_name);
+        #$path = $dir . '/' . $this->pl->cleanUpFilename($tmp_name);
+        $path = $dir . '/' . $tmp_name;
         $this->temp_directories[] = $dir;
         $path = $this->signWithWAC($path);
         return ILIAS_HTTP_PATH . ltrim($path, '.');
