@@ -360,7 +360,7 @@ class xoctPlupload
             $fileName = uniqid("file_");
         }
 
-        $filePath = $targetDir . DIRECTORY_SEPARATOR . $this->pl->cleanUpFilename($fileName);
+        $filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
         global $DIC;
         $ilLog = $DIC['ilLog'];
         $ilLog->write('plupload chunks');

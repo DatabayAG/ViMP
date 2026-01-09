@@ -87,9 +87,8 @@ class xvmpUploadService
      */
     public function getSignedUrl(string $tmp_name, string $tmp_id) : string
     {
-        $vimp_path = ILIAS_ABSOLUTE_PATH . '/public/' . ilFileUtils::getWebspaceDir() . '/vimp/';
+        $vimp_path =   ilFileUtils::getWebspaceDir() . '/vimp/';
         $dir = $vimp_path . $tmp_id;
-        #$path = $dir . '/' . $this->pl->cleanUpFilename($tmp_name);
         $path = $dir . '/' . $tmp_name;
         $this->temp_directories[] = $dir;
         $path = $this->signWithWAC($path);
