@@ -82,7 +82,6 @@ class xvmpMedium extends xvmpObject
     protected ?string $meta_author;
     protected ?string $meta_copyright;
     protected int $sum_rating;
-    protected int $count_views;
     protected int $count_rating;
     protected int $count_favorites;
     protected int $count_comments;
@@ -106,6 +105,7 @@ class xvmpMedium extends xvmpObject
     protected int $count_views_portal;
     protected int $count_views_embed;
     protected int $count_views_api;
+    protected int $count_views;
 
     /**
      * @param null  $ilObjUser
@@ -262,6 +262,10 @@ class xvmpMedium extends xvmpObject
         $response['description'] = strip_tags(html_entity_decode((string) $response['description']));
         $response['title'] = (string) $response['title'];
         $response['slug'] = (string) $response['slug'];
+        $response['count_views'] = (int) $response['count_views'];
+        $response['count_views_api'] = (int) $response['count_views_api'];
+        $response['count_views_embed'] = (int) $response['count_views_embed'];
+        $response['count_views_portal'] = (int) $response['count_views_portal'];
 
         if (isset($response['mediapermissions']) && isset($response['mediapermissions']['rid']) && is_array($response['mediapermissions']['rid'])) {
             $response['mediapermissions'] = $response['mediapermissions']['rid'];

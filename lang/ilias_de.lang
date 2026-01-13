@@ -53,6 +53,12 @@ conf_cache#:#Caching
 conf_cache_info#:#Objekte werden zur Verbesserung der Performanz zwischengespeichert. Nach Ablauf der TTL wird ein Objekt aus dem Cache entfernt und neu geladen (bei Eingabe von 0 werden sie nicht automatisch entfernt). Der gesamte Cache kann mithilfe der Schaltfläche oben auf dieser Seite geleert werden. Innerhalb von VIMP-Objekten im Magazin können ausserdem die Videos dieser Objekte aus dem Cache entfernt und neu geladen werden.
 conf_embed_player#:#Embedded Videoplayer nutzen
 conf_embed_player_info#:#Wenn aktiviert, wird der eingebettete Videoplayer von VIMP genutzt. Wenn der Lernfortschritt für ein Objekt aktiviert ist, wird jedoch dennoch der Plugin-eigene Player verwendet, da der Lernfortschritt mit dem eingebetteten Player nicht gemessen werden kann.
+conf_download_button#:#Download Button
+conf_download_button_info#:#Zeige den Download Button zum direkten herunterladen des Videos an. Das Video muss auf dem VIMP Server, die 'Download' Option aktiviert haben.
+conf_streaming_button#:#Streaming Button
+conf_streaming_button_info#:#Zeige den Streaming Button zum kopieren des Videos an.
+conf_views#:#Anzahl Views anzeigen
+conf_views_info#:#Zeige die Anzahl der Views an.
 conf_text#:#Textfeld
 conf_checkbox#:#Checkbox
 conf_form_field_type_0#:#Textfeld
@@ -202,6 +208,8 @@ direct_link_dropdown#:#Link zum Video
 btn_copy_link#:#Link kopieren
 btn_copy_link_w_time#:#Link mit Zeitangabe kopieren
 btn_download#:#Download
+btn_streaming#:#Streaming-URL
+btn_permanent_link#:#Permanent Link
 popover_link_copied#:#Link in Zwischenablage kopiert
 availability_between#:#Verfügbar %s - %s
 availability_from#:#Verfügbar ab %s
@@ -212,5 +220,7 @@ availability_to_short#:#Bis %s
 available#:#Verfügbar
 obj_xvmp#:#VIMP
 objs_xvmp#:#VIMP
+copied#:#In die Zwischenablage kopiert.
+conf_ui_settings#:#Benutzeroberfläche
 change_owner#:#Besitzer ändern
 auto_subtitle#:#Automatische Untertitel generieren<br><br><div class="help-block">Bei Nutzung dieser Funktion erfolgt eine Übertragung <br>der Tonspur an den externen Dienst "Amberscript".<br> Bitte beachten Sie die dazugehörige <a href="https://www.amberscript.com/de/datenschutzerklaerung/">Datenschutzerklärung</a></div>

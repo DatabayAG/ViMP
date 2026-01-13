@@ -1,7 +1,7 @@
 <?php
 
 $id = 'xvmp';
-$version = '1.9.5';
+$version = '1.9.6';
 $ilias_min_version = '10.0';
 $ilias_max_version = '10.999';
 $responsible = 'Databay AG';

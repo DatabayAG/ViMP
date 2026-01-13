@@ -98,6 +98,13 @@ class MediumMetadataDTOBuilder
             );
         }
 
+        if(xvmpConf::getConfig(xvmpConf::F_VIEWS)) {
+            $medium_infos[] = new MediumAttribute(
+                (string) $medium->getCountViews(),
+                $this->plugin->txt('views')
+            );
+        }
+
         return $medium_infos;
     }
 
