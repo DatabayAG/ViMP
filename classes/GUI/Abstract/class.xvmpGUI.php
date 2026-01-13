@@ -9,6 +9,7 @@ use srag\Plugins\ViMP\UIComponents\PlayerModal\PlayerContainerDTO;
 use srag\Plugins\ViMP\Content\MediumMetadataDTOBuilder;
 use srag\Plugins\ViMP\UIComponents\Renderer\Factory;
 use srag\Plugins\ViMP\UIComponents\Player\VideoPlayer;
+use ILIAS\UI\Component\Popover\Popover;
 
 /**
  * Class xvmpGUI
@@ -22,6 +23,8 @@ abstract class xvmpGUI
     public const CMD_FILL_MODAL = 'fillModalPlayer';
     public const TAB_ACTIVE = ''; // overwrite in subclass
     public const CMD_DOWNLOAD_MEDIUM = 'downloadMedium';
+    public const CMD_STREAMING_MEDIUM = 'streamingMedium';
+    private ilLanguage $lang;
     protected ilObjViMPGUI $parent_gui;
     protected ilViMPPlugin $pl;
     protected Container $dic;
@@ -45,6 +48,7 @@ abstract class xvmpGUI
 
     protected function addJavaScript() : void
     {
+        $this->dic->ui()->mainTemplate()->addJavaScript('Customizing/global/plugins/Services/Repository/RepositoryObject/ViMP/templates/js/xvmp_copy_button.js');
         $this->dic->ui()->mainTemplate()->addJavaScript('./node_modules/webui-popover/dist/jquery.webui-popover.js');
         $this->dic->ui()->mainTemplate()->addJavaScript('./src/UI/templates/js/Popover/popover.js');
     }
@@ -257,6 +261,8 @@ abstract class xvmpGUI
         $buttons = [];
         if (!is_null($this->getObject())) {
             $buttons[] = $this->buildPermLinkUI($medium);
+            $buttons[] = $this->buildStreamingButton($medium);
+            $buttons[] = $this->buildDownloadButton($medium);
         }
 
         if ($medium->isDownloadAllowed()) {
@@ -300,43 +306,6 @@ abstract class xvmpGUI
     }
 
     /**
-     * @param xvmpMedium $video
-     * @return ILIAS\UI\Component\Component[]
-     */
-    public function buildPermLinkUI(xvmpMedium $video) : array
-    {
-        $items = [];
-        $link_tpl = ilLink::_getStaticLink(
-            $this->parent_gui->getRefId(),
-            $this->parent_gui->getType(),
-            true,
-            '_' . $video->getMid() . '_0'
-        );
-
-        $popover = $this->dic->ui()->factory()->popover()->standard(
-            $this->dic->ui()->factory()->legacy($this->pl->txt('popover_link_copied'))
-        );
-
-        if (!xvmpConf::getConfig(xvmpConf::F_EMBED_PLAYER)) {
-            $items[] = $this->dic->ui()->factory()->button()->shy(
-                $this->pl->txt('btn_copy_link_w_time'),
-                ''
-            )->withOnClick($popover->getShowSignal())->withOnLoadCode(function ($id) use ($link_tpl) {
-                return "document.getElementById('$id').addEventListener('click', () => VimpContent.copyDirectLinkWithTime('$link_tpl'));";
-            });
-        }
-        return [
-            $popover,
-            $this->dic->ui()->factory()->legacy('
-                <div class="ilPermalinkContainer input-group">
-                    <input class="form-control" id="current_perma_link" type="text" value="' . $link_tpl . '" readonly="readonly" onclick="this.focus();this.select();return false;" />
-                    <span class="input-group-btn">'),
-            $this->dic->ui()->factory()->dropdown()->standard($items)->withLabel(''),
-            $this->dic->ui()->factory()->legacy('</span></div>'),
-        ];
-    }
-
-    /**
      * ajax
      * @throws xvmpException
      */
@@ -347,6 +316,87 @@ abstract class xvmpGUI
         xvmpUserProgress::storeProgress($this->dic->user()->getid(), $mid, $ranges);
         echo "ok";
         exit;
+    }
+
+    public function buildPermLinkUI(xvmpMedium $video) : array
+    {
+        $link_tpl = ilLink::_getStaticLink(
+            $this->parent_gui->getRefId(),
+            $this->parent_gui->getType(),
+            true,
+            '_' . $video->getMid() . '_0'
+        );
+        $popover = $this->buildCopyPopover();
+
+        $code = function (string $id) use ($link_tpl): string {
+            $id = $this->jsonEncode($id);
+            $perm_url = $this->jsonEncode((string) $link_tpl);
+            return "document.getElementById($id).addEventListener('click', e => copyButtonPermanentLink($perm_url));";
+        };
+
+        $button = $this->dic->ui()->factory()->button()->standard(
+            $this->pl->txt('btn_permanent_link'),
+            ''
+        )->withAdditionalOnLoadCode($code)->withOnClick($popover->getShowSignal());
+        return [
+            $button, $popover
+        ];
+    }
+
+    public function buildStreamingButton(xvmpMedium $video) : array
+    {
+        $medium = $video->getMedium();
+        if (is_array($medium) && isset($medium[0])) {
+            $medium = $medium[0];
+        }
+
+        if(xvmpConf::getConfig(xvmpConf::F_STREAMING_BUTTON) && ilObjViMPAccess::hasAccessToStreamingLink()){
+            $popover = $this->buildCopyPopover();
+
+            $code = function (string $id) use ($medium): string {
+                $id = $this->jsonEncode($id);
+                $perm_url = $this->jsonEncode((string) $medium);
+                return "document.getElementById($id).addEventListener('click', e => copyButtonStreamingLink($perm_url));";
+            };
+            $button = $this->dic->ui()->factory()->button()->standard(
+                $this->pl->txt('btn_streaming'),
+                ''
+            )->withAdditionalOnLoadCode($code)->withOnClick($popover->getShowSignal());
+            return [
+                $button, $popover
+            ];
+        }
+        return [];
+    }
+
+    private function jsonEncode($value): string
+    {
+        return json_encode($value, JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_THROW_ON_ERROR);
+    }
+
+    public function buildDownloadButton(xvmpMedium $medium) : array
+    {
+        if (xvmpConf::getConfig(xvmpConf::F_DOWNLOAD_BUTTON) && $medium->isDownloadAllowed()) {
+            $this->dic->ctrl()->setParameter($this, 'mid', $medium->getMid());
+
+            $button = $this->dic->ui()->factory()->button()->standard(
+                $this->pl->txt('btn_download'),
+                $this->dic->ctrl()->getLinkTarget($this, self::CMD_DOWNLOAD_MEDIUM)
+            );
+            return [
+                $button
+            ];
+        }
+        return [];
+    }
+
+    /**
+     * @return Popover
+     */
+    protected function buildCopyPopover() : Popover
+    {
+        $content = $this->dic->ui()->factory()->legacy($this->pl->txt('copied'));
+        return $this->dic->ui()->factory()->popover()->standard($content)->withVerticalPosition();
     }
 
 }

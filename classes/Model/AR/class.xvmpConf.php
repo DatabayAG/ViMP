@@ -61,6 +61,10 @@ class xvmpConf extends ActiveRecord
     public const F_TOKEN = 'token';
 
     public const F_EMBED_PLAYER = 'embed_player';
+    public const F_DOWNLOAD_BUTTON = 'download_button';
+    public const F_STREAMING_BUTTON = 'streaming_button';
+    public const F_VIEWS = 'views';
+
     public const MEDIA_PERMISSION_OFF = 0;
     public const MEDIA_PERMISSION_ON = 1;
     public const MEDIA_PERMISSION_SELECTION = 2;

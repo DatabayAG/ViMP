@@ -159,25 +159,49 @@ class xvmp
         if (is_array($medium_url)) {
             $medium_url = $medium_url[0];
         }
-        $download_url = $medium_url . '?token=' . xvmp::getToken();
-        $extension = pathinfo($medium_url)['extension'];
+        $download_url = $medium->getSource();
+        $extension = pathinfo($download_url)['extension'];
+
         // get filesize
         $ch = curl_init($download_url);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HEADER, true);
-        curl_setopt($ch, CURLOPT_NOBODY, true);
-        curl_exec($ch);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_HEADER, TRUE);
+        //curl_setopt($ch, CURLOPT_NOBODY, TRUE);
+
+        curl_setopt($ch, CURLOPT_COOKIESESSION, true);
+        curl_setopt($ch, CURLOPT_COOKIEFILE, CLIENT_DATA_DIR . "/temp/vimp_cookie.txt");
+
+        $response = curl_exec($ch);
         $size = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
         curl_close($ch);
 
+        $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+        $headers = substr($response, 0, $header_size);
+        $body = substr($response, $header_size);
+
+        $filename = $medium->getTitle() . '.' . 'mp4'; // Default filename
+        $content_type = 'application/octet-stream'; // Default content type
+        if (preg_match('/content-disposition:.*filename=["\']?([^"\']+)/', $headers, $matches)) {
+            $filename = $matches[1];
+        }
+
+        if (preg_match('/Content-Type:\s*([^\s]+)/i', $headers, $matches)) {
+            $content_type = $matches[1];
+        }
+
         // deliver file
-        header('Content-Description: File Transfer');
-        header('Content-Type: video/' . $extension);
-        header('Content-Disposition: attachment; filename="' . $medium->getTitle() . '.' . $extension);
-        header('Content-Length: ' . $size);
-        readfile($download_url);
-        exit;
+        header('Content-Type: ' . $content_type);
+        header('Content-Disposition: attachment; filename="' . $filename);
+        header('Content-Transfer-Encoding: binary');
+        header('Content-Length: ' . strlen($body));
+        header('Cache-Control: post-check=0, pre-check=0, max-age=0');
+        header('Pragma: public');
+        header('Expires: 0');
+
+        echo $body;
+        curl_close($ch);
+
     }
 
     /**
