@@ -89,6 +89,7 @@ class xvmpUploadService
     {
         $vimp_path =   ilFileUtils::getWebspaceDir() . '/vimp/';
         $dir = $vimp_path . $tmp_id;
+        #$path = $dir . '/' . $this->pl->cleanUpFilename($tmp_name);
         $path = $dir . '/' . $tmp_name;
         $this->temp_directories[] = $dir;
         $path = $this->signWithWAC($path);
