@@ -129,7 +129,6 @@ if (!empty(xvmpConf::getConfig(xvmpConf::F_FORM_FIELDS))) {
 ?>
 <#11>
 <?php
-require_once("./Services/Migration/DBUpdate_3560/classes/class.ilDBUpdateNewObjectType.php");
 $xvmp_type_id = ilDBUpdateNewObjectType::addNewType('xvmp', 'Plugin ViMP');
 
 //Adding a new Permission rep_robj_xvmp_readlink ("Read link")
