@@ -264,15 +264,7 @@ abstract class xvmpGUI
             $buttons[] = $this->buildStreamingButton($medium);
             $buttons[] = $this->buildDownloadButton($medium);
         }
-
-        if ($medium->isDownloadAllowed()) {
-            $this->dic->ctrl()->setParameter($this, 'mid', $medium->getMid());
-            $buttons[] = $this->dic->ui()->factory()->button()->standard(
-                $this->pl->txt('btn_download'),
-                $this->dic->ctrl()->getLinkTarget($this, self::CMD_DOWNLOAD_MEDIUM)
-            );
-        }
-
+        
         if (!empty($buttons)) {
             $playerContainerDTO = $playerContainerDTO->withButtons($buttons);
         }
