@@ -221,7 +221,9 @@ class VideoPlayer
             $videojs_script .= " player.hlsQualitySelector();";
         }
 
-        if ($this->video->getProperties()['source-is360video']) {
+        $properties = $this->video->getProperties();
+
+        if (!empty($properties['source-is360video'])) {
             $videojs_script .= "player.mediainfo = player.mediainfo || {};";
             $videojs_script .= "player.mediainfo.projection = '360';";
             $videojs_script .= "player.vr();";
