@@ -9,6 +9,8 @@ use srag\Plugins\ViMP\UIComponents\PlayerModal\PlayerContainerDTO;
 use srag\Plugins\ViMP\Content\MediumMetadataDTOBuilder;
 use srag\Plugins\ViMP\UIComponents\Renderer\Factory;
 use srag\Plugins\ViMP\UIComponents\Player\VideoPlayer;
+use ILIAS\StaticURL\Services;
+use ILIAS\Data\ReferenceId;
 
 /**
  * Class xvmpGUI
@@ -306,11 +308,11 @@ abstract class xvmpGUI
     public function buildPermLinkUI(xvmpMedium $video) : array
     {
         $items = [];
-        $link_tpl = ilLink::_getStaticLink(
-            $this->parent_gui->getRefId(),
+
+        $link_tpl = $this->dic['static_url']->builder()->build(
             $this->parent_gui->getType(),
-            true,
-            '_' . $video->getMid() . '_0'
+            new ReferenceId($this->parent_gui->getRefId()),
+            [$video->getMid() , '0']
         );
 
         $popover = $this->dic->ui()->factory()->popover()->standard(

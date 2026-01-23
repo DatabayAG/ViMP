@@ -139,9 +139,23 @@ class VideoPlayer
         if ($medium && xvmp::ViMPVersionGreaterEquals('4.1.0') && $abr_conf) {
             $isABRStream = true;
             $medium = html_entity_decode($medium);
-            //$medium = str_replace('mp4', 'smil', $medium);
-            //$medium = preg_replace('/(_[0-9]{3,4}p)?\.smil/', '.smil', $medium);
+            $medium = str_replace('mp4', 'smil', $medium);
+            $medium = preg_replace('/(_[0-9]{3,4}p)?\.smil/', '.smil', $medium);
         }
+
+        if (xvmp::ViMPVersionGreaterEquals('6.2.0')) {
+            $medium_newer = $this->video->getField('streaming');
+            foreach ($medium_newer as $playlist) {
+                if(str_contains($playlist, '<ip-address>')){
+                    continue;
+                }
+                if (str_contains($playlist, 'smil:')){
+                    $medium = $playlist;
+                    break;
+                }
+            }
+        }
+
         $random = new ilRandom();
         $id = md5(((string) ($random->int(1, 9999999) + str_replace(" ", "", (string) microtime()))));
 
