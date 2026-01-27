@@ -9,7 +9,7 @@ use ILIAS\DI\Container;
 /**
  * Class ilObjViMPGUI
  * @author            Theodor Truffer <tt@studer-raimann.ch>
- * @ilCtrl_isCalledBy ilObjViMPGUI: ilRepositoryGUI, ilObjPluginDispatchGUI, ilAdministrationGUI, illmeditorgui
+ * @ilCtrl_isCalledBy ilObjViMPGUI: ilRepositoryGUI, ilObjPluginDispatchGUI, ilAdministrationGUI, illmeditorgui, ilmediapoolpresentationgui
  * @ilCtrl_Calls      ilObjViMPGUI: ilPermissionGUI, ilInfoScreenGUI, ilObjectCopyGUI, ilCommonActionDispatcherGUI, ilLearningProgressGUI
  */
 class ilObjViMPGUI extends ilObjectPluginGUI

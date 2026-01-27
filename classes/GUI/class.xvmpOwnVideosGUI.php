@@ -25,6 +25,10 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
     public const CMD_CONFIRMED_DELETE_VIDEO = 'confirmedDeleteVideo';
     public const CMD_UPLOAD_CHUNKS = 'uploadChunks';
 
+    /**
+     * @throws ilCtrlException
+     * @throws xvmpException
+     */
     protected function performCommand($cmd) : void
     {
         switch ($cmd) {
@@ -34,11 +38,14 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
             case self::CMD_DELETE_VIDEO:
             case self::CMD_CONFIRMED_CHANGE_OWNER:
             case self::CMD_CONFIRMED_DELETE_VIDEO:
-                $mid = max($_GET['mid'], $_POST['mid']);
-                $medium = xvmpMedium::find($mid);
-                if (!$medium instanceof xvmpDeletedMedium) {
-                    ilObjViMPAccess::checkAction(ilObjViMPAccess::ACTION_MANIPULATE_VIDEO, $this, $medium);
-                }
+                $mid = $this->getMidFromPostOrGet();
+
+                if($mid !== null){
+                        $medium = xvmpMedium::find($mid);
+                        if (!$medium instanceof xvmpDeletedMedium) {
+                            ilObjViMPAccess::checkAction(ilObjViMPAccess::ACTION_MANIPULATE_VIDEO, $this, $medium);
+                        }
+                    }
                 break;
             case self::CMD_FILL_MODAL:
                 $mid = max($_GET['mid'], $_POST['mid']);
@@ -77,6 +84,22 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
 
         $xoctPlupload->setTargetDir($dir);
         $xoctPlupload->handleUpload();
+    }
+
+    /**
+     * @return mixed|null
+     */
+    protected function getMidFromPostOrGet() : mixed
+    {
+        $get_mid = $_GET['mid'] ?? null;
+        $post_mid = $_POST['mid'] ?? null;
+        $mid = null;
+        if ($get_mid !== null && $post_mid !== null) {
+            $mid = max($_GET['mid'], $_POST['mid']);
+        } elseif ($get_mid !== null) {
+            $mid = $get_mid;
+        }
+        return $mid;
     }
 
     /**
