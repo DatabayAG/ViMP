@@ -977,6 +977,54 @@ class xvmpMedium extends xvmpObject
     /**
      * @return int
      */
+    public function getCountViewsPortal() : int
+    {
+        return $this->count_views_portal;
+    }
+
+    /**
+     * @param int $count_views
+     */
+    public function setCountViewsPortal(int $count_views) : void
+    {
+        $this->count_views_portal = $count_views;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCountViewsEmbed() : int
+    {
+        return $this->count_views_embed;
+    }
+
+    /**
+     * @param int $count_views
+     */
+    public function setCountViewsEmbed(int $count_views) : void
+    {
+        $this->count_views_embed = $count_views;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCountViewsAPI() : int
+    {
+        return $this->count_views_api;
+    }
+
+    /**
+     * @param int $count_views
+     */
+    public function setCountViewsAPI(int $count_views) : void
+    {
+        $this->count_views_api = $count_views;
+    }
+
+    /**
+     * @return int
+     */
     public function getCountRating() : int
     {
         return $this->count_rating;
