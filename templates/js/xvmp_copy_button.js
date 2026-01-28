@@ -1,13 +1,18 @@
+let xvmpCopyButtonBlurTimer = 3000;
+function xvmpFocusOutside() {
+  $("body").click()
+}
+
 let copyButtonPermanentLink = text => {
-  console.log(text);
   if (window.navigator.clipboard) {
-    console.log(text);
+    setTimeout(xvmpFocusOutside, xvmpCopyButtonBlurTimer);
     return window.navigator.clipboard.writeText(text);
   }
 };
 
 let copyButtonStreamingLink = text => {
   if (window.navigator.clipboard) {
+    setTimeout(xvmpFocusOutside, xvmpCopyButtonBlurTimer);
     return window.navigator.clipboard.writeText(text);
   }
 };
