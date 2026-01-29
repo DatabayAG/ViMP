@@ -958,68 +958,44 @@ class xvmpMedium extends xvmpObject
         $this->sum_rating = $sum_rating;
     }
 
-    /**
-     * @return int
-     */
     public function getCountViews() : int
     {
         return $this->count_views;
     }
 
-    /**
-     * @param int $count_views
-     */
     public function setCountViews(int $count_views) : void
     {
         $this->count_views = $count_views;
     }
 
-    /**
-     * @return int
-     */
     public function getCountViewsPortal() : int
     {
         return $this->count_views_portal;
     }
 
-    /**
-     * @param int $count_views
-     */
-    public function setCountViewsPortal(int $count_views) : void
+    public function setCountViewsPortal(int $count_views_portal) : void
     {
-        $this->count_views_portal = $count_views;
+        $this->count_views_portal = $count_views_portal;
     }
 
-    /**
-     * @return int
-     */
     public function getCountViewsEmbed() : int
     {
         return $this->count_views_embed;
     }
 
-    /**
-     * @param int $count_views
-     */
-    public function setCountViewsEmbed(int $count_views) : void
+    public function setCountViewsEmbed(int $count_views_embed) : void
     {
-        $this->count_views_embed = $count_views;
+        $this->count_views_embed = $count_views_embed;
     }
 
-    /**
-     * @return int
-     */
     public function getCountViewsAPI() : int
     {
         return $this->count_views_api;
     }
 
-    /**
-     * @param int $count_views
-     */
-    public function setCountViewsAPI(int $count_views) : void
+    public function setCountViewsAPI(int $count_views_api) : void
     {
-        $this->count_views_api = $count_views;
+        $this->count_views_api = $count_views_api;
     }
 
     /**

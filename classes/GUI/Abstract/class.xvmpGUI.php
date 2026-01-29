@@ -10,6 +10,7 @@ use srag\Plugins\ViMP\Content\MediumMetadataDTOBuilder;
 use srag\Plugins\ViMP\UIComponents\Renderer\Factory;
 use srag\Plugins\ViMP\UIComponents\Player\VideoPlayer;
 use ILIAS\UI\Component\Popover\Popover;
+use ILIAS\UI\Component\Button\Standard;
 
 /**
  * Class xvmpGUI
@@ -264,7 +265,7 @@ abstract class xvmpGUI
             $buttons[] = $this->buildStreamingButton($medium);
             $buttons[] = $this->buildDownloadButton($medium);
         }
-        
+
         if (!empty($buttons)) {
             $playerContainerDTO = $playerContainerDTO->withButtons($buttons);
         }
@@ -326,10 +327,7 @@ abstract class xvmpGUI
             return "document.getElementById($id).addEventListener('click', e => copyButtonPermanentLink($perm_url));";
         };
 
-        $button = $this->dic->ui()->factory()->button()->standard(
-            $this->pl->txt('btn_permanent_link'),
-            ''
-        )->withAdditionalOnLoadCode($code)->withOnClick($popover->getShowSignal());
+        $button = $this->generateButton('btn_permanent_link', $code, $popover);
         return [
             $button, $popover
         ];
@@ -350,15 +348,27 @@ abstract class xvmpGUI
                 $perm_url = $this->jsonEncode((string) $medium);
                 return "document.getElementById($id).addEventListener('click', e => copyButtonStreamingLink($perm_url));";
             };
-            $button = $this->dic->ui()->factory()->button()->standard(
-                $this->pl->txt('btn_streaming'),
-                ''
-            )->withAdditionalOnLoadCode($code)->withOnClick($popover->getShowSignal());
+            $button = $this->generateButton('btn_streaming', $code, $popover);
             return [
                 $button, $popover
             ];
         }
         return [];
+    }
+
+    protected function generateButton(string $txt, Closure $code = null, Popover $popover = null) : Standard
+    {
+        if($code !==  null && $popover !== null) {
+            return $this->dic->ui()->factory()->button()->standard(
+                $this->pl->txt($txt),
+                ''
+            )->withAdditionalOnLoadCode($code)->withOnClick($popover->getShowSignal());
+        } else {
+            return $this->dic->ui()->factory()->button()->standard(
+                $this->pl->txt($txt),
+                $this->dic->ctrl()->getLinkTarget($this, self::CMD_DOWNLOAD_MEDIUM)
+            );
+        }
     }
 
     private function jsonEncode($value): string
@@ -371,10 +381,7 @@ abstract class xvmpGUI
         if (xvmpConf::getConfig(xvmpConf::F_DOWNLOAD_BUTTON) && $medium->isDownloadAllowed()) {
             $this->dic->ctrl()->setParameter($this, 'mid', $medium->getMid());
 
-            $button = $this->dic->ui()->factory()->button()->standard(
-                $this->pl->txt('btn_download'),
-                $this->dic->ctrl()->getLinkTarget($this, self::CMD_DOWNLOAD_MEDIUM)
-            );
+            $button = $this->generateButton('btn_download');
             return [
                 $button
             ];
