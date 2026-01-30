@@ -102,9 +102,9 @@ class VideoPlayer
         $tpl->addJavaScript($ilViMPPlugin->getExternAssetURL('/node_modules/video.js/dist/video.min.js'));
         $tpl->addCss($ilViMPPlugin->getExternAssetURL( '/node_modules/video.js/dist/video-js.min.css'));
         $tpl->addJavaScript($ilViMPPlugin->getExternAssetURL(
-             '/node_modules/videojs-contrib-quality-levels/dist/videojs-contrib-quality-levels.min.js'));
+            '/node_modules/videojs-contrib-quality-levels/dist/videojs-contrib-quality-levels.min.js'));
         $tpl->addJavaScript($ilViMPPlugin->getExternAssetURL(
-             '/node_modules/videojs-hls-quality-selector/dist/videojs-hls-quality-selector.min.js'));
+            '/node_modules/videojs-hls-quality-selector/dist/videojs-hls-quality-selector.min.js'));
         $tpl->addCss($ilViMPPlugin->getExternAssetURL( '/node_modules/videojs-vr/dist/videojs-vr.css'));
         $tpl->addJavaScript($ilViMPPlugin->getExternAssetURL(
             '/node_modules/videojs-vr/dist/videojs-vr.min.js'));
@@ -134,8 +134,8 @@ class VideoPlayer
 
         $template = $this->pl->getTemplate('default/tpl.video.html');
 
-        $medium = $this->video->getMedium();
-        $medium = is_array($medium) ? end($medium) : $medium;
+        $medium_array = $this->video->getMedium();
+        $medium = is_array($medium_array) ? reset($medium_array) : $medium_array;
 
         $isABRStream = false;
 
@@ -186,9 +186,9 @@ class VideoPlayer
             $output = "WEBVTT \n\n";
             foreach ($chapters as $chapter) {
                 $output .= gmdate("H:i:s", $chapter['time']) . ".000 --> " . gmdate(
-                    "H:i:s",
-                    $chapter['time']
-                ) . ".000\n" . $chapter['title'] . "\n\n";
+                        "H:i:s",
+                        $chapter['time']
+                    ) . ".000\n" . $chapter['title'] . "\n\n";
             }
 
             $template->setCurrentBlock('chapters');
