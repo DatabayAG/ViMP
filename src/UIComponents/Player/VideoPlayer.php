@@ -205,7 +205,6 @@ class VideoPlayer
         $has_query = !is_null(parse_url($medium, PHP_URL_QUERY));
         $template->setVariable('SOURCE', $medium . ($has_query ? '&' : '?') . 'token=' . xvmp::getToken());
         $template->setVariable('THUMBNAIL', $this->video->getThumbnail());
-        $template->setVariable('TYPE', $pathinfo['extension']);
 
         if (!isset($this->options['width'])) {
             $template->setVariable('CSS_CLASS', 'vjs-4-3');
