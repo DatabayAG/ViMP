@@ -12,7 +12,7 @@ use ILIAS\Filesystem\Stream\Streams;
  * Class ilObjViMPGUI
  * @author            Theodor Truffer <tt@studer-raimann.ch>
  * @ilCtrl_isCalledBy ilObjViMPGUI: ilRepositoryGUI, ilObjPluginDispatchGUI, ilAdministrationGUI, illmeditorgui, ilmediapoolpresentationgui
- * @ilCtrl_Calls      ilObjViMPGUI: ilPermissionGUI, ilInfoScreenGUI, ilObjectCopyGUI, ilCommonActionDispatcherGUI, ilLearningProgressGUI
+ * @ilCtrl_Calls      ilObjViMPGUI: ilPermissionGUI, ilInfoScreenGUI, ilObjectCopyGUI, ilCommonActionDispatcherGUI, ilLearningProgressGUI, xvmpLearningProgressGUI
  */
 class ilObjViMPGUI extends ilObjectPluginGUI
 {
@@ -181,7 +181,16 @@ class ilObjViMPGUI extends ilObjectPluginGUI
                         $this->initHeader();
                         $this->setTabs();
                     }
-                    $xvmpGUI = new xvmpLearningProgressGUI($this);
+                    $xvmpGUI = new xvmpLearningProgressGUI($this, $this->object);
+                    $this->ctrl->forwardCommand($xvmpGUI);
+                    $this->tpl->printToStdout();
+                    break;
+                case 'xvmpLearningProgressUserTableGUI':
+                    if (!$this->ctrl->isAsynch()) {
+                        $this->initHeader();
+                        $this->setTabs();
+                    }
+                    $xvmpGUI = new xvmpLearningProgressUserTableGUI($this->object, $cmd, $this->obj_id, $this->ref_id);
                     $this->ctrl->forwardCommand($xvmpGUI);
                     $this->tpl->printToStdout();
                     break;
@@ -473,5 +482,37 @@ class ilObjViMPGUI extends ilObjectPluginGUI
 
         $container->http()->sendResponse();
         $container->http()->close();
+    }
+
+    public function getPluginInstance(): ilPlugin
+    {
+        return ilInteractiveVideoPlugin::getInstance();
+    }
+
+    public function ensureAtLeastOnePermission(array $permissions)
+    {
+        foreach ($permissions as $permission) {
+            if($this->checkPermissionBool($permission)) {
+                return true;
+            }
+        }
+        // Since all $permissions returned false, this checkPermission() will lead to general behaviour of redirecting and sending failure
+        $this->checkPermission($permission);
+    }
+
+    /**
+     * Public wrapper for permission checks
+     */
+    public function hasPermission(string $permission): bool
+    {
+        return $this->checkPermissionBool($permission);
+    }
+
+    /**
+     * @param string $permission
+     */
+    public function ensurePermission(string $permission): void
+    {
+        $this->checkPermission($permission);
     }
 }

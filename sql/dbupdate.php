@@ -138,3 +138,16 @@ if($offering_admin)
 {
     ilDBUpdateNewObjectType::addRBACOperation($xvmp_type_id, $offering_admin);
 }
+?>
+<#12>
+<?php
+if(!$ilDB->tableColumnExists('xvmp_setting', 'lp_mode'))
+{
+    $ilDB->addTableColumn('xvmp_setting', 'lp_mode',
+        array(
+            'type'    => 'integer',
+            'length'  => '3',
+            'notnull' => true,
+            'default' => 0));
+}
+?>

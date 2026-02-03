@@ -8,6 +8,10 @@ declare(strict_types=1);
  */
 class ilObjViMP extends ilObjectPlugin implements ilLPStatusPluginInterface
 {
+    const LP_MODE_DEACTIVATED = 0;
+    const LP_MODE_BY_VIDEOS = 523;
+    private int $learning_progress_mode = 0;
+
     protected function initType() : void
     {
         $this->setType(ilViMPPlugin::XVMP);
@@ -18,6 +22,26 @@ class ilObjViMP extends ilObjectPlugin implements ilLPStatusPluginInterface
         $xvmpSettings = new xvmpSettings();
         $xvmpSettings->setObjId($this->getId());
         $xvmpSettings->create();
+    }
+
+    protected function doUpdate(bool $clone_mode = false) : void
+    {
+        global $DIC;
+        $post_lp_mode = $DIC->http()->wrapper()->post()->has('modus');
+        if($post_lp_mode) {
+            $lp_mode = $DIC->http()->wrapper()->post()->retrieve(
+                'modus',
+                $DIC->refinery()->kindlyTo()->int()
+            );
+            $xvmpSettings = new xvmpSettings();
+            $xvmpSettings->setObjId($this->getId());
+            if($lp_mode > 0) {
+                $xvmpSettings->setLpActive(1);
+            }
+            $xvmpSettings->setLpMode((int) $lp_mode);
+            $xvmpSettings->update();
+        }
+
     }
 
     protected function doDelete() : void
@@ -80,5 +104,33 @@ class ilObjViMP extends ilObjectPlugin implements ilLPStatusPluginInterface
             return $user_status->getStatus();
         }
         return ilLPStatus::LP_STATUS_NOT_ATTEMPTED_NUM;
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getLPValidModes(): array
+    {
+        return [
+            self::LP_MODE_DEACTIVATED,
+            self::LP_MODE_BY_VIDEOS,
+        ];
+    }
+
+    public function isCoreLPMode($lp_mode): bool
+    {
+        return array_key_exists($lp_mode, ilLPObjSettings::getClassMap());
+    }
+
+    public function getInternalLabelForLPMode(): string {
+        return 'by_videos';
+    }
+
+    public function refreshLearningProgress(array $usrIds = []): void
+    {
+        ilLPStatusWrapper::_refreshStatus(
+            $this->getId(),
+            empty($usrIds) ? null : $usrIds
+        );
     }
 }

@@ -16,6 +16,7 @@ class xvmpSettingsFormGUI extends xvmpFormGUI
     public const F_LAYOUT = 'layout';
     public const F_REPOSITORY_PREVIEW = 'repository_preview';
     public const F_LEARNING_PROGRESS = 'enable_learning_progress';
+    public const F_LEARNING_PROGRESS_MODE = 'modus';
     private const IMAGE_PATH = 'Customizing/global/plugins/Services/Repository/RepositoryObject/ViMP/templates/images/';
     /**
      * @var ilObjViMP
@@ -54,7 +55,8 @@ class xvmpSettingsFormGUI extends xvmpFormGUI
             self::F_ONLINE => $this->setting->getIsOnline(),
             self::F_LAYOUT => $this->setting->getLayoutType(),
             self::F_REPOSITORY_PREVIEW => $this->setting->getRepositoryPreview(),
-            self::F_LEARNING_PROGRESS => $this->setting->getLpActive()
+            self::F_LEARNING_PROGRESS => $this->setting->getLpActive(),
+            self::F_LEARNING_PROGRESS_MODE => $this->setting->getLpMode()
         );
         $this->setValuesByArray($values);
     }
@@ -106,6 +108,9 @@ class xvmpSettingsFormGUI extends xvmpFormGUI
         $input->setDisabled(!xvmp::isLearningProgressPossible($this->parent_gui->getObjId()));
         $this->addItem($input);
 
+        $input = new ilHiddenInputGUI(self::F_LEARNING_PROGRESS_MODE);
+        $this->addItem($input);
+
         $this->dic->object()->commonSettings()->legacyForm($this, $this->object)->addTileImage();
 
         $this->initCommandButtons();
@@ -137,6 +142,7 @@ class xvmpSettingsFormGUI extends xvmpFormGUI
         $this->setting->setLayoutType((int) $this->getInput(self::F_LAYOUT));
         $this->setting->setRepositoryPreview((int) $this->getInput(self::F_REPOSITORY_PREVIEW));
         $this->setting->setLpActive((int) $this->getInput(self::F_LEARNING_PROGRESS));
+        $this->setting->setLpMode((int) $this->getInput((string) self::F_LEARNING_PROGRESS_MODE));
         $this->setting->update();
 
         $this->dic->object()->commonSettings()->legacyForm($this, $this->object)->saveTileImage();

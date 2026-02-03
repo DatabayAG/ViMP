@@ -54,6 +54,14 @@ class xvmpSettings extends ActiveRecord
      */
     protected int $lp_active = 0;
 
+    /**
+     * @var int
+     * @db_has_field        true
+     * @db_fieldtype        integer
+     * @db_length           3
+     */
+    protected ?int $lp_mode = 0;
+
     public static function returnDbTableName() : string
     {
         return self::DB_TABLE_NAME;
@@ -121,6 +129,22 @@ class xvmpSettings extends ActiveRecord
     public function setLpActive(int $lp_active) : void
     {
         $this->lp_active = $lp_active;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLpMode() : int
+    {
+        return $this->lp_mode;
+    }
+
+    /**
+     * @param int $mode
+     */
+    public function setLpMode(int $mode) : void
+    {
+        $this->lp_mode = $mode;
     }
 
     /**

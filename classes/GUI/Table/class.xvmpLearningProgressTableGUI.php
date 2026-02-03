@@ -8,7 +8,7 @@ declare(strict_types=1);
  * Class xvmpLearningProgressTableGUI
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-class xvmpLearningProgressTableGUI extends xvmpTableGUI
+class xvmpLearningProgressTableGUI extends ilLearningProgressBaseGUI
 {
     public const ROW_TEMPLATE = 'tpl.learning_progress_row.html';
     public const THUMBSIZE = '170x108';
@@ -55,9 +55,13 @@ class xvmpLearningProgressTableGUI extends xvmpTableGUI
      * @throws ilCtrlException|xvmpException
      * @throws xvmpException
      */
-    public function __construct($parent_gui, $parent_cmd)
+    public function  __construct(
+        int $a_mode,
+        int $a_ref_id = 0,
+        int $a_usr_id = 0
+    )
     {
-        parent::__construct($parent_gui, $parent_cmd);
+        parent::__construct($a_mode, $a_ref_id, $a_usr_id);
 
         $this->setTitle($this->pl->txt('selected_videos'));
         $this->setExternalSorting(true);
@@ -111,20 +115,20 @@ class xvmpLearningProgressTableGUI extends xvmpTableGUI
 
         foreach ($this->available_columns as $title => $props) {
 
-            if ($title == 'required') {
+            if ($title === 'required') {
                 $this->tpl->setVariable('VAL_' . strtoupper($title),
-                    $selected_medium->getLpIsRequired() == 1 ? 'checked' : '');
+                    $selected_medium->getLpIsRequired() === 1 ? 'checked' : '');
                 //			} elseif ($title == 'thumbnail' && $transcoding) {
                 //				$this->tpl->setVariable('VAL_' . strtoupper($title), $a_set[$title]);
-            } elseif ($title == 'required_percentage') {
+            } elseif ($title === 'required_percentage') {
                 $this->tpl->setVariable('VAL_' . strtoupper($title), $selected_medium->getLpReqPercentage());
                 //			} elseif ($title == 'thumbnail' && $transcoding) {
                 //				$this->tpl->setVariable('VAL_' . strtoupper($title), $a_set[$title]);
-            } elseif ($title == 'duration') {
+            } elseif ($title === 'duration') {
                 $this->tpl->setVariable('VAL_' . strtoupper($title), $a_set['duration_formatted']);
-            } elseif ($title == 'description' && strlen($a_set[$title]) > 95) {
+            } elseif ($title === 'description' && strlen($a_set[$title]) > 95) {
                 $this->tpl->setVariable('VAL_' . strtoupper($title), substr($a_set[$title], 0, 90) . '...');
-            } elseif ($title == 'title' && strlen($a_set[$title]) > 50) {
+            } elseif ($title === 'title' && strlen($a_set[$title]) > 50) {
                 $this->tpl->setVariable('VAL_' . strtoupper($title), substr($a_set[$title], 0, 45) . '...');
             } else {
                 $this->tpl->setVariable('VAL_' . strtoupper($title), $a_set[$title]);
