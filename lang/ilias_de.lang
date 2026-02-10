@@ -224,3 +224,13 @@ copied#:#In die Zwischenablage kopiert.
 conf_ui_settings#:#Benutzeroberfläche
 change_owner#:#Besitzer ändern
 auto_subtitle#:#Automatische Untertitel generieren<br><br><div class="help-block">Bei Nutzung dieser Funktion erfolgt eine Übertragung <br>der Tonspur an den externen Dienst "Amberscript".<br> Bitte beachten Sie die dazugehörige <a href="https://www.amberscript.com/de/datenschutzerklaerung/">Datenschutzerklärung</a></div>
+lp_matrix#:#Matrixansicht
+lp_mode_desc_by_all_answered_questions#:#Das Objekt gilt als 'Bearbeitet', wenn für alle definierten Fragen eine Antwort gewählt wurde, unabhängig von der Korrektheit. Falls keine Fragen konfiguriert wurden, gilt das Objekt beim Erreichen der Endposition des Videos als 'Bearbeitet'.
+lp_mode_desc_by_questions#:#Das Objekt gilt als 'Bearbeitet', wenn für alle definierten Fragen eine 'richtige' Antwort gewählt und die Endposition des Videos erreicht wurde. Falls keine Fragen konfiguriert wurden, gilt das Objekt beim Erreichen der Endposition des Videos als 'Bearbeitet'.
+lp_mode_title_by_all_answered_questions#:#Fragen beantwortet
+lp_mode_title_by_questions#:#Fragen korrekt beantwortet
+lp_settings#:#Einstellungen
+lp_summary#:#Zusammenfassung
+lp_users#:#Benutzer
+lp_mode_title_by_videos#:#Videos welche angesehen werden müssen
+lp_mode_desc_by_videos#:#PLACEHOLDER

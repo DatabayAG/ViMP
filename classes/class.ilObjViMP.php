@@ -133,4 +133,18 @@ class ilObjViMP extends ilObjectPlugin implements ilLPStatusPluginInterface
             empty($usrIds) ? null : $usrIds
         );
     }
+
+    public function getLearningProgressMode() : int
+    {
+        return $this->learning_progress_mode;
+    }
+
+    public function setLearningProgressMode(int $learning_progress_mode) : void
+    {
+        $this->learning_progress_mode = $learning_progress_mode;
+    }
+
+    public function isLearningProgressModeActive() : bool {
+        return $this->learning_progress_mode > 0;
+    }
 }

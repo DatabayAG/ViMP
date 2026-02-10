@@ -8,7 +8,7 @@ declare(strict_types=1);
  * Class xvmpLearningProgressTableGUI
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-class xvmpLearningProgressTableGUI extends ilLearningProgressBaseGUI
+class xvmpLearningProgressTableGUI extends xvmpTableGUI
 {
     public const ROW_TEMPLATE = 'tpl.learning_progress_row.html';
     public const THUMBSIZE = '170x108';
@@ -55,14 +55,9 @@ class xvmpLearningProgressTableGUI extends ilLearningProgressBaseGUI
      * @throws ilCtrlException|xvmpException
      * @throws xvmpException
      */
-    public function  __construct(
-        int $a_mode,
-        int $a_ref_id = 0,
-        int $a_usr_id = 0
-    )
+    public function __construct($parent_gui, $parent_cmd)
     {
-        parent::__construct($a_mode, $a_ref_id, $a_usr_id);
-
+        parent::__construct($parent_gui, $parent_cmd);
         $this->setTitle($this->pl->txt('selected_videos'));
         $this->setExternalSorting(true);
         $this->setEnableNumInfo(false);

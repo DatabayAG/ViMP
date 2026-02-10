@@ -486,7 +486,7 @@ class ilObjViMPGUI extends ilObjectPluginGUI
 
     public function getPluginInstance(): ilPlugin
     {
-        return ilInteractiveVideoPlugin::getInstance();
+        return ilViMPPlugin::getInstance();
     }
 
     public function ensureAtLeastOnePermission(array $permissions)

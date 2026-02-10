@@ -15,9 +15,16 @@ use srag\Plugins\ViMP\UIComponents\Player\VideoPlayer;
 class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
 {
     private ?ActiveRecord $setting;
+    /**
+     * @var \ILIAS\DI\Container|mixed
+     */
+    private $dic;
     protected $gui;
 
     public $object;
+    public const CMD_STANDARD = 'index';
+    public const CMD_SELECT_VIDEO = 'selectVideo';
+    public const CMD_SAVE = 'save';
 
     /**
      * @var ilLanguage
@@ -34,21 +41,14 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
      */
     protected ilGlobalTemplateInterface $tpl;
 
-    /**
-     * @var ilInteractiveVideoPlugin
-     */
     public $plugin;
 
-    /**
-     * ilInteractiveVideoLearningProgressGUI constructor.
-     * @param  $gui
-     * @param  $object
-     */
     public function __construct( $gui,  $object)
     {
-        global $tpl, $lng, $ilCtrl;
+        global $tpl, $lng, $ilCtrl, $DIC;
 
         $this->gui = $gui;
+        $this->dic = $DIC;
         $this->object = $object;
         $this->plugin = $this->gui->getPluginInstance();
         $this->setting = xvmpSettings::find($this->object->getId());
@@ -107,6 +107,11 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
                 'lp_settings',
                 $this->lng->txt('trac_settings'),
                 $this->ctrl->getLinkTarget($this, 'showLPSettings')
+            );
+            $ilTabs->addSubTab(
+                'selected_video',
+                $this->plugin->txt('selected_videos'),
+                $this->ctrl->getLinkTarget($this, self::CMD_SELECT_VIDEO)
             );
         } elseif (
             $this->gui->hasPermission('read') &&
@@ -171,7 +176,7 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
                 );
             } else {
                 $opt = new ilRadioOption(
-                    $this->gui->getPluginInstance()->txt('lp_mode_title_' . $this->object->getInternalLabelForLPMode($mode)),
+                    $this->gui->getPluginInstance()->txt('lp_mode_title_by_videos'),
                     (string) $mode,
                     $this->gui->getPluginInstance()->txt('lp_mode_desc_' . $this->object->getInternalLabelForLPMode($mode))
                 );
@@ -270,6 +275,23 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
         $this->tpl->setContent(implode('<br />', [$table->getHTML(), $this->__getLegendHTML()]));
     }
 
+    public function selectVideo(): void
+    {
+        /**
+         * @var $ilTabs ilTabsGUI
+         */
+        global $ilTabs, $DIC;
+
+        $this->gui->ensureAtLeastOnePermission(['write', 'read_learning_progress']);
+
+        $this->addLearningProgressSubTabs();
+        $ilTabs->activateSubTab('selected_video');
+
+        $DIC->ui()->mainTemplate()->setOnScreenMessage('info', $this->plugin->txt('hint_learning_progress_gui'));
+        $xvmpLearningProgressTableGUI = new xvmpLearningProgressTableGUI($this, self::CMD_STANDARD);
+        $DIC->ui()->mainTemplate()->setContent($xvmpLearningProgressTableGUI->getHTML() . self::getModalPlayer()->getHTML());
+    }
+
     /**
      * @throws ilObjectNotFoundException
      * @throws ilCtrlException
@@ -289,7 +311,7 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
         $this->addLearningProgressSubTabs();
         $ilTabs->activateSubTab('lp_summary');
 
-        if ($this->object->getLearningProgressMode() == ilObjInteractiveVideo::LP_MODE_DEACTIVATED) {
+        if ($this->object->getLearningProgressMode() == ilObjViMP::LP_MODE_DEACTIVATED) {
             $this->ctrl->redirect($this->gui, $this->gui->getStandardCmd());
         }
 
@@ -430,5 +452,34 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
     public function getCtrl(): ilCtrlInterface
     {
         return $this->ctrl;
+    }
+
+    public static function getModalPlayer() : ilModalGUI
+    {
+        global $tpl;
+        #$tpl->addJavaScript('Customizing/global/plugins/Services/Repository/RepositoryObject/ViMP/templates/js/xvmp_copy_button.js');
+        $tpl->addCss(ilViMPPlugin::getInstance()->getAssetURL('default/modal.css'));
+        $modal = ilModalGUI::getInstance();
+        $modal->setId('xvmp_modal_player');
+        $modal->setType(ilModalGUI::TYPE_LARGE);
+        $modal->setBody('<section><div id="xvmp_video_container"></div></section>');
+        ilModalGUI::initJS($tpl);
+        return $modal;
+    }
+
+    protected function save() : void
+    {
+        foreach (filter_input(INPUT_POST, 'lp_required_percentage', FILTER_DEFAULT,
+            FILTER_REQUIRE_ARRAY) as $mid => $percentage) {
+            /** @var xvmpSelectedMedia $selected_medium */
+            $selected_medium = xvmpSelectedMedia::where(array('mid' => $mid, 'obj_id' => $this->getObjId()))->first();
+            $selected_medium->setLpReqPercentage((int) $percentage);
+            $selected_medium->setLpIsRequired((int) isset($_POST['lp_required'][$mid]));
+            $selected_medium->update();
+        }
+        xvmpUserLPStatus::updateLPStatuses($this->getObjId(), false);
+        ilLPStatusWrapper::_refreshStatus($this->getObjId());
+        $this->dic->ui()->mainTemplate()->setOnScreenMessage('success', $this->plugin->txt('form_saved'), true);
+        $this->dic->ctrl()->redirect($this, self::CMD_SELECT_VIDEO);
     }
 }
