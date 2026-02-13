@@ -30,6 +30,7 @@ class VideoPlayer
      * @var bool
      */
     private bool $increase_view_count;
+    private \ilObjViMP $plugin;
 
     /**
      * @var ilViMPPlugin
@@ -83,6 +84,9 @@ class VideoPlayer
         $this->video = $video;
         $this->embed = $embed;
         $this->increase_view_count = $increase_view_count;
+
+        $ref_id = (int) $_GET['ref_id'] ?: 0;
+        $this->plugin = new \ilObjViMP($ref_id);
     }
 
     /**
@@ -233,6 +237,8 @@ class VideoPlayer
         $template->setVariable('SCRIPT', 'if (typeof videojs === "undefined") { document.addEventListener("DOMContentLoaded", function() { ' . $videojs_script . ' });} else {  ' . $videojs_script . ' }');
         $template->parseCurrentBlock();
 
+        $this->plugin->trackReadEvent();
+
         return $template->get();
     }
 
@@ -248,4 +254,5 @@ class VideoPlayer
             $this->options[$option] = $value;
         }
     }
+
 }

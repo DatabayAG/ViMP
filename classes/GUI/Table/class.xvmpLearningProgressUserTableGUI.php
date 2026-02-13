@@ -3,9 +3,12 @@
 class xvmpLearningProgressUserTableGUI extends ilTrObjectUsersPropsTableGUI
 {
     private ?ActiveRecord $xvmp_settings;
+    private mixed $object;
 
     public function __construct($a_parent_obj, $a_parent_cmd, $a_obj_id, $a_ref_id, $a_print_view = false)
     {
+
+        $this->object = $a_parent_obj;
         $this->xvmp_settings = xvmpSettings::find($a_obj_id);
         parent::__construct($a_parent_obj, $a_parent_cmd, $a_obj_id, $a_ref_id, true);
         $this->setPrintMode($a_print_view);
@@ -109,12 +112,21 @@ class xvmpLearningProgressUserTableGUI extends ilTrObjectUsersPropsTableGUI
     /**
      * @inheritDoc
      */
-    protected function fillRow($data) : void
+    protected function fillRow($a_set) : void
     {
         global $DIC;
+        $reached_percentage = $a_set['percentage'];
+        $user_id = $a_set['usr_id'];
+        if($reached_percentage === 0) {
+            foreach (xvmpSelectedMedia::where(array('obj_id' => $this->object->getObjId(),
+                                                    'lp_is_required' => 1,
+                                                    'visible' => 1
+            ))->get() as $selected_medium) {
+            $reached_percentage = xvmpUserProgress::calcPercentage($user_id, $selected_medium->getMid());
+        }}
         foreach ($this->getSelectedColumns() as $column) {
-            if ($column === 'status' && (int) $data[$column] !== ilLPStatus::LP_STATUS_COMPLETED_NUM) {
-                $timing = $this->showTimingsWarning($this->ref_id, $data['usr_id']);
+            if ($column === 'status' && (int) $a_set[$column] !== ilLPStatus::LP_STATUS_COMPLETED_NUM) {
+                $timing = $this->showTimingsWarning($this->ref_id, $a_set['usr_id']);
                 if ($timing) {
                     if ($timing !== true) {
                         $timing = ': ' . ilDatePresentation::formatDate(new ilDate($timing, IL_CAL_UNIX));
@@ -129,19 +141,25 @@ class xvmpLearningProgressUserTableGUI extends ilTrObjectUsersPropsTableGUI
             }
 
             // #7694
-            if ($column === 'login' && !$data['active']) {
+            if ($column === 'login' && !$a_set['active']) {
                 $this->tpl->setCurrentBlock('inactive_bl');
                 $this->tpl->setVariable('TXT_INACTIVE', $this->lng->txt('inactive'));
                 $this->tpl->parseCurrentBlock();
             }
 
             $this->tpl->setCurrentBlock('user_field');
-            $val = $this->parseValue($column, $data[$column], 'user');
-            $this->tpl->setVariable('VAL_UF', $val);
+            $val = $this->parseValue($column, $a_set[$column], 'user');
+            if ($column === 'percentage') {
+                $this->tpl->setVariable('VAL_UF', $reached_percentage . '%');
+            } else {
+                $this->tpl->setVariable('VAL_UF', $val);
+            }
+
             $this->tpl->parseCurrentBlock();
+
         }
 
-        $DIC->ctrl()->setParameter($this->getParentObject(), 'user_id', $data['usr_id']);
+        $DIC->ctrl()->setParameter($this->getParentObject(), 'user_id', $a_set['usr_id']);
         if (!$this->getPrintMode()) {
             $this->tpl->setCurrentBlock('item_command');
             $this->tpl->setVariable(

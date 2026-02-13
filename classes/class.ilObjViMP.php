@@ -147,4 +147,10 @@ class ilObjViMP extends ilObjectPlugin implements ilLPStatusPluginInterface
     public function isLearningProgressModeActive() : bool {
         return $this->learning_progress_mode > 0;
     }
+
+    public function trackReadEvent(): void
+    {
+        ilChangeEvent::_recordReadEvent($this->getType(), $this->getRefId(), $this->getId(), $this->user->getId());
+    }
+
 }

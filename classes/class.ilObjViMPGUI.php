@@ -331,33 +331,7 @@ class ilObjViMPGUI extends ilObjectPluginGUI
     {
         $this->tpl->addCss($this->pl->getAssetURL('default/xvmp_settings.css'));
 
-        $form = parent::initCreateForm($new_type);
-
-        // ONLINE
-       /* $input = new ilCheckboxInputGUI($this->lng->txt(xvmpSettingsFormGUI::F_ONLINE), xvmpSettingsFormGUI::F_ONLINE);
-        $form->addItem($input);
-
-        // LAYOUT
-        $input = new ilRadioGroupInputGUI($this->pl->txt(xvmpSettingsFormGUI::F_LAYOUT), xvmpSettingsFormGUI::F_LAYOUT);
-        $option = new ilRadioOption(
-            ilUtil::img($this->pl->getImagePath(xvmpSettingsFormGUI::F_LAYOUT . '_' . xvmpSettings::LAYOUT_TYPE_LIST . '.png')),
-            (string) xvmpSettings::LAYOUT_TYPE_LIST
-        );
-        $input->addOption($option);
-        $option = new ilRadioOption(
-            ilUtil::img($this->pl->getImagePath(xvmpSettingsFormGUI::F_LAYOUT . '_' . xvmpSettings::LAYOUT_TYPE_TILES . '.png')),
-            (string) xvmpSettings::LAYOUT_TYPE_TILES
-        );
-        $input->addOption($option);
-        $option = new ilRadioOption(
-            ilUtil::img($this->pl->getImagePath(xvmpSettingsFormGUI::F_LAYOUT . '_' . xvmpSettings::LAYOUT_TYPE_PLAYER . '.png')),
-            (string) xvmpSettings::LAYOUT_TYPE_PLAYER
-        );
-        $input->addOption($option);
-        $input->setValue((string) xvmpSettings::LAYOUT_TYPE_LIST);
-        $form->addItem($input);
-*/
-        return $form;
+        return parent::initCreateForm($new_type);
     }
 
     public function afterSave(ilObject $new_object) : void

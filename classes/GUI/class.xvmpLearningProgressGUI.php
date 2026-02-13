@@ -397,7 +397,7 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
         $form = new ilPropertyFormGUI();
         $this->ctrl->setParameter($this, 'user_id', $user->getId());
         $form->setFormAction($this->ctrl->getFormAction($this, 'editUser'));
-        $form->setTitle($this->lng->txt('edit') . ': ' . $this->lng->txt('trac_learning_progress_tbl_header') . $user->getFullname());
+        $form->setTitle($this->lng->txt('edit') . ': ' . $this->object->txt('trac_learning_progress_tbl_header') . ' ' . $user->getFullname());
         $form->setDescription($this->lng->txt('trac_mode') . ': ' . ilLPObjSettings::_mode2Text($this->object->getLearningProgressMode()));
 
         $mark = new ilTextInputGUI($this->lng->txt('trac_mark'), 'mark');

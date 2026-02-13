@@ -112,10 +112,6 @@ class xvmpLearningProgressSummaryTableGUI extends ilTrSummaryTableGUI
     /**
      * {@inheritdoc}
      * @throws ilTemplateException
-     * @throws ilTemplateException
-     * @throws ilTemplateException
-     * @throws ilTemplateException
-     * @throws ilTemplateException
      */
     protected function fillRow(array $a_set): void
     {
