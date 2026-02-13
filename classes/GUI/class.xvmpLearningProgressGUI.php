@@ -8,9 +8,8 @@ use srag\Plugins\ViMP\UIComponents\Player\VideoPlayer;
 
 /**
  * Class xvmpLearningProgressGUI
- * @ilCtrl_Calls xvmpLearningProgressGUI: ilObjViMPGUI, xvmpLearningProgressUserTableGUI, xvmpLearningProgressTableGUI
+ * @ilCtrl_Calls xvmpLearningProgressGUI: xvmpLearningProgressUserTableGUI, xvmpLearningProgressSummaryTableGUI, xvmpLearningProgressTableGUI
  * @ilCtrl_isCalledBy xvmpLearningProgressGUI: ilObjViMPGUI
- * @author            Theodor Truffer <tt@studer-raimann.ch>
  */
 class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
 {
@@ -251,8 +250,7 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
         $this->addLearningProgressSubTabs();
         $ilTabs->activateSubTab('lp_users');
 
-        $table = new xvmpLearningProgressUserTableGUI($this, 'showLPUsers', $this->object->getId(),
-            $this->object->getRefId(), false);
+        $table = new xvmpLearningProgressUserTableGUI($this, 'showLPUsers', $this->object->getId(), $this->object->getRefId());
         $this->tpl->setContent(implode('<br />', [$table->getHTML(), $this->__getLegendHTML()]));
     }
 
@@ -271,7 +269,7 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
         $this->addLearningProgressSubTabs();
         $ilTabs->activateSubTab('lp_summary');
 
-        $table = new xvmpLearningProgressUserTableGUI($this, 'showLPSummary', $this->object->getRefId());
+        $table = new xvmpLearningProgressSummaryTableGUI($this, 'showLPSummary', $this->object->getRefId());
         $this->tpl->setContent(implode('<br />', [$table->getHTML(), $this->__getLegendHTML()]));
     }
 
