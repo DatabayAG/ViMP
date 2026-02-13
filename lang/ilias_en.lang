@@ -235,3 +235,5 @@ lp_users#:#Users
 lp_mode_title_by_videos#:#Videos which must be viewed
 lp_mode_desc_by_videos#:#PLACEHOLDER
 trac_learning_progress_tbl_header#:#Learning Progress of:
+conf_curl_timeout#:#CURL Timeout
+conf_curl_timeout_info#:#Timeout in seconds for CURL requests
