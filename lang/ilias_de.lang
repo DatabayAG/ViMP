@@ -185,7 +185,7 @@ form_title_change_owner#:#Benutzer suchen
 search#:#Suchen
 permission_denied#:#Zugriff verweigert.
 enable_learning_progress#:#Lernfortschritt aktiviert
-enable_learning_progress_info#:#Der Lernfortschritt kann nur aktiviert werden, wenn das Objekt innerhalb eines Kurses liegt und der Lernfortschritt global aktiviert ist.
+enable_learning_progress_info#:#Der Lernfortschritt kann nur aktiviert werden, wenn der Lernfortschritt global aktiviert ist.
 added#:#Hinzugefügt
 max_filesize#:#Max. Dateigröße
 info_not_available#:#Nicht Verfügbar
