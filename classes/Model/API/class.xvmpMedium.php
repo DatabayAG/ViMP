@@ -106,6 +106,8 @@ class xvmpMedium extends xvmpObject
     protected int $count_views_embed;
     protected int $count_views_api;
     protected int $count_views;
+    protected int $count_chapters;
+
 
     /**
      * @param null  $ilObjUser
