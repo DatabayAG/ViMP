@@ -26,13 +26,12 @@
     sr_id_input_selector.select2(settings);
 
     function triggerCategoryInputCheck(selectedValues) {
-      console.log(selectedValues);
       if(selectedValues.length === 0){
-        $('.select2-choices').css('background-color', '#ffebeb')
         document.querySelector(".select2-choices").style.borderColor = "red";
+        document.querySelector(".select2-choices").style.backgroundColor = '#ffebeb';
       } else {
-        $('.select2-choices').css('background-color', '#fff')
         document.querySelector(".select2-choices").style.borderColor = "black";
+        document.querySelector(".select2-choices").style.backgroundColor = "#fff";
       }
     }
 
