@@ -106,7 +106,7 @@ class xvmpLearningProgressSummaryTableGUI extends ilTrSummaryTableGUI
 
     protected function isLearningProgressDeactivated(): bool
     {
-        return in_array($this->parent_obj->object->getLearningProgressMode(), [ilObjInteractiveVideo::LP_MODE_DEACTIVATED]);
+        return $this->parent_obj->object->getLearningProgressMode() == ilObjViMP::LP_MODE_DEACTIVATED;
     }
 
     /**
