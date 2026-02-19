@@ -156,6 +156,7 @@ categories#:#Categories
 user#:#User
 required#:#Required
 form_msg_select#:#Please choose a file to upload.
+form_val_select#:#Please ensure to fill out each required fields.
 form_msg_not_supported#:#File type not supported.
 form_incomplete#:#Some of this forms fields are mandatory and need to be filled out. Please complete these fields.
 msg_incomplete#:#Some of this forms fields are mandatory and need to be filled out. Please complete these fields.

@@ -87,10 +87,10 @@ class xvmpFileUploadInputGUI extends ilSubEnabledFormPropertyGUI
         global $DIC;
         $tpl = $DIC['tpl'];
         $tpl->addJavaScript($this->pl->getAssetURL('default/form/uploader.min.js'));
-        $tpl->addJavaScript($this->pl->getAssetURL('default/form/xvmpForm.js'));
         $settings = new stdClass();
         $settings->lng = new stdClass();
         $settings->lng->msg_select = $this->pl->txt('form_msg_select');
+        $settings->lng->form_val_select = $this->pl->txt('form_val_select');
         $settings->lng->msg_not_supported = $this->pl->txt('form_msg_not_supported');
         $settings->log = $this->isLog();
         $settings->cmd = $this->getCmd();
