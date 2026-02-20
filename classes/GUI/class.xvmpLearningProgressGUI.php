@@ -88,8 +88,9 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
          * @var $ilTabs ilTabsGUI
          */
         global $ilTabs;
-
+        $ilTabs->activateTab(ilObjViMPGUI::TAB_LEARNING_PROGRESS);
         if ($this->gui->hasPermission('write') || $this->gui->hasPermission('read_learning_progress')) {
+
             if ($this->setting->getLpActive()) {
                 $ilTabs->addSubTab(
                     'lp_users',
