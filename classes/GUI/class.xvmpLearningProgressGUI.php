@@ -108,11 +108,16 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
                 $this->lng->txt('trac_settings'),
                 $this->ctrl->getLinkTarget($this, 'showLPSettings')
             );
-            $ilTabs->addSubTab(
-                'selected_video',
-                $this->plugin->txt('selected_videos'),
-                $this->ctrl->getLinkTarget($this, self::CMD_SELECT_VIDEO)
-            );
+
+
+            if ($this->setting->getLpMode()) {
+                $ilTabs->addSubTab(
+                    'selected_video',
+                    $this->plugin->txt('selected_videos'),
+                    $this->ctrl->getLinkTarget($this, self::CMD_SELECT_VIDEO)
+                );
+            }
+
         } elseif (
             $this->gui->hasPermission('read') &&
             $this->setting->getLpActive()
