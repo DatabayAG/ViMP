@@ -33,13 +33,9 @@ class ilObjViMP extends ilObjectPlugin implements ilLPStatusPluginInterface
                 'modus',
                 $DIC->refinery()->kindlyTo()->int()
             );
-            $xvmpSettings = new xvmpSettings();
-            $xvmpSettings->setObjId($this->getId());
-            if($lp_mode > 0) {
-                $xvmpSettings->setLpActive(1);
-            }
-            $xvmpSettings->setLpMode((int) $lp_mode);
-            $xvmpSettings->update();
+            $settings = xvmpSettings::find($this->getId());
+            $settings->setLpMode((int) $lp_mode);
+            $settings->update();
         }
 
     }

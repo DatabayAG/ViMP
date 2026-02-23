@@ -168,8 +168,13 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
         $form->setTitle($this->lng->txt('tracking_settings'));
         $form->setFormAction($this->ctrl->getFormAction($this, 'saveLearningProgressSettings'));
 
+        $edit_form = false;
+        if($this->gui->hasPermission('write') || $this->gui->hasPermission('edit_learning_progress')) {
+            $edit_form = true;
+        }
         $mod = new ilRadioGroupInputGUI($this->lng->txt('trac_mode'), 'modus');
         $mod->setRequired(true);
+        $mod->setDisabled(!$edit_form);
         $form->addItem($mod);
 
         foreach ($this->object->getLPValidModes() as $mode) {
@@ -210,7 +215,6 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
         $form = $this->getLearningProgressSettingsForm();
         if ($form->checkInput()) {
             $this->addLearningProgressSubTabs();
-
             $new_mode = (int) $form->getInput('modus');
             $old_mode = $this->object->getLearningProgressMode();
             $mode_changed = ($old_mode != $new_mode);
@@ -461,7 +465,7 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
     public static function getModalPlayer() : ilModalGUI
     {
         global $tpl;
-        #$tpl->addJavaScript('Customizing/global/plugins/Services/Repository/RepositoryObject/ViMP/templates/js/xvmp_copy_button.js');
+
         $tpl->addCss(ilViMPPlugin::getInstance()->getAssetURL('default/modal.css'));
         $modal = ilModalGUI::getInstance();
         $modal->setId('xvmp_modal_player');
