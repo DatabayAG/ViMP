@@ -52,7 +52,7 @@ class xvmpSettings extends ActiveRecord
      * @db_fieldtype        integer
      * @db_length           1
      */
-    protected int $lp_active = 0;
+    protected int $lp_active = 1;
 
     /**
      * @var int
@@ -120,7 +120,7 @@ class xvmpSettings extends ActiveRecord
      */
     public function getLpActive() : bool
     {
-        return $this->lp_active && xvmp::isLearningProgressPossible($this->getObjId());
+        return xvmp::isLearningProgressPossible($this->getObjId());
     }
 
     /**
@@ -128,7 +128,7 @@ class xvmpSettings extends ActiveRecord
      */
     public function setLpActive(int $lp_active) : void
     {
-        $this->lp_active = $lp_active;
+        $this->lp_active = 1;
     }
 
     /**
