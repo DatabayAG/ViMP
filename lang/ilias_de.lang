@@ -234,7 +234,7 @@ lp_settings#:#Einstellungen
 lp_summary#:#Zusammenfassung
 lp_users#:#Benutzer
 lp_mode_title_by_videos#:#Videos welche angesehen werden müssen
-lp_mode_desc_by_videos#:#PLACEHOLDER
+lp_mode_desc_by_videos#:#Stellen sie bitte sicher, das sie die für den Lernfortschritt relevanten Videos unter dem Tab 'Ausgewählte Videos' konfigurieren.
 trac_learning_progress_tbl_header#:#Lernfortschritt von:
 conf_curl_timeout#:#CURL Timeout
 conf_curl_timeout_info#:#Timeout in Sekunden
