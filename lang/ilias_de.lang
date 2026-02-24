@@ -238,3 +238,4 @@ lp_mode_desc_by_videos#:#PLACEHOLDER
 trac_learning_progress_tbl_header#:#Lernfortschritt von:
 conf_curl_timeout#:#CURL Timeout
 conf_curl_timeout_info#:#Timeout in Sekunden
+info#:#Info

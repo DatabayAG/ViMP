@@ -8,7 +8,8 @@ use srag\Plugins\ViMP\UIComponents\Player\VideoPlayer;
 
 /**
  * Class xvmpLearningProgressGUI
- * @ilCtrl_Calls xvmpLearningProgressGUI: xvmpLearningProgressUserTableGUI, xvmpLearningProgressSummaryTableGUI, xvmpLearningProgressTableGUI
+ * @ilCtrl_Calls xvmpLearningProgressGUI: xvmpLearningProgressUserTableGUI, xvmpLearningProgressSummaryTableGUI, xvmpLearningProgressTableGUI, ilLPListOfProgressGUI
+ * @ilCtrl_Calls xvmpLearningProgressGUI: ilobjplugindispatchgui, ilLPListOfProgressGUI, ilLPProgressTableGUI
  * @ilCtrl_isCalledBy xvmpLearningProgressGUI: ilObjViMPGUI
  */
 class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
@@ -64,9 +65,7 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
     public function executeCommand(): void
     {
         $cmd = $this->ctrl->getCmd();
-        if($cmd === 'index') {
-            $cmd = 'showLPSettings';
-        }
+
         $this->$cmd();
     }
 
@@ -79,6 +78,17 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
         return $this->object->getId();
     }
 
+    protected function index() {
+        $lop_gui = new ilLPListOfProgressGUI(
+            3,
+            $this->object->getRefId(),
+            $this->user->getId()
+        );
+        $lop_gui->details();
+        global $ilTabs;
+        $this->addLearningProgressSubTabs();
+        $ilTabs->activateSubTab('info');
+    }
     /**
      * @throws ilCtrlException
      */
@@ -89,7 +99,10 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
          */
         global $ilTabs;
         $ilTabs->activateTab(ilObjViMPGUI::TAB_LEARNING_PROGRESS);
-        if ($this->gui->hasPermission('write') || $this->gui->hasPermission('read_learning_progress')) {
+        $read_users_lp = $this->gui->hasPermission('read_learning_progress');
+        $write_settings = $this->gui->hasPermission('write');
+        $write_settings_lp = $this->gui->hasPermission('edit_learning_progress');
+        if ($read_users_lp || $write_settings) {
 
             if ($this->setting->getLpActive()) {
                 $ilTabs->addSubTab(
@@ -103,32 +116,28 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
                     $this->ctrl->getLinkTarget($this, 'showLPSummary')
                 );
             }
-            $ilTabs->addSubTab(
-                'lp_settings',
-                $this->lng->txt('trac_settings'),
-                $this->ctrl->getLinkTarget($this, 'showLPSettings')
-            );
-
-
-            if ($this->setting->getLpMode()) {
+            if ($write_settings || $write_settings_lp) {
                 $ilTabs->addSubTab(
-                    'selected_video',
-                    $this->plugin->txt('selected_videos'),
-                    $this->ctrl->getLinkTarget($this, self::CMD_SELECT_VIDEO)
+                    'lp_settings',
+                    $this->lng->txt('trac_settings'),
+                    $this->ctrl->getLinkTarget($this, 'showLPSettings')
                 );
+                if ($this->setting->getLpMode()) {
+                    $ilTabs->addSubTab(
+                        'selected_video',
+                        $this->plugin->txt('selected_videos'),
+                        $this->ctrl->getLinkTarget($this, self::CMD_SELECT_VIDEO)
+                    );
+                }
             }
 
-        } elseif (
-            $this->gui->hasPermission('read') &&
-            $this->setting->getLpActive()
-        ) {
-            $ilTabs->addSubTab(
-                'lp_users',
-                $this->plugin->txt('lp_users'),
-                $this->ctrl->getLinkTarget($this, 'showLPUserDetails')
-            );
         }
 
+        $ilTabs->addSubTab(
+            'info',
+            $this->plugin->txt('info'),
+            $this->ctrl->getLinkTarget($this, 'index')
+        );
     }
 
     /**
