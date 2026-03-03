@@ -85,8 +85,7 @@ class VideoPlayer
         $this->embed = $embed;
         $this->increase_view_count = $increase_view_count;
 
-        $ref_id = (int) $_GET['ref_id'] ?: 0;
-        $this->plugin = new \ilObjViMP($ref_id);
+        $this->plugin = new \ilObjViMP(0);
     }
 
     /**
