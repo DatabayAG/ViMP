@@ -103,11 +103,15 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
         $write_settings = $this->gui->hasPermission('write');
         $write_settings_lp = $this->gui->hasPermission('edit_learning_progress');
 
-        $ilTabs->addSubTab(
-            'info',
-            $this->plugin->txt('info'),
-            $this->ctrl->getLinkTarget($this, 'index')
-        );
+        if ($read_users_lp) {
+            if (! ($write_settings || $write_settings_lp)) {
+                $ilTabs->addSubTab(
+                    'info',
+                    $this->plugin->txt('info'),
+                    $this->ctrl->getLinkTarget($this, 'index')
+                );
+            }
+        }
 
         if ($read_users_lp || $write_settings) {
             if ($this->setting->getLpActive()) {
