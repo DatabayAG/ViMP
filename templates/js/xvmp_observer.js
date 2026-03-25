@@ -26,7 +26,7 @@ var VimpObserver = {
 
 		if (VimpObserver.send_request === false) {
 			// no changes
-			return;
+		//	return;
 		}
 
 		$.post({

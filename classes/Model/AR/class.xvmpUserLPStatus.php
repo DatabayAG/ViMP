@@ -81,8 +81,9 @@ class xvmpUserLPStatus extends ActiveRecord
             $id = (int) $_GET['ref_id'];
         }
         $users = ($user_id > 0) ? [$user_id] : xvmp::getCourseMembers($id, $is_ref_id);
+        $obj_or_ref_id = $is_ref_id ? ilObject2::_lookupObjectId($id) : $id;
         foreach ($users as $usr_id) {
-            $user_status = self::getInstance($usr_id, $is_ref_id ? ilObject2::_lookupObjectId($id) : $id);
+            $user_status = self::getInstance($usr_id, $obj_or_ref_id);
             $user_status->updateStatus();
             $user_status->store();
         }

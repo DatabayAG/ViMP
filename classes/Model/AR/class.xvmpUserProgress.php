@@ -86,6 +86,8 @@ class xvmpUserProgress extends ActiveRecord
         }
         $progress->setRanges($ranges);
         $progress->store();
+        $id = (int) $_GET['ref_id'];
+        ilLPStatusWrapper::_refreshStatus(ilObject::_lookupObjId($id), [$usr_id]);
     }
 
     /**
