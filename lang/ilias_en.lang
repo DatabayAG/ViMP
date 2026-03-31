@@ -203,6 +203,7 @@ btn_copy_link#:#Copy Link
 btn_copy_link_w_time#:#Copy Link with current time
 btn_download#:#Download
 popover_link_copied#:#Link copied to dashboard
+perm_readlink#:#Streaming URL
 availability_between#:#Available %s - %s
 availability_from#:#Available from %s
 availability_to#:#Available until %s

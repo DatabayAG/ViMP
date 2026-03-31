@@ -202,6 +202,10 @@ class ilObjViMPGUI extends ilObjectPluginGUI
                         $this->deleteObject();
                         break;
                     }
+                    if($cmd == 'count_views') {
+                        ilObjViMPGUI::countViews();
+                        break;
+                    }
                     parent::executeCommand();
                     break;
             }
@@ -443,6 +447,14 @@ class ilObjViMPGUI extends ilObjectPluginGUI
     {
         $key = $_GET['key'];
         // TODO: implement picture wrapper, if api action is implemented
+    }
+    public static function countViews() 
+    {
+        $mid = intval(filter_input(INPUT_GET, 'mid'));
+        if($mid && (!ilSession::get('vimp_view') || ilSession::get('vimp_view') != $mid)) {
+            xvmpRequest::addMediumCount($mid);
+                ilSession::set('vimp_view', $mid);
+        }
     }
 
     public function addUserAutoComplete()
