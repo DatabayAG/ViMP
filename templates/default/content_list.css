@@ -164,6 +164,13 @@ div.xvmp_image_container img.xvmp_preview_image {
     min-height: 250px;
     max-width: unset;
 }
+/* Use contain when the fallback logo is used as src (set via onerror) */
+div.xvmp_image_container img.xvmp_preview_image[src$="vimp_logo.svg"] {
+    object-fit: contain;
+    background-image: none; /* avoid double logo (src + background) */
+    background-color: black;
+    padding: 2rem;
+}
 @media (min-width: 769px) {
     .xvmp_image_container {
         flex: 5
