@@ -242,3 +242,11 @@ div.xvmp_image_container img.xvmp_preview_image[src$="vimp_logo.svg"] {
 .info-labels::after {
     content: ':';
 }
+
+/* Tighter spacing between info rows in list view */
+.xvmp_video_infos .info-row {
+    margin: 4px 0; /* reduce vertical spacing between rows */
+}
+.xvmp_video_infos .info-row p {
+    margin: 0; /* remove extra paragraph margins inside rows */
+}
