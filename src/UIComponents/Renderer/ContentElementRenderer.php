@@ -93,10 +93,16 @@ abstract class ContentElementRenderer
     protected function fillMediumInfos(MediumMetadataDTO $mediumMetadataDTO, ilTemplate $tpl) : void
     {
         foreach ($mediumMetadataDTO->getMediumAttributes() as $mediumAttribute) {
+            if ($mediumAttribute->getTitle()) {
+                $tpl->setCurrentBlock('info_label');
+                $tpl->setVariable('INFO_LABEL', $mediumAttribute->getTitle());
+                $tpl->parseCurrentBlock();
+            }
             $tpl->setCurrentBlock('info_paragraph');
-            $tpl->setVariable('INFO', $mediumAttribute->getTitle() ?
-                $mediumAttribute->getTitle() . ': ' . $mediumAttribute->getValue() :
-                $mediumAttribute->getValue());
+            $tpl->setVariable('INFO', $mediumAttribute->getValue());
+            $tpl->parseCurrentBlock();
+            // wrap label and value into a single row
+            $tpl->setCurrentBlock('info_row');
             $tpl->parseCurrentBlock();
         }
     }
@@ -106,12 +112,16 @@ abstract class ContentElementRenderer
      */
     protected function fillAvailabilityInfo(MediumMetadataDTO $mediumMetadataDTO, ilTemplate $tpl) : void
     {
+        // value paragraph (no explicit label in list view)
         $tpl->setCurrentBlock('info_paragraph');
         $tpl->setVariable('INFO', $this->metadata_parser->parseAvailability(
             $mediumMetadataDTO->getAvailabilityStart(),
             $mediumMetadataDTO->getAvailabilityEnd(),
             false
         ));
+        $tpl->parseCurrentBlock();
+        // wrap into a single row for consistent structure
+        $tpl->setCurrentBlock('info_row');
         $tpl->parseCurrentBlock();
     }
 
