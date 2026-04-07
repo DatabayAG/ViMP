@@ -20,11 +20,12 @@ div#xvmp_video_container {
 	width: 100%;
 }
 
-h4.modal-title {
+h1.modal-title {
 	overflow: hidden;
 	white-space: nowrap;
 	-ms-text-overflow: ellipsis;
 	text-overflow:     ellipsis;
+    padding: 0;
 }
 
 .waiting {
