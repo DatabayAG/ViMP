@@ -206,7 +206,7 @@ class VideoPlayer
         $template->setVariable('TYPE', $pathinfo['extension']);
 
         if (!isset($this->options['width'])) {
-            $template->setVariable('CSS_CLASS', 'vjs-4-3');
+            $template->setVariable('CSS_CLASS', 'vjs-16-3');
             $this->setOption('fluid', true);
         } else {
             $this->setOption('fluid', false);

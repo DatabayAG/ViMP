@@ -1,8 +1,25 @@
-div#xvmp_video_infos .ilPermalinkContainer {
-	width: inherit;
-	margin-top: 10px;
-	margin-bottom: 10px;
+.boxes-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 1.5rem;
+    column-gap: 1rem;
+    align-items: flex-start; /* let tiles be only as tall as their content */
+    overflow: hidden;
+    padding: 1rem 0;
 }
+
+div#xvmp_video_infos .ilPermalinkContainer {
+    margin: 1rem 0;
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+div#xvmp_video_infos .ilPermalinkContainer.input-group {
+ > .input-group-btn {
+     width: fit-content;
+ }
+}
+
 
 div#xvmp_video_container {
 	width: 70%;
@@ -25,25 +42,31 @@ div.xvmp_image_container img.xvmp_preview_image {
 	background-size: contain;
 	width: 100%;
 	height: 100%;
+	object-fit: cover; /* fill fixed-height thumbnail nicely */
+	object-position: center;
 }
 
 div#xvmp_video_infos {
 	margin-left: 10px;
 }
+div#xvmp_video_infos h1 {
+    margin-top: 0;
+}
+
+
 
 div#xvmp_video_infos div.dropdown {
 	position: relative;
 }
 
 div.xvmp_video_infos {
-	padding: 0 5px;
+	padding: 1rem 0.75rem;
 }
 
 div#xvmp_video_list_container {
 	overflow-x: auto;
 	overflow-y: hidden;
 	/*width: auto;*/
-	margin-top: 20px;
 	white-space: nowrap;
 	width: 100%;
 	float:left;
@@ -69,16 +92,18 @@ div#xvmp_video_list_container::-webkit-scrollbar-thumb
 }
 
 .box {
-	width: 150px;
-	padding-bottom: 150px;
-	margin: 0 10px 10px 0;
+	/* Flex item: 8 columns on wide screens, wraps automatically */
+	flex: 1 1 calc((100% - 7 * 1rem) / 8);
+	max-width: calc((100% - 7 * 1rem) / 8);
+	min-width: 150px; /* prevents boxes from getting too small; matches legacy width */
+	/* Auto height based on content (no forced square) */
 	color: black;
 	position: relative;
-	display: inline-block;
-	/*float: left;*/
+	/* inline-block/float not needed with flexbox */
 	text-align: center;
 	background: white;
-	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    transition: all 0.3s ease;
 }
 
 .xvmp_overlay_infos {
@@ -108,7 +133,8 @@ div#xvmp_video_list_container::-webkit-scrollbar-thumb
 
 .xvmp_title h2 {
 	font-size: 1em;
-	margin-top: 7px;
+    margin-top: 0;
+    margin-bottom: 0.25rem;
 	overflow:hidden;
 	-ms-text-overflow: ellipsis;
 	text-overflow:     ellipsis;
@@ -120,17 +146,16 @@ div#xvmp_video_list_container::-webkit-scrollbar-thumb
 }
 
 .innerContent {
-	position: absolute;
-	left: 0;
-	right: 0;
-	top: 0;
-	bottom: 0;
+	/* Let content define the tile height (no absolute fill) */
+	position: static;
 }
 .xvmp_image_container {
+	/* Fixed thumbnail height */
 	text-align: center;
 	width: 100%;
-	height: 60%;
+	height: 80px;
 	background: black;
+	position: relative; /* for overlays inside the thumbnail area */
 }
 
 div.xvmp_image_container img.xvmp_preview_image {
@@ -163,6 +188,11 @@ div.xvmp_image_container img.xvmp_preview_image {
 .box a:hover {
 	text-decoration: none;
 	color: inherit;
+}
+
+.box:hover {
+    transition: all 0.3s ease;
+    transform: scale(1.1);
 }
 
 .xvmp_not_available_overlay {
@@ -236,7 +266,20 @@ div.xvmp_image_container img.xvmp_play_icon {
 	}
 }
 
-
+/* Force single-column on narrow screens */
+@media only screen and (max-width: 480px) {
+	.box {
+		flex: 1 1 100%;
+		max-width: 100%;
+		min-width: 100%;
+	}
+    .xvmp_preview_image {
+        height: 100px;
+    }
+    .xvmp_image_container {
+        height: 150px;
+    }
+}
 
 /*@media only screen and (max-width : 480px) {*/
 	/*!* Smartphone view: 1 tile *!*/
@@ -274,3 +317,168 @@ div.xvmp_image_container img.xvmp_play_icon {
 		/*margin: 0 2% 2% 0;*/
 	/*}*/
 /*}*/
+
+
+/* Hide info overlay in player view (not needed) */
+.box .xvmp_overlay_infos {
+	display: none !important;
+}
+
+/* Player layout: video + infos side by side with responsive breakpoints */
+.xvmp_player_layout {
+	display: flex;
+	/* prevent premature wrap on desktop; items may shrink slightly to make room for the gap */
+	flex-wrap: nowrap;
+	column-gap: 1.5rem; /* horizontal spacing between video and infos */
+	row-gap: 1.5rem;    /* vertical spacing when stacked */
+	align-items: flex-start;
+    margin: 2rem 0;
+}
+
+/* Left: video (approx. 40%) */
+.xvmp_player_layout #xvmp_video_container {
+	flex: 0 1 40%;
+	max-width: 40%;
+	/* override legacy floats/widths in player view */
+	float: none;
+	width: auto;
+	margin-right: 0;
+	/* let Video.js fluid padding define height; container itself should not impose aspect/min-height */
+	position: relative;
+	background: black; /* ensure visible area even before player initializes */
+}
+
+.xvmp_player_layout #xvmp_video_container iframe {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	max-width: none;
+}
+
+/* Right: infos (approx. 60%) */
+.xvmp_player_layout #xvmp_video_infos,
+.xvmp_player_layout .xvmp_video_infos {
+	flex: 1 1 60%;
+	max-width: 60%;
+	margin-left: 0;
+}
+
+/* Medium screens: 50 / 50 with gap accounted for */
+@media (max-width: 1200px) {
+	/* allow wrapping from this breakpoint downward */
+	.xvmp_player_layout {
+		flex-wrap: wrap;
+	}
+	/* two columns of equal width minus half the horizontal gap each */
+	.xvmp_player_layout #xvmp_video_container {
+		flex: 0 1 calc((100% - 1.5rem) / 2);
+		max-width: calc((100% - 1.5rem) / 2);
+	}
+	.xvmp_player_layout #xvmp_video_infos,
+	.xvmp_player_layout .xvmp_video_infos {
+		flex: 1 1 calc((100% - 1.5rem) / 2);
+		max-width: calc((100% - 1.5rem) / 2);
+	}
+}
+
+/* Small/mobile: stacked */
+@media (max-width: 768px) {
+	.xvmp_player_layout {
+		flex-direction: column;
+	}
+	.xvmp_player_layout #xvmp_video_container,
+	.xvmp_player_layout #xvmp_video_infos,
+	.xvmp_player_layout .xvmp_video_infos {
+		flex: 0 0 100%;
+		max-width: 100%;
+        width: 100%;
+	}
+}
+
+/* Ensure any direct embed fills the video container */
+.xvmp_player_layout #xvmp_video_container > iframe,
+.xvmp_player_layout #xvmp_video_container > video,
+.xvmp_player_layout #xvmp_video_container > object,
+.xvmp_player_layout #xvmp_video_container > embed {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	max-width: none;
+	max-height: none;
+	display: block;
+}
+
+/* Fallback for browsers without aspect-ratio support */
+@supports not (aspect-ratio: 16 / 9) {
+	.xvmp_player_layout #xvmp_video_container::before {
+		content: "";
+		display: block;
+		padding-top: 56.25%; /* 16:9 ratio */
+	}
+	.xvmp_player_layout #xvmp_video_container {
+		min-height: 0; /* let the padding-top define the height */
+	}
+}
+
+/* Ensure Video.js player defines the container height only via its own fluid padding */
+.xvmp_player_layout #xvmp_video_container .video-js {
+	width: 100%; /* container takes full available width */
+	display: block; /* avoid inline gaps */
+}
+
+/* Mobile optimizations: keep sidebar content visible and operable */
+@media (max-width: 768px) {
+	/* stack items with tighter gaps */
+	.xvmp_player_layout {
+		row-gap: 1.5rem;
+		column-gap: 0.75rem;
+	}
+	/* remove legacy left margin on infos when stacked */
+	#xvmp_video_infos { margin-left: 0; }
+	/* compact padding for info area */
+	.xvmp_video_infos { padding: 0.5rem 0.5rem; }
+	.xvmp_player_toolbar > * {
+		margin: 0; /* rely on gap */
+		flex: 0 0 auto;
+	}
+	.xvmp_player_toolbar button,
+	.xvmp_player_toolbar .dropdown,
+	.xvmp_player_toolbar .btn {
+		/*min-height: 40px; !* touch target *!*/
+		/*padding: 0.4rem 0.6rem;*/
+		/*font-size: 0.95rem;*/
+	}
+	/* long texts: slightly tighter spacing */
+ #xvmp_video_infos h1 { margin-bottom: 0.5rem; }
+	#xvmp_video_infos h3 { margin-top: 0.5rem; margin-bottom: 0.5rem; }
+	#xvmp_video_infos p { margin-top: 0.4rem; margin-bottom: 0.4rem; }
+}
+
+/* Structured info rows for player view */
+#xvmp_video_infos .info-row {
+	display: flex;
+	gap: 0.25rem;
+	margin: 4px 0;
+}
+#xvmp_video_infos .info-row p {
+	margin: 0;
+}
+#xvmp_video_infos .info-labels {
+	font-weight: bold;
+}
+#xvmp_video_infos .info-labels::after {
+	content: ':';
+}
+#xvmp_video_infos .xvmp_description {
+	margin: 0.5rem 0 1rem;
+}
+
+/* When fallback logo is used via onerror, show fully (no crop) */
+div.xvmp_image_container img.xvmp_preview_image[src$="vimp_logo.svg"] {
+    object-fit: contain;
+    background-image: none; /* avoid double logo */
+    background-color: black;
+    padding: 1rem;
+}
