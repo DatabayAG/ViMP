@@ -91,6 +91,7 @@
     flex-direction: column;
     justify-content: center;
     height: 100%;
+    min-height: fit-content;
 }
 
 .xvmp_video_infos h2 {
@@ -107,7 +108,7 @@
 .xvmp_image_container {
 	text-align: center;
 	width: 100%;
-	height: 66%; /* fixed portion of tile height to align title baseline */
+    height: 150px;
 	background: black;
 	overflow: hidden;
 	position: relative;
@@ -198,6 +199,9 @@ div.xvmp_image_container img.xvmp_preview_image[src$="vimp_logo.svg"] {
 		flex: 0 0 calc((100% - 1rem) / 2);
 		max-width: calc((100% - 1rem) / 2);
 	}
+    .xvmp_image_container {
+        height: 66%; /* fixed portion of tile height to align title baseline */
+    }
 }
 @media (min-width: 900px) {
 	.box {
@@ -205,6 +209,9 @@ div.xvmp_image_container img.xvmp_preview_image[src$="vimp_logo.svg"] {
 		flex: 0 0 calc((100% - 2rem) / 3);
 		max-width: calc((100% - 2rem) / 3);
 	}
+    .xvmp_image_container {
+        height: 66%; /* fixed portion of tile height to align title baseline */
+    }
 }
 @media (min-width: 1200px) {
 	.box {
@@ -212,6 +219,9 @@ div.xvmp_image_container img.xvmp_preview_image[src$="vimp_logo.svg"] {
 		flex: 0 0 calc((100% - 3rem) / 4);
 		max-width: calc((100% - 3rem) / 4);
 	}
+    .xvmp_image_container {
+        height: 66%; /* fixed portion of tile height to align title baseline */
+    }
 }
 
 
@@ -316,16 +326,6 @@ div.xvmp_image_container img.xvmp_preview_image[src$="vimp_logo.svg"] {
 .innerContent > a{
     height: 100%;
     display: block;
-}
-
-.xvmp_image_container {
-	text-align: center;
-	width: 100%;
-	height: 66%; /* fixed portion of tile height to align title baseline */
-	background: black;
-	overflow: hidden;
-	position: relative;
-	flex: 0 0 66%;
 }
 
 .xvmp_image_container img:hover {
