@@ -51,7 +51,8 @@ h4.modal-title {
 /* Structured info rows in modal to match other views */
 .info-row {
 	display: flex;
-	gap: 0.25rem;
+    flex-wrap: wrap;
+    gap: 0 0.25rem;
 	margin: 4px 0;
 }
 .info-row p {
