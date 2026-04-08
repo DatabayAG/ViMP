@@ -50,7 +50,7 @@ div#xvmp_video_infos {
 	margin-left: 10px;
 }
 div#xvmp_video_infos h1 {
-    margin-top: 0;
+    margin-top: 0.5rem;
 }
 
 
@@ -193,6 +193,7 @@ div.xvmp_image_container img.xvmp_preview_image {
 .box:hover {
     transition: all 0.3s ease;
     transform: scale(0.95);
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 10px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 }
 
 .xvmp_not_available_overlay {
@@ -330,7 +331,7 @@ div.xvmp_image_container img.xvmp_play_icon {
 	/* prevent premature wrap on desktop; items may shrink slightly to make room for the gap */
 	flex-wrap: nowrap;
 	column-gap: 1.5rem; /* horizontal spacing between video and infos */
-	row-gap: 1.5rem;    /* vertical spacing when stacked */
+	row-gap: 1rem;    /* vertical spacing when stacked */
 	align-items: flex-start;
     margin: 2rem 0;
 }

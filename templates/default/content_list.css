@@ -19,6 +19,7 @@
 .box:hover {
     transform: scale(.97);
     transition: all 0.3s ease;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 10px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 }
 
 .innerContent {
