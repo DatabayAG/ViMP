@@ -152,7 +152,6 @@ div#xvmp_video_list_container::-webkit-scrollbar-thumb {
 	background-color: rgba(0,0,0,.7);
 	vertical-align: middle;
 	display: inline-block;
-	/*background: url('../images/play.svg') center no-repeat;*/
 }
 
 /* Hide info overlay in player view (not needed) */
