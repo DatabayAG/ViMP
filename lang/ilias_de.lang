@@ -181,6 +181,7 @@ xvmp_rep_robj_xvmp_perm_upload#:#Upload: Videos können hochgeladen werden
 xvmp_write#:#Einstellungen bearbeiten: Einstellungen und Inhalte können bearbeitet werden
 xvmp_delete#:#Löschen: Objekt kann gelöscht werden
 xvmp_edit_permission#:#Rechteeinstellungen ändern: Rechteeinstellungen ändern
+rep_robj_xvmp_perm_readlink#:#Streaming-URL-Button wird angezeigt
 form_title_change_owner#:#Benutzer suchen
 search#:#Suchen
 permission_denied#:#Zugriff verweigert.
