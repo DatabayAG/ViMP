@@ -63,27 +63,39 @@ class PlayerModalRenderer
         $this->renderInfoMessage($playerContainerDTO, $tpl, $show_unavailable);
 
         if ($playerContainerDTO->getMediumMetadata()->hasAvailability()) {
+            // label
+            $tpl->setCurrentBlock('info_label');
+            $tpl->setVariable('INFO_LABEL', $this->plugin->txt('available'));
+            $tpl->parseCurrentBlock();
+            // value
             $tpl->setCurrentBlock('info_paragraph');
-            $tpl->setVariable('INFO', $this->plugin->txt('available') . ': ' .
-                $this->metadata_parser->parseAvailability(
-                    $playerContainerDTO->getMediumMetadata()->getAvailabilityStart(),
-                    $playerContainerDTO->getMediumMetadata()->getAvailabilityEnd(),
-                    true
-                ));
+            $tpl->setVariable('INFO', $this->metadata_parser->parseAvailability(
+                $playerContainerDTO->getMediumMetadata()->getAvailabilityStart(),
+                $playerContainerDTO->getMediumMetadata()->getAvailabilityEnd(),
+                false
+            ));
+            $tpl->parseCurrentBlock();
+            // wrap row
+            $tpl->setCurrentBlock('info_row');
             $tpl->parseCurrentBlock();
         }
 
         foreach ($playerContainerDTO->getMediumMetadata()->getMediumAttributes() as $mediumAttribute) {
+            if ($mediumAttribute->getTitle()) {
+                $tpl->setCurrentBlock('info_label');
+                $tpl->setVariable('INFO_LABEL', $mediumAttribute->getTitle());
+                $tpl->parseCurrentBlock();
+            }
             $tpl->setCurrentBlock('info_paragraph');
-            $tpl->setVariable('INFO', $mediumAttribute->getTitle() ?
-                $mediumAttribute->getTitle() . ': ' . $mediumAttribute->getValue() :
-                $mediumAttribute->getValue());
+            $tpl->setVariable('INFO', $mediumAttribute->getValue());
+            $tpl->parseCurrentBlock();
+            // wrap row
+            $tpl->setCurrentBlock('info_row');
             $tpl->parseCurrentBlock();
         }
 
-        $tpl->setCurrentBlock('info_paragraph');
-        $tpl->setVariable('INFO', nl2br($playerContainerDTO->getMediumMetadata()->getDescription(), false));
-        $tpl->parseCurrentBlock();
+        // description paragraph
+        $tpl->setVariable('DESCRIPTION', nl2br($playerContainerDTO->getMediumMetadata()->getDescription(), false));
 
         foreach ($playerContainerDTO->getButtons() as $button) {
             $tpl->setCurrentBlock('button');
@@ -102,16 +114,14 @@ class PlayerModalRenderer
     protected function renderInfoMessage(PlayerContainerDTO $playerContainerDTO, ilTemplate $tpl, bool $available) : void
     {
         if ($available === false) {
-            $tpl->setCurrentBlock('info_paragraph');
-            $tpl->setVariable('INFO', $this->plugin->txt('info_not_available'));
-            $tpl->setVariable('INFO_STYLE', 'color:red;');
+            $tpl->setCurrentBlock('info_message');
+            $tpl->setVariable('INFO_MESSAGE', $this->plugin->txt('info_not_available'));
             $tpl->parseCurrentBlock();
         } elseif ($playerContainerDTO->getMediumMetadata()->isTranscoding()) {
             $msg = xvmpConf::getConfig(xvmpConf::F_EMBED_PLAYER) ? $this->plugin->txt('info_transcoding_full')
                 : $this->plugin->txt('info_transcoding_possible_full');
-            $tpl->setCurrentBlock('info_paragraph');
-            $tpl->setVariable('INFO', $msg);
-            $tpl->setVariable('INFO_STYLE', 'color:red;');
+            $tpl->setCurrentBlock('info_message');
+            $tpl->setVariable('INFO_MESSAGE', $msg);
             $tpl->parseCurrentBlock();
         }
     }

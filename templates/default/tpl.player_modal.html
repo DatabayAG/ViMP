@@ -1,10 +1,18 @@
 {VIDEO_PLAYER}
-<!-- BEGIN info_paragraph -->
-<p class="xvmp_info" style="{INFO_STYLE}">{INFO}</p>
-<!-- END info_paragraph -->
-<!-- BEGIN info_paragraph_ellipsis -->
-<div class="xvmp_ellipsis xvmp_info" style="{INFO_STYLE}">{INFO}</div>
-<!-- END info_paragraph_ellipsis -->
+<!-- BEGIN info_message -->
+<p style="color:red">{INFO_MESSAGE}</p>
+<!-- END info_message -->
+<p class="xvmp_description">{DESCRIPTION}</p>
+<!-- BEGIN info_row -->
+<div class="info-row">
+  <!-- BEGIN info_label -->
+  <p class="info-labels">{INFO_LABEL}</p>
+  <!-- END info_label -->
+  <!-- BEGIN info_paragraph -->
+  <p>{INFO}</p>
+  <!-- END info_paragraph -->
+</div>
+<!-- END info_row -->
 <div class="xvmp_player_toolbar">
 <!-- BEGIN button -->
 {BUTTON}
