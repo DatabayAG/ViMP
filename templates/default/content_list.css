@@ -12,7 +12,13 @@
 	/*height: 250px;*/
 	overflow: hidden;
 	position: relative;
+    transition: all 0.3s ease;
 	/*margin-bottom: 15px;*/
+}
+
+.box:hover {
+    transform: scale(.97);
+    transition: all 0.3s ease;
 }
 
 .innerContent {

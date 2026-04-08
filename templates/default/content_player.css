@@ -192,7 +192,7 @@ div.xvmp_image_container img.xvmp_preview_image {
 
 .box:hover {
     transition: all 0.3s ease;
-    transform: scale(1.1);
+    transform: scale(0.95);
 }
 
 .xvmp_not_available_overlay {
