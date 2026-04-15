@@ -139,8 +139,8 @@ class VideoPlayer
         if ($medium && xvmp::ViMPVersionGreaterEquals('4.1.0') && $abr_conf) {
             $isABRStream = true;
             $medium = html_entity_decode($medium);
-            $medium = str_replace('mp4', 'smil', $medium);
-            $medium = preg_replace('/(_[0-9]{3,4}p)?\.smil/', '.smil', $medium);
+            #$medium = str_replace('mp4', 'smil', $medium);
+            #$medium = preg_replace('/(_[0-9]{3,4}p)?\.smil/', '.smil', $medium);
         }
         $random = new ilRandom();
         $id = md5(((string) ($random->int(1, 9999999) + str_replace(" ", "", (string) microtime()))));
