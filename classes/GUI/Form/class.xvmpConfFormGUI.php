@@ -411,26 +411,29 @@ class xvmpConfFormGUI extends xvmpFormGUI
                 // obj
                 $sql = $this->db->query('select value from lng_data where module = "rep_robj_xvmp" and identifier = "rep_robj_xvmp_obj_xvmp"');
                 $existing = $this->db->fetchObject($sql);
-
+                $date_local_change = date('Y-m-d H:i:s');
                 if ($existing) {
                     $this->db->update('lng_data', array(
-                        'value' => array('text', $value)
+                        'value' => array('text', $value),
+                        'local_change' => array('text',  $date_local_change)
                     ), array(
                         'module' => array('text', 'rep_robj_xvmp'),
-                        'identifier' => array('text', 'rep_robj_xvmp_obj_xvmp'),
+                        'identifier' => array('text', 'rep_robj_xvmp_obj_xvmp')
                     ));
                 } else {
                     $this->db->insert('lng_data', array(
                         'lang_key' => array('text', 'de'),
                         'module' => array('text', 'rep_robj_xvmp'),
                         'identifier' => array('text', 'rep_robj_xvmp_obj_xvmp'),
-                        'value' => array('text', $value)
+                        'value' => array('text', $value),
+                        'local_change' => array('text',  $date_local_change)
                     ));
                     $this->db->insert('lng_data', array(
                         'lang_key' => array('text', 'en'),
                         'module' => array('text', 'rep_robj_xvmp'),
                         'identifier' => array('text', 'rep_robj_xvmp_obj_xvmp'),
-                        'value' => array('text', $value)
+                        'value' => array('text', $value),
+                        'local_change' => array('text',  $date_local_change)
                     ));
                 }
 
@@ -440,23 +443,26 @@ class xvmpConfFormGUI extends xvmpFormGUI
 
                 if ($existing) {
                     $this->db->update('lng_data', array(
-                        'value' => array('text', $value)
+                        'value' => array('text', $value),
+                        'local_change' => array('text',  $date_local_change)
                     ), array(
                         'module' => array('text', 'rep_robj_xvmp'),
-                        'identifier' => array('text', 'rep_robj_xvmp_objs_xvmp'),
+                        'identifier' => array('text', 'rep_robj_xvmp_objs_xvmp')
                     ));
                 } else {
                     $this->db->insert('lng_data', array(
                         'lang_key' => array('text', 'de'),
                         'module' => array('text', 'rep_robj_xvmp'),
                         'identifier' => array('text', 'rep_robj_xvmp_objs_xvmp'),
-                        'value' => array('text', $value)
+                        'value' => array('text', $value),
+                        'local_change' => array('text',  $date_local_change)
                     ));
                     $this->db->insert('lng_data', array(
                         'lang_key' => array('text', 'en'),
                         'module' => array('text', 'rep_robj_xvmp'),
                         'identifier' => array('text', 'rep_robj_xvmp_objs_xvmp'),
-                        'value' => array('text', $value)
+                        'value' => array('text', $value),
+                        'local_change' => array('text',  $date_local_change)
                     ));
                 }
                 return;
