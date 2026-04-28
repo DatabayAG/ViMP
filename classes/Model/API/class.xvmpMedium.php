@@ -95,6 +95,7 @@ class xvmpMedium extends xvmpObject
     protected array|string $streaming;
     protected int $count_likes;
     protected ?array $subtitles = [];
+    protected ?array $channels = [];
     protected bool $download_allowed = false;
     protected ?DateTime $startdate = null;
     protected ?DateTime $enddate = null;
