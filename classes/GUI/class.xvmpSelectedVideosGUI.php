@@ -37,15 +37,34 @@ class xvmpSelectedVideosGUI extends xvmpVideosGUI
      */
     public function reorder()
     {
-        $ids = $_POST['ids'];
-        $sort = 10;
+        $ids = $_POST['ids'] ?? [];
+        $media = xvmpSelectedMedia::where(['mid' => $ids, 'obj_id' => $this->getObjId()])->get();
+
+        if (empty($media)) {
+            echo json_encode(['success' => true]);
+            exit;
+        }
+
+        $mediaByMid = [];
+        foreach ($media as $obj) {
+            $mediaByMid[$obj->getMid()] = $obj;
+        }
+
+        $orderedMedia = [];
         foreach ($ids as $id) {
-            $xvmpSelectedMedia = xvmpSelectedMedia::where(array('mid' => $id, 'obj_id' => $this->getObjId()))->first();
-            $xvmpSelectedMedia->setSort($sort);
-            $xvmpSelectedMedia->update();
+            if (isset($mediaByMid[$id])) {
+                $orderedMedia[] = $mediaByMid[$id];
+            }
+        }
+
+        $sort = min(array_map(fn($o) => $o->getSort(), $orderedMedia));
+        foreach ($orderedMedia as $obj) {
+            $obj->setSort($sort);
+            $obj->update();
             $sort += 10;
         }
-        echo "{\"success\": true}";
+
+        echo json_encode(['success' => true]);
         exit;
     }
 

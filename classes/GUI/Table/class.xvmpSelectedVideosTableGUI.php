@@ -47,6 +47,12 @@ class xvmpSelectedVideosTableGUI extends xvmpTableGUI
      */
     public function __construct($parent_gui, $parent_cmd)
     {
+        global $DIC;
+        $ilUser = $DIC['ilUser'];
+        $id = 'xvmp_selected_' . (int) $_GET['ref_id'] . '_' . $ilUser->getId();
+        $this->setId($id);
+        $this->setPrefix($id);
+        $this->setFormName($id);
         parent::__construct($parent_gui, $parent_cmd);
 
         $this->setTitle($this->pl->txt('selected_videos'));
@@ -59,8 +65,8 @@ class xvmpSelectedVideosTableGUI extends xvmpTableGUI
         $this->setDescription($description);
 
         $this->setExternalSorting(true);
-        $this->setEnableNumInfo(false);
-        $this->setShowRowsSelector(false);
+        $this->setEnableNumInfo(true);
+        $this->setShowRowsSelector(true);
 
         $base_link = $this->ctrl->getLinkTarget($this->parent_obj, '', '', true);
         $this->tpl_global->addOnLoadCode('VimpSelected.init("' . $base_link . '");');
@@ -98,7 +104,9 @@ class xvmpSelectedVideosTableGUI extends xvmpTableGUI
 
     public function parseData() : void
     {
-        $this->setData(xvmpMedium::getSelectedAsArray($this->parent_obj->getObjId()));
+        $data = xvmpMedium::getSelectedAsArray($this->parent_obj->getObjId());
+        $this->setData($data);
+        $this->setMaxCount(count($data));
     }
 
     protected function initColumns() : void
