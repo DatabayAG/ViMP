@@ -69,12 +69,16 @@ class ilObjViMPGUI extends ilObjectPluginGUI
 
         $DIC->ctrl()->setParameterByClass(xvmpContentGUI::class, self::GET_REF_ID, $id[0]);
 
-        if (isset($id[1])) {
-            if (isset($id[3])) {
+        if (isset($id[0])) {
+            if (isset($id[2])) {
                 // time
-                $DIC->ctrl()->setParameterByClass(xvmpContentGUI::class, self::GET_TIME, (int) $id[3]);
+                $DIC->ctrl()->setParameterByClass(xvmpContentGUI::class, self::GET_TIME, (int) $id[2]);
             }
-            $DIC->ctrl()->setParameterByClass(xvmpContentGUI::class, self::GET_VIDEO_ID, (int) $id[2]);
+
+            if(isset($id[1])){
+                $DIC->ctrl()->setParameterByClass(xvmpContentGUI::class, self::GET_VIDEO_ID, (int) $id[1]);
+            }
+
             $DIC->ctrl()->redirectByClass(
                 [ilObjPluginDispatchGUI::class, self::class, xvmpContentGUI::class],
                 xvmpContentGUI::CMD_PLAY_VIDEO
