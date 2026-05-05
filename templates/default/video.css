@@ -1,3 +1,9 @@
+/* Support custom aspect ratio 16:3 for Video.js fluid mode */
+.video-js.vjs-16-3 {
+    /* height/width = 3/16 = 18.75% */
+    padding-top: 18.75%;
+}
+
 .video-js .vjs-current-time {
 	display: block;
 }
@@ -27,8 +33,5 @@ div#xvmp_video_container div.ilPermalinkContainer {
 }
 
 .video-js {
-    aspect-ratio: 16 / 9;
-    width: 100% !important;
-    height: auto !important;
     margin: 1rem 0;
 }

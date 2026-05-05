@@ -47,3 +47,26 @@ h4.modal-title {
 	width: 100%;
 	max-width: 100%;
 }
+
+/* Structured info rows in modal to match other views */
+.info-row {
+	display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.25rem;
+	margin: 4px 0;
+}
+.info-row p {
+	margin: 0;
+}
+.info-labels {
+	font-weight: bold;
+}
+.info-labels::after {
+	content: ':';
+}
+.xvmp_description {
+	margin: 1rem 0 0.75rem;
+}
+#xvmp_video_container .xvmp_player_toolbar {
+    margin-top: 1rem;
+}
