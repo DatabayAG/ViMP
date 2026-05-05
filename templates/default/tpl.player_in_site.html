@@ -1,18 +1,27 @@
-<div id="xvmp_video_container">
-  {VIDEO_PLAYER}
-</div>
-<div id="xvmp_video_infos">
-  <h1>{TITLE}</h1>
-  <!-- BEGIN info_message -->
-  <p style="color:red">{INFO_MESSAGE}</p>
-  <!-- END info_message -->
-  <h3>{DESCRIPTION}</h3>
-  <!-- BEGIN medium_info -->
-  <p>{VALUE}</p>
-  <!-- END medium_info -->
-  <div class="xvmp_player_toolbar">
-    <!-- BEGIN button -->
-    {BUTTON}
-    <!-- END button -->
+<div class="xvmp_player_layout">
+  <div id="xvmp_video_container">
+    {VIDEO_PLAYER}
+  </div>
+  <div id="xvmp_video_infos">
+    <h2>{TITLE}</h2>
+    <!-- BEGIN info_message -->
+    <p style="color:red">{INFO_MESSAGE}</p>
+    <!-- END info_message -->
+    <p class="xvmp_description">{DESCRIPTION}</p>
+    <!-- BEGIN info_row -->
+    <div class="info-row">
+      <!-- BEGIN info_label -->
+      <p class="info-labels">{INFO_LABEL}</p>
+      <!-- END info_label -->
+      <!-- BEGIN info_paragraph -->
+      <p>{INFO}</p>
+      <!-- END info_paragraph -->
+    </div>
+    <!-- END info_row -->
+    <div class="xvmp_player_toolbar">
+      <!-- BEGIN button -->
+      {BUTTON}
+      <!-- END button -->
+    </div>
   </div>
 </div>

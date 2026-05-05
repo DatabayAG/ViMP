@@ -102,11 +102,11 @@ class xvmpMedium extends xvmpObject
     protected array $downloadable_formats;
     protected string $embed_code_responsive;
     protected string $smil;
-    protected int $count_views_portal;
-    protected int $count_views_embed;
-    protected int $count_views_api;
-    protected int $count_views;
-    protected int $count_chapters;
+    protected int $count_views_portal = 0;
+    protected int $count_views_embed = 0;
+    protected int $count_views_api = 0;
+    protected int $count_views = 0;
+    protected int $count_chapters = 0;
 
 
     /**

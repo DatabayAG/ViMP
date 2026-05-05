@@ -15,13 +15,19 @@
 </div>
 <div class="xvmp_overlay_infos">
 	<div class="xvmp_overlay_infos_content">
-		<p><h3 class="xvmp_center_text">{TITLE}</h3></p>
+		<h2 class="xvmp_center_text">{TITLE}</h2>
 		<!-- BEGIN info_message -->
-		<p style="color:red;">{INFO_MESSAGE}</p>
+		<div style="color:red;">{INFO_MESSAGE}</div>
 		<!-- END info_message -->
-		<p><span>{DESCRIPTION}</span><small><b class="xvmp_float_r">{LABEL_DESCRIPTION}</b></small></p>
+		<div class="info-row">
+			<div class="info-labels">{LABEL_DESCRIPTION}</div>
+			<div class="info-value xvmp_overlay_description">{DESCRIPTION}</div>
+		</div>
 		<!-- BEGIN info_paragraph -->
-		<p><span>{INFO_VALUE}</span><small><b class="xvmp_float_r">{INFO_LABEL}</b></small></p>
+		<div class="info-row">
+			<div class="info-labels">{INFO_LABEL}</div>
+			<div class="info-value">{INFO_VALUE}</div>
+		</div>
 		<!-- END info_paragraph -->
 	</div>
 </div>
