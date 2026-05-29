@@ -82,7 +82,6 @@ class xvmpMedium extends xvmpObject
     protected ?string $meta_author;
     protected ?string $meta_copyright;
     protected int $sum_rating;
-    protected int $count_views;
     protected int $count_rating;
     protected int $count_favorites;
     protected int $count_comments;
@@ -104,6 +103,11 @@ class xvmpMedium extends xvmpObject
     protected string $smil_preview;
     protected $embed_code_responsive;
     protected $downloadable_formats;
+    protected int $count_views_portal;
+    protected int $count_views_embed;
+    protected int $count_views_api;
+    protected int $count_views;
+
 
     /**
      * @param null  $ilObjUser
@@ -261,6 +265,11 @@ class xvmpMedium extends xvmpObject
         $response['description'] = strip_tags(html_entity_decode((string) $response['description']));
         $response['title'] = (string) $response['title'];
         $response['slug'] = (string) $response['slug'];
+        $response['count_views'] = (int) $response['count_views'] ?: 0;
+        $response['count_views_api'] = (int) $response['count_views_api'] ?: 0;
+        $response['count_views_embed'] = (int) $response['count_views_embed'] ?: 0;
+        $response['count_views_portal'] = (int) $response['count_views_portal'] ?: 0;
+
 
         if (isset($response['mediapermissions']) && isset($response['mediapermissions']['rid']) && is_array($response['mediapermissions']['rid'])) {
             $response['mediapermissions'] = $response['mediapermissions']['rid'];
@@ -949,20 +958,44 @@ class xvmpMedium extends xvmpObject
         $this->sum_rating = $sum_rating;
     }
 
-    /**
-     * @return int
-     */
     public function getCountViews() : int
     {
         return $this->count_views;
     }
 
-    /**
-     * @param int $count_views
-     */
     public function setCountViews(int $count_views) : void
     {
         $this->count_views = $count_views;
+    }
+
+    public function getCountViewsPortal() : int
+    {
+        return $this->count_views_portal;
+    }
+
+    public function setCountViewsPortal(int $count_views_portal) : void
+    {
+        $this->count_views_portal = $count_views_portal;
+    }
+
+    public function getCountViewsEmbed() : int
+    {
+        return $this->count_views_embed;
+    }
+
+    public function setCountViewsEmbed(int $count_views_embed) : void
+    {
+        $this->count_views_embed = $count_views_embed;
+    }
+
+    public function getCountViewsAPI() : int
+    {
+        return $this->count_views_api;
+    }
+
+    public function setCountViewsAPI(int $count_views_api) : void
+    {
+        $this->count_views_api = $count_views_api;
     }
 
     /**
