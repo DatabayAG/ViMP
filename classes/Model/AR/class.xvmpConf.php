@@ -44,6 +44,7 @@ class xvmpConf extends ActiveRecord
     public const F_CACHE_TTL_CATEGORIES = 'cache_ttl_categories';
     public const F_CACHE_TTL_TOKEN = 'cache_ttl_token';
     public const F_CACHE_TTL_CONFIG = 'cache_ttl_config';
+    public const F_CURL_TIMEOUT = 'curl_timeout';
     public const F_FILTER_FIELDS = 'filter_fields';
     public const F_FILTER_FIELD_ID = 'filter_id';
     public const F_FILTER_FIELD_TITLE = 'filter_title';
@@ -117,6 +118,12 @@ class xvmpConf extends ActiveRecord
             if ($obj->getValue()) {
                 self::$cache[$name] = json_decode($obj->getValue(), true);
                 self::$cache_loaded[$name] = true;
+            }
+            if($name === self::F_CURL_TIMEOUT) {
+                if($obj->getValue() === null) {
+                    self::$cache[$name] = json_decode((string) xvmpRequest::DEFAULT_TIMEOUT_MS, true);
+                    self::$cache_loaded[$name] = true;
+                }
             }
         }
 

@@ -63,9 +63,7 @@ class xvmp
      */
     public static function isLearningProgressPossible($obj_id) : bool
     {
-        $ref_id = self::lookupRefId($obj_id);
-
-        return (ilObjUserTracking::_enabledLearningProgress() && self::getParentCourseRefId($ref_id));
+        return ilObjUserTracking::_enabledLearningProgress();
     }
 
     /**
@@ -89,8 +87,8 @@ class xvmp
         /**
          * @var $tree ilTree
          */
-        while (ilObject2::_lookupType($ref_id, true) != 'crs') {
-            if ($ref_id == 1) {
+        while (ilObject2::_lookupType($ref_id, true) !== 'crs') {
+            if ($ref_id === 1) {
                 return false;
             }
             $ref_id = $tree->getParentId($ref_id);
@@ -106,8 +104,8 @@ class xvmp
     {
         global $DIC;
         $is_admin = $DIC->rbac()->review()->isAssigned($DIC->user()->getId(), 2);
-        return $is_admin || xvmpConf::getConfig(xvmpConf::F_ALLOW_PUBLIC) &&
-            (ilObjViMPAccess::hasWriteAccess() || (ilObjViMPAccess::hasUploadPermission() && xvmpConf::getConfig(xvmpConf::F_ALLOW_PUBLIC_UPLOAD)));
+        return $is_admin || (xvmpConf::getConfig(xvmpConf::F_ALLOW_PUBLIC) &&
+                (ilObjViMPAccess::hasWriteAccess() || (ilObjViMPAccess::hasUploadPermission() && xvmpConf::getConfig(xvmpConf::F_ALLOW_PUBLIC_UPLOAD))));
     }
 
     /**

@@ -1,6 +1,7 @@
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("DOMContentLoaded", function () {
         var sr_id_input = "{ID}";
+        var sr_id_input_selector = $("#"+sr_id_input);
         var sr_link_input = "{AJAX_LINK}";
         var settings = {placeholder: "{PLACEHOLDER}",
                         minimumInputLength: "{MINIMUM_INPUT_LENGTH}"
@@ -21,9 +22,25 @@
                     }
                 }
             }
-
         }
-        $("#"+sr_id_input).select2(settings);
+    sr_id_input_selector.select2(settings);
+
+    function triggerCategoryInputCheck(selectedValues) {
+      if(selectedValues.length === 0){
+        document.querySelector(".select2-choices").style.borderColor = "red";
+        document.querySelector(".select2-choices").style.backgroundColor = '#ffebeb';
+      } else {
+        document.querySelector(".select2-choices").style.borderColor = "black";
+        document.querySelector(".select2-choices").style.backgroundColor = "#fff";
+      }
+    }
+
+    sr_id_input_selector.on("change", function (e) {
+        let selectedValues = $(this).val();
+        triggerCategoryInputCheck(selectedValues)
+      });
+
+    triggerCategoryInputCheck(sr_id_input_selector.val());
     });
 </script>
 

@@ -101,6 +101,11 @@ class xvmpConfFormGUI extends xvmpFormGUI
         $input->setInfo($this->pl->confTxt(xvmpConf::F_DISABLE_VERIFY_PEER . '_info'));
         $this->addItem($input);
 
+        // CURL Timeout
+        $input = new ilNumberInputGUI($this->pl->confTxt(xvmpConf::F_CURL_TIMEOUT), xvmpConf::F_CURL_TIMEOUT);
+        $input->setInfo($this->pl->confTxt(xvmpConf::F_CURL_TIMEOUT . '_info'));
+        $this->addItem($input);
+
         // External User Mapping
         $input = new ilTextInputGUI($this->pl->confTxt(xvmpConf::F_USER_MAPPING_EXTERNAL),
             xvmpConf::F_USER_MAPPING_EXTERNAL);

@@ -156,6 +156,7 @@ categories#:#Kategorien
 user#:#Benutzer
 required#:#Erforderlich
 form_msg_select#:#Bitte wählen Sie eine Datei zum Hochladen aus.
+form_val_select#:#Füllen Sie bitte alle benötigten Felder aus.
 form_msg_not_supported#:#Dateityp nicht unterstützt.
 msg_incomplete#:#Einige Felder dieses Formulares sind Pflichtfelder und müssen ausgefüllt werden. Bitte ergänzen Sie diese Felder.
 form_incomplete#:#Einige Felder dieses Formulares sind Pflichtfelder und müssen ausgefüllt werden. Bitte ergänzen Sie diese Felder.
@@ -185,7 +186,7 @@ form_title_change_owner#:#Benutzer suchen
 search#:#Suchen
 permission_denied#:#Zugriff verweigert.
 enable_learning_progress#:#Lernfortschritt aktiviert
-enable_learning_progress_info#:#Der Lernfortschritt kann nur aktiviert werden, wenn das Objekt innerhalb eines Kurses liegt und der Lernfortschritt global aktiviert ist.
+enable_learning_progress_info#:#Der Lernfortschritt kann nur aktiviert werden, wenn der Lernfortschritt global aktiviert ist.
 added#:#Hinzugefügt
 max_filesize#:#Max. Dateigröße
 info_not_available#:#Nicht Verfügbar
@@ -224,3 +225,17 @@ copied#:#In die Zwischenablage kopiert.
 conf_ui_settings#:#Benutzeroberfläche
 change_owner#:#Besitzer ändern
 auto_subtitle#:#Automatische Untertitel generieren<br><br><div class="help-block">Bei Nutzung dieser Funktion erfolgt eine Übertragung <br>der Tonspur an den externen Dienst "Amberscript".<br> Bitte beachten Sie die dazugehörige <a href="https://www.amberscript.com/de/datenschutzerklaerung/">Datenschutzerklärung</a></div>
+lp_matrix#:#Matrixansicht
+lp_mode_desc_by_all_answered_questions#:#Das Objekt gilt als 'Bearbeitet', wenn für alle definierten Fragen eine Antwort gewählt wurde, unabhängig von der Korrektheit. Falls keine Fragen konfiguriert wurden, gilt das Objekt beim Erreichen der Endposition des Videos als 'Bearbeitet'.
+lp_mode_desc_by_questions#:#Das Objekt gilt als 'Bearbeitet', wenn für alle definierten Fragen eine 'richtige' Antwort gewählt und die Endposition des Videos erreicht wurde. Falls keine Fragen konfiguriert wurden, gilt das Objekt beim Erreichen der Endposition des Videos als 'Bearbeitet'.
+lp_mode_title_by_all_answered_questions#:#Fragen beantwortet
+lp_mode_title_by_questions#:#Fragen korrekt beantwortet
+lp_settings#:#Einstellungen
+lp_summary#:#Zusammenfassung
+lp_users#:#Benutzer
+lp_mode_title_by_videos#:#Videos welche angesehen werden müssen
+lp_mode_desc_by_videos#:#Stellen sie bitte sicher, das sie die für den Lernfortschritt relevanten Videos unter dem Tab 'Ausgewählte Videos' konfigurieren.
+trac_learning_progress_tbl_header#:#Lernfortschritt von:
+conf_curl_timeout#:#CURL Timeout
+conf_curl_timeout_info#:#Timeout in Sekunden
+info#:#Info

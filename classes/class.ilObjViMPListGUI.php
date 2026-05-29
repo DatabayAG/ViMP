@@ -164,4 +164,9 @@ class ilObjViMPListGUI extends ilObjectPluginListGUI
         );
     }
 
+    public function getCommandFrame(string $cmd): string
+    {
+        return '';
+    }
+
 }

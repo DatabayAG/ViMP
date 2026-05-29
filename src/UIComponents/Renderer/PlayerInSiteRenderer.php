@@ -71,22 +71,35 @@ class PlayerInSiteRenderer
             $tpl->setVariable('INFO_MESSAGE', $this->plugin->txt('info_transcoding_full'));
             $tpl->parseCurrentBlock();
         } elseif ($playerContainerDTO->getMediumMetadata()->hasAvailability()) {
-            $tpl->setCurrentBlock('medium_info');
-            $tpl->setVariable('VALUE', $this->plugin->txt('available') . ': ' .
-                $this->metadata_parser->parseAvailability(
-                    $playerContainerDTO->getMediumMetadata()->getAvailabilityStart(),
-                    $playerContainerDTO->getMediumMetadata()->getAvailabilityEnd(),
-                    true
-                ));
+            // Availability row with label and value
+            $tpl->setCurrentBlock('info_label');
+            $tpl->setVariable('INFO_LABEL', $this->plugin->txt('available'));
+            $tpl->parseCurrentBlock();
+
+            $tpl->setCurrentBlock('info_paragraph');
+            $tpl->setVariable('INFO', $this->metadata_parser->parseAvailability(
+                $playerContainerDTO->getMediumMetadata()->getAvailabilityStart(),
+                $playerContainerDTO->getMediumMetadata()->getAvailabilityEnd(),
+                false
+            ));
+            $tpl->parseCurrentBlock();
+
+            $tpl->setCurrentBlock('info_row');
             $tpl->parseCurrentBlock();
         }
 
         if (!$deleted) {
             foreach ($playerContainerDTO->getMediumMetadata()->getMediumAttributes() as $mediumAttribute) {
-                $tpl->setCurrentBlock('medium_info');
-                $tpl->setVariable('VALUE', $mediumAttribute->getTitle() ?
-                    $mediumAttribute->getTitle() . ': ' . $mediumAttribute->getValue() :
-                    $mediumAttribute->getValue());
+                if ($mediumAttribute->getTitle()) {
+                    $tpl->setCurrentBlock('info_label');
+                    $tpl->setVariable('INFO_LABEL', $mediumAttribute->getTitle());
+                    $tpl->parseCurrentBlock();
+                }
+                $tpl->setCurrentBlock('info_paragraph');
+                $tpl->setVariable('INFO', $mediumAttribute->getValue());
+                $tpl->parseCurrentBlock();
+
+                $tpl->setCurrentBlock('info_row');
                 $tpl->parseCurrentBlock();
             }
 

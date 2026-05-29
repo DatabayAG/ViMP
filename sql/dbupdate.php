@@ -129,6 +129,7 @@ if (!empty(xvmpConf::getConfig(xvmpConf::F_FORM_FIELDS))) {
 ?>
 <#11>
 <?php
+require_once("components/ILIAS/Migration/DBUpdate_3560/classes/class.ilDBUpdateNewObjectType.php");
 $xvmp_type_id = ilDBUpdateNewObjectType::addNewType('xvmp', 'Plugin ViMP');
 
 //Adding a new Permission rep_robj_xvmp_readlink ("Read link")
@@ -138,3 +139,16 @@ if($offering_admin)
 {
     ilDBUpdateNewObjectType::addRBACOperation($xvmp_type_id, $offering_admin);
 }
+?>
+<#12>
+<?php
+if(!$ilDB->tableColumnExists('xvmp_setting', 'lp_mode'))
+{
+    $ilDB->addTableColumn('xvmp_setting', 'lp_mode',
+        array(
+            'type'    => 'integer',
+            'length'  => '3',
+            'notnull' => true,
+            'default' => 0));
+}
+?>
