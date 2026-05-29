@@ -67,3 +67,6 @@ h4.modal-title {
 .xvmp_description {
 	margin: 1rem 0 0.75rem;
 }
+#xvmp_video_container .xvmp_player_toolbar {
+    margin-top: 1rem;
+}

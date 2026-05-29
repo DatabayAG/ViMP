@@ -50,8 +50,8 @@ div#xvmp_video_infos .ilPermalinkContainer.input-group {
      width: fit-content;
  }
 }
-div#xvmp_video_infos h1 {
-    margin-top: 0.5rem;
+div#xvmp_video_infos h2 {
+    margin-top: 0;
 }
 div#xvmp_video_infos div.dropdown {
     position: relative;
@@ -382,4 +382,10 @@ div.xvmp_image_container img.xvmp_play_icon {
     .xvmp_image_container {
         height: 150px;
     }
+}
+.xvmp_player_layout > #xvmp_video_infos {
+    padding-top: 0;
+}
+#xvmp_video_infos .xvmp_player_toolbar {
+    margin-top: 1rem;
 }

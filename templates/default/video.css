@@ -33,8 +33,5 @@ div#xvmp_video_container div.ilPermalinkContainer {
 }
 
 .video-js {
-    aspect-ratio: 16 / 9;
-    width: 100% !important;
-    height: auto !important;
     margin: 1rem 0;
 }
