@@ -22,6 +22,7 @@ class xvmpConfFormGUI extends xvmpFormGUI
     protected $db;
 
     protected Services $http;
+    protected const PASS_MASK = '********';
 
     /**
      * xvmpConfFormGUI constructor.
@@ -60,17 +61,15 @@ class xvmpConfFormGUI extends xvmpFormGUI
         $this->addItem($input);
 
         // API Password
-        $input = new ilPasswordInputGUI($this->pl->confTxt(xvmpConf::F_API_PASSWORD), xvmpConf::F_API_PASSWORD);
+        $input = new ilTextInputGUI($this->pl->confTxt(xvmpConf::F_API_PASSWORD), xvmpConf::F_API_PASSWORD);
         $input->setInfo($this->pl->confTxt(xvmpConf::F_API_PASSWORD . '_info'));
-        $input->setRetype(false);
         $input->setRequired(true);
         $this->addItem($input);
 
         // API Key
-        $input = new ilPasswordInputGUI($this->pl->confTxt(xvmpConf::F_API_KEY), xvmpConf::F_API_KEY);
+        $input = new ilTextInputGUI($this->pl->confTxt(xvmpConf::F_API_KEY), xvmpConf::F_API_KEY);
         $input->setInfo($this->pl->confTxt(xvmpConf::F_API_KEY . '_info'));
         $input->setRequired(true);
-        $input->setRetype(false);
         $this->addItem($input);
 
         // API Url
@@ -345,6 +344,11 @@ class xvmpConfFormGUI extends xvmpFormGUI
             } else {
                 $value = xvmpConf::getConfig($key);
             }
+            if($key === xvmpConf::F_API_PASSWORD && $value !== '' && $value !== null) {
+                $value = self::PASS_MASK;
+            } else if($key === xvmpConf::F_API_KEY && $value !== '' && $value !== null) {
+                $value = self::PASS_MASK;
+            }
             $array[$key] = $value;
             if (self::checkForSubItem($item)) {
                 foreach ($item->getSubItems() as $subitem) {
@@ -392,7 +396,15 @@ class xvmpConfFormGUI extends xvmpFormGUI
             return false;
         }
         foreach ($this->getItems() as $item) {
-            $this->saveValueForItem($item);
+            if($item->getPostVar() === xvmpConf::F_API_PASSWORD || $item->getPostVar() === xvmpConf::F_API_KEY) {
+                $value = $this->getInput($item->getPostVar());
+                if($value !== '' && $value !== self::PASS_MASK) {
+                    xvmpConf::set($item->getPostVar(), $value);
+                    $this->saveValueForItem($item);
+                }
+            } else {
+                $this->saveValueForItem($item);
+            }
         }
         xvmpConf::set(xvmpConf::F_CONFIG_VERSION, xvmpConf::CONFIG_VERSION);
 
