@@ -1,45 +1,65 @@
+.boxes-wrapper {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.5rem;
+}
+
 .box {
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 	width: 100%;
 	background-color: white;
-	height: 236px;
+    min-height: 250px;
 	overflow: hidden;
 	position: relative;
-	margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.box:hover {
+    transform: scale(.97);
+    transition: all 0.3s ease;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 10px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 }
 
 .innerContent {
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 100%;
+    min-height: 250px;
+}
+
+.innerContent > a {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    row-gap: 1rem;
+    min-height: 250px;
 }
 
 .xvmp_image_container {
-	height: 236px;
-	width: 356px;
-	float: left;
+    height: 100%;
+	width: 100%;
 	background-color: black;
 	text-align: center;
-	display: inline;
 	overflow: hidden;
+    position: relative;
+    flex: 0 0 100%;
 }
 
 .xvmp_video_infos {
-	padding-left: 36px;
-	padding-top: 15px;
-	overflow: auto;
-	white-space: nowrap;
+	padding: 1rem 2rem;
+	overflow: hidden; /* prevent scrollbars */
+	white-space: normal; /* allow wrapping by default */
 	text-overflow: ellipsis;
 	word-break: break-all;
 	word-wrap: break-word;
 	height: 100%;
+    width: 100%;
+    flex: 0 0 100%;
 }
 
 .xvmp_video_infos .xvmp_title_container {
-	margin-top: 8px;
 	margin-bottom: 10px;
+}
+
+.xvmp_title_container > h2 {
+    margin-top: 0;
 }
 
 .xvmp_video_infos p {
@@ -49,18 +69,28 @@
 }
 
 .xvmp_video_infos p.xvmp_description {
-	font-style: italic;
 	margin-bottom: 10px;
+	width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	/* multi-line clamp */
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 3; /* number of lines to show */
+	/* fallback for non-webkit: limit height based on line-height */
+	line-height: 1.4;
+	max-height: calc(1.4em * 3);
+    word-break: normal;
 }
 
 .xvmp_video_infos h2, .xvmp_video_infos p {
-	/*display: inline;*/
 	overflow: hidden;
 	-ms-text-overflow: ellipsis;
 	text-overflow:     ellipsis;
 	word-break: break-all;
 	word-wrap: break-word;
 	clear: both;
+    width: fit-content;
 }
 
 
@@ -72,13 +102,11 @@
 	left: 0;
 	right: 0;
 	height: inherit;
-	width: inherit;
 	opacity: 0;
 	transition: .5s ease;
 	background-color: rgba(0,0,0,.7);
 	vertical-align: middle;
 	display: inline-block;
-	/*background: url('../images/play.svg') center no-repeat;*/
 }
 
 .box:hover .xvmp_play_overlay, .box:hover .xvmp_play_icon {
@@ -108,7 +136,6 @@
 	cursor: default;
 }
 
-/* this is necessary to center the "play" image */
 .xvmp_pseudo_element {
 	height: 100%;
 	vertical-align: middle;
@@ -122,21 +149,56 @@ div.xvmp_image_container img.xvmp_play_icon {
 
 div.xvmp_image_container img.xvmp_preview_image {
 	background: black url('../images/vimp_logo.svg') center no-repeat;
-	background-size: contain;
+    object-fit: cover;
+    width: 100%;
+    min-height: 250px;
+    max-width: unset;
+}
+/* Use contain when the fallback logo is used as src (set via onerror) */
+div.xvmp_image_container img.xvmp_preview_image[src$="vimp_logo.svg"] {
+    object-fit: contain;
+    background-image: none; /* avoid double logo (src + background) */
+    background-color: black;
+    padding: 2rem;
+}
+@media (min-width: 769px) {
+    .xvmp_image_container {
+        flex: 5
+    }
+    .xvmp_video_infos {
+        flex: 5;
+    }
+}
+
+@media (min-width: 1024px) {
+    .xvmp_image_container {
+        flex: 4;
+    }
+    .xvmp_video_infos {
+        flex: 6;
+    }
+}
+
+@media (min-width: 1200px) {
+    .xvmp_image_container {
+        flex: 3;
+    }
+    .xvmp_video_infos {
+        flex: 7;
+    }
+}
+
+@media only screen and (max-width : 767px) {
+    .xvmp_image_container {
+        height: 250px;
+    }
+    .xvmp_video_infos {
+        padding-bottom: 2rem;
+        height: fit-content;
+    }
 }
 
 @media only screen and (max-width : 650px) {
-	/* Tablet view: 2 tiles */
-	.xvmp_image_container {
-		width: 100%;
-		height: 172px;
-	}
-
-	.xvmp_image_container img {
-		width: 295px;
-		height: 172px;
-	}
-
 	.xvmp_video_infos {
 		position: relative;
 		left: 0;
@@ -144,8 +206,24 @@ div.xvmp_image_container img.xvmp_preview_image {
 		width: 100%;
 		padding-left: 20px;
 	}
+}
 
-	.box {
-		height: 320px;
-	}
+.info-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.25rem;
+}
+.info-labels {
+    font-weight: bold;
+}
+.info-labels::after {
+    content: ':';
+}
+
+.xvmp_video_infos .info-row {
+    margin: 4px 0;
+}
+.xvmp_video_infos .info-row p {
+    margin: 0;
+    word-break: normal;
 }

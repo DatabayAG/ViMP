@@ -1,3 +1,7 @@
 #subtitles .multi_input_line .help-block {
     display: none;
 }
+textarea:invalid {
+    background-color: #ffebeb;
+    border-color: #d00;
+}

@@ -30,6 +30,7 @@ class VideoPlayer
      * @var bool
      */
     private bool $increase_view_count;
+    private \ilObjViMP $plugin;
 
     /**
      * @var ilViMPPlugin
@@ -83,6 +84,8 @@ class VideoPlayer
         $this->video = $video;
         $this->embed = $embed;
         $this->increase_view_count = $increase_view_count;
+
+        $this->plugin = new \ilObjViMP(0);
     }
 
     /**
@@ -202,12 +205,23 @@ class VideoPlayer
         $template->setVariable('THUMBNAIL', $this->video->getThumbnail());
         $template->setVariable('TYPE', $pathinfo['extension']);
 
-        if (!isset($this->options['width'])) {
-            $template->setVariable('CSS_CLASS', 'vjs-4-3');
+        $type = $this->options['type'] ?? null;
+        $css_string = '';
+        if($type !== null && $type === 'static') {
+            $width = $this->options['width'] ?? 0;
+            $css_string .= 'width: ' . $width . ';';
+            $this->setOption('fluid', true);
+        }
+        if($type === 'responsive' && isset($this->options['ratio'])) {
+            $css_string .= 'aspect-ratio: ' . $this->options['ratio'] . ';';
+        } else if (!isset($this->options['width'])) {
+            $template->setVariable('CSS_CLASS', 'vjs-16-3');
             $this->setOption('fluid', true);
         } else {
             $this->setOption('fluid', false);
         }
+
+        $template->setVariable('CSS_STYLE', $css_string);
 
         $options = json_encode($this->options);
 
@@ -233,6 +247,8 @@ class VideoPlayer
         $template->setVariable('SCRIPT', 'if (typeof videojs === "undefined") { document.addEventListener("DOMContentLoaded", function() { ' . $videojs_script . ' });} else {  ' . $videojs_script . ' }');
         $template->parseCurrentBlock();
 
+        $this->plugin->trackReadEvent();
+
         return $template->get();
     }
 
@@ -248,4 +264,5 @@ class VideoPlayer
             $this->options[$option] = $value;
         }
     }
+
 }

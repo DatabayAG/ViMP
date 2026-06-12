@@ -11,6 +11,7 @@ declare(strict_types=1);
 class xvmpRequest
 {
     public const TYPE_VIDEO = '0';
+    public const DEFAULT_TIMEOUT_MS = 10000;
 
     // API ENDPOINTS
     public const VERSION = 'version';
@@ -44,8 +45,9 @@ class xvmpRequest
      */
     public static function version() : xvmpCurl
     {
+        $timeout = (int) xvmpConf::getConfig(xvmpConf::F_CURL_TIMEOUT) ?: self::DEFAULT_TIMEOUT_MS;
         $xvmpCurl = new xvmpCurl(self::VERSION);
-        $xvmpCurl->setTimeoutMS(10000);
+        $xvmpCurl->setTimeoutMS($timeout);
         $xvmpCurl->post();
         return $xvmpCurl;
     }

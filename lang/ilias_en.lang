@@ -156,6 +156,7 @@ categories#:#Categories
 user#:#User
 required#:#Required
 form_msg_select#:#Please choose a file to upload.
+form_val_select#:#Please ensure to fill out each required fields.
 form_msg_not_supported#:#File type not supported.
 form_incomplete#:#Some of this forms fields are mandatory and need to be filled out. Please complete these fields.
 msg_incomplete#:#Some of this forms fields are mandatory and need to be filled out. Please complete these fields.
@@ -185,7 +186,7 @@ form_title_change_owner#:#Search User
 search#:#Search
 permission_denied#:#Permission denied.
 enable_learning_progress#:#Learning Progress Active
-enable_learning_progress_info#:#Der Lernfortschritt kann nur aktiviert werden, wenn das Objekt innerhalb eines Kurses liegt und der Lernfortschritt global aktiviert ist.
+enable_learning_progress_info#:#The learning progress can only be activated, if the learning progress is globally activated.
 added#:#Added
 max_filesize#:#Max. Filesize
 info_not_available#:#Not Available
@@ -224,3 +225,17 @@ copied#:#Copied to clipboard
 conf_ui_settings#:#User Interface
 change_owner#:#Change Owner
 auto_subtitle#:#Automatic subtitle creation<br><br><div class="help-block">Using this functionality results in a transfer of the <br>audio track to the third-party service Amberscript. <br>Please note the corresponding <a href="https://www.amberscript.com/en/privacy-policy/">privacy policy</a>.</div>
+lp_matrix#:#Matrix View
+lp_mode_desc_by_all_answered_questions#:#The object is 'completed' if the users submitted an answer for each question, correct or not. If there is no question defined, the object is 'completed' if the user reaches the end of the video.
+lp_mode_desc_by_questions#:#The object is 'completed' if the users submitted the 'correct' answer for each question. If there is no question defined, the object is 'completed' if the user reaches the end of the video.
+lp_mode_title_by_all_answered_questions#:#Questions Answered
+lp_mode_title_by_questions#:#Questions Correctly Answered
+lp_settings#:#Settings
+lp_summary#:#Summary
+lp_users#:#Users
+lp_mode_title_by_videos#:#Videos which must be viewed
+lp_mode_desc_by_videos#:#Please ensure to configure the videos, which are needed for the learning progress under the tab 'Selected Videos'.
+trac_learning_progress_tbl_header#:#Learning Progress of:
+conf_curl_timeout#:#CURL Timeout
+conf_curl_timeout_info#:#Timeout in seconds for CURL requests
+info#:#Info
