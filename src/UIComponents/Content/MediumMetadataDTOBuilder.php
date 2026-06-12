@@ -97,6 +97,25 @@ class MediumMetadataDTOBuilder
                 $this->plugin->txt('watched')
             );
         }
+        if(xvmpConf::getConfig(xvmpConf::F_VIEWS)) {
+            $medium_infos[] = new MediumAttribute(
+                (string) $medium->getCountViews(),
+                $this->plugin->txt('views')
+            );
+            $medium_infos[] = new MediumAttribute(
+                (string) $medium->getCountViewsAPI(),
+                $this->plugin->txt('views') . ' API'
+            );
+            $medium_infos[] = new MediumAttribute(
+                (string) $medium->getCountViewsEmbed(),
+                $this->plugin->txt('views') . ' Embed'
+            );
+            $medium_infos[] = new MediumAttribute(
+                (string) $medium->getCountViewsPortal(),
+                $this->plugin->txt('views') . ' Portal'
+            );
+        }
+
 
         return $medium_infos;
     }

@@ -195,4 +195,18 @@ class ilObjViMPAccess extends ilObjectPluginAccess
         return (bool) xvmpSettings::find($obj_id)->getIsOnline();
     }
 
+    /**
+     * @param $ref_id
+     * @return bool
+     */
+    public static function hasAccessToStreamingLink($ref_id = NULL) : bool {
+        if ($ref_id === NULL) {
+            $ref_id =  $_GET['ref_id'];
+        }
+        global $DIC;
+
+        return $DIC['ilAccess']->checkAccess('rep_robj_xvmp_perm_readlink', '',(int)$ref_id);
+    }
+
+
 }

@@ -22,6 +22,7 @@ class xvmpConfFormGUI extends xvmpFormGUI
     protected $db;
 
     protected Services $http;
+    protected const PASS_MASK = '********';
 
     /**
      * xvmpConfFormGUI constructor.
@@ -220,9 +221,29 @@ class xvmpConfFormGUI extends xvmpFormGUI
         $input->addOption($radio_option);
         $this->addItem($input);
 
+        // *** UI SETTINGS ***
+        $header = new ilFormSectionHeaderGUI();
+        $header->setTitle($this->pl->confTxt('ui_settings'));
+        $this->addItem($header);
+
         // Embedded Player
         $input = new ilCheckboxInputGUI($this->pl->confTxt(xvmpConf::F_EMBED_PLAYER), xvmpConf::F_EMBED_PLAYER);
         $input->setInfo($this->pl->confTxt(xvmpConf::F_EMBED_PLAYER . '_info'));
+        $this->addItem($input);
+
+        // Download Button
+        $input = new ilCheckboxInputGUI($this->pl->confTxt(xvmpConf::F_DOWNLOAD_BUTTON), xvmpConf::F_DOWNLOAD_BUTTON);
+        $input->setInfo($this->pl->confTxt(xvmpConf::F_DOWNLOAD_BUTTON . '_info'));
+        $this->addItem($input);
+
+        // Streaming Button
+        $input = new ilCheckboxInputGUI($this->pl->confTxt(xvmpConf::F_STREAMING_BUTTON), xvmpConf::F_STREAMING_BUTTON);
+        $input->setInfo($this->pl->confTxt(xvmpConf::F_STREAMING_BUTTON . '_info'));
+        $this->addItem($input);
+
+        // Views
+        $input = new ilCheckboxInputGUI($this->pl->confTxt(xvmpConf::F_VIEWS), xvmpConf::F_VIEWS);
+        $input->setInfo($this->pl->confTxt(xvmpConf::F_VIEWS . '_info'));
         $this->addItem($input);
 
         // *** NOTIFICATION ***
@@ -330,18 +351,20 @@ class xvmpConfFormGUI extends xvmpFormGUI
     private function getValuesForItem($item, &$array) : void
     {
         if (self::checkItem($item)) {
+            $value = null;
             $key = rtrim($item->getPostVar(), '[]');
             if ($key == xvmpConf::F_OBJECT_TITLE) {
                 $sql = $this->db->query('select value from lng_data where module = "rep_robj_xvmp" and identifier = "rep_robj_xvmp_obj_xvmp"');
-                $val = $this->db->fetchObject($sql);
-                if($val !== null) {
-                    $value = $val->value;
-                } else {
-                    $value = '';
+                if($this->db->fetchObject($sql) !== null) {
+                    $value = $this->db->fetchObject($sql)->value;
                 }
-
             } else {
                 $value = xvmpConf::getConfig($key);
+            }
+            if($key === xvmpConf::F_API_PASSWORD && $value !== '' && $value !== null) {
+                $value = self::PASS_MASK;
+            } else if($key === xvmpConf::F_API_KEY && $value !== '' && $value !== null) {
+                $value = self::PASS_MASK;
             }
             $array[$key] = $value;
             if (self::checkForSubItem($item)) {
@@ -390,7 +413,15 @@ class xvmpConfFormGUI extends xvmpFormGUI
             return false;
         }
         foreach ($this->getItems() as $item) {
-            $this->saveValueForItem($item);
+            if($item->getPostVar() === xvmpConf::F_API_PASSWORD || $item->getPostVar() === xvmpConf::F_API_KEY) {
+                $value = $this->getInput($item->getPostVar());
+                if($value !== '' && $value !== self::PASS_MASK) {
+                    xvmpConf::set($item->getPostVar(), $value);
+                    $this->saveValueForItem($item);
+                }
+            } else {
+                $this->saveValueForItem($item);
+            }
         }
         xvmpConf::set(xvmpConf::F_CONFIG_VERSION, xvmpConf::CONFIG_VERSION);
 
@@ -411,26 +442,29 @@ class xvmpConfFormGUI extends xvmpFormGUI
                 // obj
                 $sql = $this->db->query('select value from lng_data where module = "rep_robj_xvmp" and identifier = "rep_robj_xvmp_obj_xvmp"');
                 $existing = $this->db->fetchObject($sql);
-
+                $date_local_change = date('Y-m-d H:i:s');
                 if ($existing) {
                     $this->db->update('lng_data', array(
-                        'value' => array('text', $value)
+                        'value' => array('text', $value),
+                        'local_change' => array('text',  $date_local_change)
                     ), array(
                         'module' => array('text', 'rep_robj_xvmp'),
-                        'identifier' => array('text', 'rep_robj_xvmp_obj_xvmp'),
+                        'identifier' => array('text', 'rep_robj_xvmp_obj_xvmp')
                     ));
                 } else {
                     $this->db->insert('lng_data', array(
                         'lang_key' => array('text', 'de'),
                         'module' => array('text', 'rep_robj_xvmp'),
                         'identifier' => array('text', 'rep_robj_xvmp_obj_xvmp'),
-                        'value' => array('text', $value)
+                        'value' => array('text', $value),
+                        'local_change' => array('text',  $date_local_change)
                     ));
                     $this->db->insert('lng_data', array(
                         'lang_key' => array('text', 'en'),
                         'module' => array('text', 'rep_robj_xvmp'),
                         'identifier' => array('text', 'rep_robj_xvmp_obj_xvmp'),
-                        'value' => array('text', $value)
+                        'value' => array('text', $value),
+                        'local_change' => array('text',  $date_local_change)
                     ));
                 }
 
@@ -440,23 +474,26 @@ class xvmpConfFormGUI extends xvmpFormGUI
 
                 if ($existing) {
                     $this->db->update('lng_data', array(
-                        'value' => array('text', $value)
+                        'value' => array('text', $value),
+                        'local_change' => array('text',  $date_local_change)
                     ), array(
                         'module' => array('text', 'rep_robj_xvmp'),
-                        'identifier' => array('text', 'rep_robj_xvmp_objs_xvmp'),
+                        'identifier' => array('text', 'rep_robj_xvmp_objs_xvmp')
                     ));
                 } else {
                     $this->db->insert('lng_data', array(
                         'lang_key' => array('text', 'de'),
                         'module' => array('text', 'rep_robj_xvmp'),
                         'identifier' => array('text', 'rep_robj_xvmp_objs_xvmp'),
-                        'value' => array('text', $value)
+                        'value' => array('text', $value),
+                        'local_change' => array('text',  $date_local_change)
                     ));
                     $this->db->insert('lng_data', array(
                         'lang_key' => array('text', 'en'),
                         'module' => array('text', 'rep_robj_xvmp'),
                         'identifier' => array('text', 'rep_robj_xvmp_objs_xvmp'),
-                        'value' => array('text', $value)
+                        'value' => array('text', $value),
+                        'local_change' => array('text',  $date_local_change)
                     ));
                 }
                 return;
