@@ -48,7 +48,7 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
                     }
                 break;
             case self::CMD_FILL_MODAL:
-                $mid = max($_GET['mid'], $_POST['mid']);
+                $mid = $this->getMidFromPostOrGet();
                 $medium = xvmpMedium::find($mid);
                 ilObjViMPAccess::checkAction(ilObjViMPAccess::ACTION_PLAY_VIDEO, $this, $medium);
                 break;
