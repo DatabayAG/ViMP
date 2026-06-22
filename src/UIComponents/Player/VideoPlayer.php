@@ -100,7 +100,7 @@ class VideoPlayer
         }
         $tpl->addCss($ilViMPPlugin->getAssetURL('default/video.css'));
 
-        $tpl->addJavaScript($ilViMPPlugin->getExternAssetURL('/node_modules/bootstrap/dist/css/bootstrap.css'));
+        $tpl->addCss($ilViMPPlugin->getExternAssetURL('/node_modules/bootstrap/dist/css/bootstrap.css'));
         $tpl->addJavaScript($ilViMPPlugin->getExternAssetURL('/node_modules/bootstrap/dist/js/bootstrap.js'));
         $tpl->addJavaScript($ilViMPPlugin->getExternAssetURL('/node_modules/video.js/dist/video.min.js'));
         $tpl->addCss($ilViMPPlugin->getExternAssetURL( '/node_modules/video.js/dist/video-js.min.css'));
@@ -154,8 +154,18 @@ class VideoPlayer
         $id = md5(((string) ($random->int(1, 9999999) + str_replace(" ", "", (string) microtime()))));
 
         if (xvmp::ViMPVersionGreaterEquals('4.0.5')) {
-            $pathinfo['extension'] = $abr_conf ? 'application/x-mpegURL' : 'video/' . pathinfo($medium)['extension'];
             $medium = urldecode($medium);
+            // Only treat the source as an HLS/ABR stream if the URL actually points
+            // to a manifest (.m3u8/.smil). Otherwise (e.g. a progressive .mp4) the
+            // type must match the file, or video.js fails with MEDIA_ERR_SRC_NOT_SUPPORTED.
+            $url_extension = strtolower((string) pathinfo(parse_url($medium, PHP_URL_PATH) ?? $medium, PATHINFO_EXTENSION));
+            $is_manifest = in_array($url_extension, ['m3u8', 'smil'], true);
+            if ($abr_conf && $is_manifest) {
+                   $pathinfo['extension'] = 'application/x-mpegURL';
+               } else {
+              $isABRStream = false;
+              $pathinfo['extension'] = 'video/' . ($url_extension !== '' ? $url_extension : 'mp4');
+            }
         } else {
             $pathinfo['extension'] = 'video/' . pathinfo($medium)['extension'];
 
