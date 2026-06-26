@@ -11,7 +11,7 @@ declare(strict_types=1);
 class xvmpRequest
 {
     public const TYPE_VIDEO = '0';
-    public const DEFAULT_TIMEOUT_MS = 10000;
+    public const DEFAULT_TIMEOUT_MS = 60000;
 
     // API ENDPOINTS
     public const VERSION = 'version';
