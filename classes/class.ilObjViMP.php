@@ -22,6 +22,17 @@ class ilObjViMP extends ilObjectPlugin implements ilLPStatusPluginInterface
         $xvmpSettings = new xvmpSettings();
         $xvmpSettings->setObjId($this->getId());
         $xvmpSettings->create();
+
+        $this->learning_progress_mode = (int) $xvmpSettings->getLpMode();
+        $this->syncCoreLearningProgressMode($this->learning_progress_mode);
+    }
+
+    protected function doRead() : void
+    {
+        $settings = xvmpSettings::find($this->getId());
+        if ($settings instanceof xvmpSettings) {
+            $this->learning_progress_mode = (int) $settings->getLpMode();
+        }
     }
 
     protected function doUpdate(bool $clone_mode = false) : void
@@ -36,8 +47,31 @@ class ilObjViMP extends ilObjectPlugin implements ilLPStatusPluginInterface
             $settings = xvmpSettings::find($this->getId());
             $settings->setLpMode((int) $lp_mode);
             $settings->update();
+
+            $this->learning_progress_mode = (int) $lp_mode;
+            $this->syncCoreLearningProgressMode((int) $lp_mode);
         }
 
+    }
+
+    /**
+     * Keep the ILIAS core learning progress setting (ut_lp_settings) in sync with the
+     * plugin's own LP mode. The repository list icon is driven by the core LP mode via
+     * ilLPStatus::checkLPModesForObjects(), so without an explicit core entry a plugin
+     * object is always treated as LP-active (ilPluginLP::getCurrentMode() returns
+     * LP_MODE_PLUGIN). Writing LP_MODE_DEACTIVATED hides the icon when LP is off.
+     */
+    private function syncCoreLearningProgressMode(int $plugin_lp_mode) : void
+    {
+        $core_mode = ($plugin_lp_mode === self::LP_MODE_DEACTIVATED)
+            ? ilLPObjSettings::LP_MODE_DEACTIVATED
+            : ilLPObjSettings::LP_MODE_PLUGIN;
+
+        $lp_settings = new ilLPObjSettings($this->getId());
+        if ($lp_settings->getMode() !== $core_mode) {
+            $lp_settings->setMode($core_mode);
+            $lp_settings->update();
+        }
     }
 
     protected function doDelete() : void

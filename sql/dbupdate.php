@@ -129,7 +129,7 @@ if (!empty(xvmpConf::getConfig(xvmpConf::F_FORM_FIELDS))) {
 ?>
 <#11>
 <?php
-require_once("components/ILIAS/Migration/DBUpdate_3560/classes/class.ilDBUpdateNewObjectType.php");
+require_once("../components/ILIAS/Migration/DBUpdate_3560/classes/class.ilDBUpdateNewObjectType.php");
 $xvmp_type_id = ilDBUpdateNewObjectType::addNewType('xvmp', 'Plugin ViMP');
 
 //Adding a new Permission rep_robj_xvmp_readlink ("Read link")
@@ -150,5 +150,41 @@ if(!$ilDB->tableColumnExists('xvmp_setting', 'lp_mode'))
             'length'  => '3',
             'notnull' => true,
             'default' => 0));
+}
+?>
+<#13>
+<?php
+// Backfill the ILIAS core learning progress mode (ut_lp_settings) for existing ViMP
+// objects so that deactivated LP no longer shows in the repository list. The list icon
+// is decided by the core LP mode; without an entry a plugin object is treated as active.
+global $DIC;
+$ilDB = $DIC->database();
+
+$set = $ilDB->query(
+    'SELECT s.obj_id, s.lp_mode FROM xvmp_setting s' .
+    ' INNER JOIN object_data od ON od.obj_id = s.obj_id AND od.type = ' . $ilDB->quote('xvmp', 'text')
+);
+while ($row = $ilDB->fetchAssoc($set)) {
+    $obj_id = (int) $row['obj_id'];
+    $core_mode = ((int) $row['lp_mode'] === ilLPObjSettings::LP_MODE_DEACTIVATED)
+        ? ilLPObjSettings::LP_MODE_DEACTIVATED
+        : ilLPObjSettings::LP_MODE_PLUGIN;
+
+    $existing = $ilDB->query(
+        'SELECT obj_id FROM ut_lp_settings WHERE obj_id = ' . $ilDB->quote($obj_id, 'integer')
+    );
+    if ($ilDB->numRows($existing)) {
+        $ilDB->manipulate(
+            'UPDATE ut_lp_settings SET u_mode = ' . $ilDB->quote($core_mode, 'integer') .
+            ' WHERE obj_id = ' . $ilDB->quote($obj_id, 'integer')
+        );
+    } else {
+        $ilDB->insert('ut_lp_settings', array(
+            'obj_id'   => array('integer', $obj_id),
+            'obj_type' => array('text', 'xvmp'),
+            'u_mode'   => array('integer', $core_mode),
+            'visits'   => array('integer', 0),
+        ));
+    }
 }
 ?>
