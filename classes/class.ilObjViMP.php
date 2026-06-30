@@ -55,11 +55,8 @@ class ilObjViMP extends ilObjectPlugin implements ilLPStatusPluginInterface
     }
 
     /**
-     * Keep the ILIAS core learning progress setting (ut_lp_settings) in sync with the
-     * plugin's own LP mode. The repository list icon is driven by the core LP mode via
-     * ilLPStatus::checkLPModesForObjects(), so without an explicit core entry a plugin
-     * object is always treated as LP-active (ilPluginLP::getCurrentMode() returns
-     * LP_MODE_PLUGIN). Writing LP_MODE_DEACTIVATED hides the icon when LP is off.
+     * Keep the ILIAS core learning progress setting in sync with the
+     * plugin's own LP mode.
      */
     private function syncCoreLearningProgressMode(int $plugin_lp_mode) : void
     {
