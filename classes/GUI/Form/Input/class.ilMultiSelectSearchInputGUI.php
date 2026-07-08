@@ -88,6 +88,12 @@ class ilMultiSelectSearchInputGUI extends ilMultiSelectInputGUI
         $tpl->setVariable("MINIMUM_INPUT_LENGTH", $this->getMinimumInputLength());
         $tpl->setVariable("Class", $this->getCssClass());
 
+        if ($this->getRequired()) {
+            $tpl->setVariable("REQUIRED", "true");
+        } else {
+            $tpl->setVariable("REQUIRED", "false");
+        }
+
         if (isset($this->ajax_link)) {
             $tpl->setVariable("AJAX_LINK", $this->getAjaxLink());
         }
