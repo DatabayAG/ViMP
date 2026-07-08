@@ -25,20 +25,21 @@ var xoctFileuploader = {
             multi_selection: false,
             flash_swf_url: '../js/Moxie.swf',
             silverlight_xap_url: '../js/Moxie.xap',
-            preinit: {
-                Init: function (up, info) {
-                  var self = this;
-                  if(self.checkPreRequirements() === true) {
-                  } else {
-                    alert(xoctFileuploaderSettings.lng.form_val_select);
-                  }
+        preinit: {
+            Init: function (up, info) {
+                var self = this;
 
-                    info.runtime == 'html5' ? xoctWaiter.init('percentage') : xoctWaiter.init();
-                    $(document).ready(function () {
+                info.runtime == 'html5' ? xoctWaiter.init('percentage') : xoctWaiter.init();
+                $(document).ready(function () {
 
-                        $('#form_' + xoctFileuploaderSettings.form_id + ' input[name="cmd[create]"], ' +
-                          '#form_' + xoctFileuploaderSettings.form_id + ' input[name="cmd[updateVideo]"]').click(function (e) {
-                          self.cmd = $(this).attr('name');
+                    $('#form_' + xoctFileuploaderSettings.form_id + ' input[name="cmd[create]"], ' +
+                      '#form_' + xoctFileuploaderSettings.form_id + ' input[name="cmd[updateVideo]"]').click(function (e) {
+                        if (xoctFileuploader.checkPreRequirements() !== true) {
+                            e.preventDefault();
+                            alert(xoctFileuploaderSettings.lng.form_val_select);
+                            return false;
+                        }
+                        self.cmd = $(this).attr('name');
                           if (self.has_files) {
                             e.preventDefault();
                             xoctWaiter.show();
@@ -56,17 +57,6 @@ var xoctFileuploader = {
 
                     });
                 },
-            },
-            checkPreRequirements: function () {
-              let requirement = true;
-              let title_input = $("#title");
-              let sr_id_input_selector = $("#s2id_autogen1");
-              if (sr_id_input_selector.length === 0) {
-                requirement = false;
-              } else if(title_input.val().length === 0) {
-                requirement = false;
-              }
-              return requirement;
             },
             init: {
                 /**
@@ -152,6 +142,18 @@ var xoctFileuploader = {
         });
 
         xoctFileuploaderJS.init();
+    },
+    checkPreRequirements: function () {
+        let requirement = true;
+        let title_input = $("#title");
+        let categories_input = $("[name='categories[]']");
+
+        if (categories_input.length > 0 && categories_input.val() === null) {
+            requirement = false;
+        } else if (title_input.val().length === 0) {
+            requirement = false;
+        }
+        return requirement;
     }
 };
 

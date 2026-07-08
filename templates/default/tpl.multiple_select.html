@@ -24,14 +24,18 @@
             }
         }
     sr_id_input_selector.select2(settings);
+    var choices = sr_id_input_selector.next('.select2-container').find(".select2-choices");
 
     function triggerCategoryInputCheck(selectedValues) {
-      if(selectedValues.length === 0){
-        document.querySelector(".select2-choices").style.borderColor = "red";
-        document.querySelector(".select2-choices").style.backgroundColor = '#ffebeb';
+      if (choices.length === 0 || "{REQUIRED}" !== "true") {
+        return;
+      }
+      if(!selectedValues || selectedValues.length === 0){
+        choices.css("border-color", "red");
+        choices.css("background-color", '#ffebeb');
       } else {
-        document.querySelector(".select2-choices").style.borderColor = "black";
-        document.querySelector(".select2-choices").style.backgroundColor = "#fff";
+        choices.css("border-color", "black");
+        choices.css("background-color", "#fff");
       }
     }
 
@@ -44,7 +48,7 @@
     });
 </script>
 
-<select style="width:{WIDTH}; display:none;" class="chosen {CSS_CLASS}" data-placeholder="{PLACEHOLDER}" class="sr_multi_select_input" id="{ID}" name="{POST_VAR}" {ALL_DISABLED} multiple>
+<select style="width:{WIDTH}; display:none;" class="chosen {CSS_CLASS} sr_multi_select_input" data-placeholder="{PLACEHOLDER}" id="{ID}" name="{POST_VAR}" {ALL_DISABLED} multiple>
     <!-- BEGIN item -->
     <option value="{VAL}" {SELECTED} {DISABLED}>{TEXT}</option>
     <!-- END item -->
