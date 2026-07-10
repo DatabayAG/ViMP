@@ -41,6 +41,7 @@ class xvmpFileUploadInputGUI extends ilSubEnabledFormPropertyGUI
             99)));
         $this->setFormId($ilPropertyFormGUI->getId());
         $this->setCmd($cmd);
+        $this->setParentForm($ilPropertyFormGUI);
         $tpl->addJavaScript($this->pl->getAssetURL('js/plupload-2.1.8/js/plupload.full.min.js'));
 
         parent::__construct($a_title, $a_postvar);
@@ -86,7 +87,7 @@ class xvmpFileUploadInputGUI extends ilSubEnabledFormPropertyGUI
     {
         global $DIC;
         $tpl = $DIC['tpl'];
-        $tpl->addJavaScript($this->pl->getAssetURL('default/form/uploader.min.js'));
+        $tpl->addJavaScript($this->pl->getAssetURL('default/form/uploader.js'));
         $settings = new stdClass();
         $settings->lng = new stdClass();
         $settings->lng->msg_select = $this->pl->txt('form_msg_select');
@@ -106,7 +107,18 @@ class xvmpFileUploadInputGUI extends ilSubEnabledFormPropertyGUI
         $settings->mime_types_array = $this->getMimeTypes();
         $settings->required = $this->getRequired();
 
-        $tpl->addOnLoadCode('xoctFileuploaderSettings.initFromJSON(\'' . json_encode($settings) . '\');');
+        $required_fields = [];
+        $parent_form = $this->getParentForm();
+        if ($parent_form instanceof ilPropertyFormGUI) {
+            foreach ($parent_form->getItems() as $item) {
+                if ($item instanceof ilFormPropertyGUI && $item->getRequired() && $item->getPostVar() !== $this->getPostVar()) {
+                    $required_fields[] = $item->getPostVar();
+                }
+            }
+        }
+        $settings->required_fields = $required_fields;
+
+        $tpl->addOnLoadCode('xoctFileuploaderSettings.initFromJSON(\'' . json_encode($settings, JSON_HEX_APOS | JSON_HEX_QUOT) . '\');');
     }
 
     /**
