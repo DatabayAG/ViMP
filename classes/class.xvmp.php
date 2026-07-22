@@ -82,19 +82,19 @@ class xvmp
      */
     public static function getParentCourseRefId($ref_id) : bool|int
     {
+        if (empty($ref_id)) {
+            return false;
+        }
         global $DIC;
         $tree = $DIC['tree'];
         /**
          * @var $tree ilTree
          */
-        while (ilObject2::_lookupType($ref_id, true) !== 'crs') {
-            if ($ref_id === 1) {
-                return false;
-            }
+        while ($ref_id > 1 && ilObject2::_lookupType($ref_id, true) !== 'crs') {
             $ref_id = $tree->getParentId($ref_id);
         }
 
-        return $ref_id;
+        return ($ref_id > 1) ? $ref_id : false;
     }
 
     /**
@@ -140,7 +140,7 @@ class xvmp
     {
         $members = array();
         $ref_id = self::getParentCourseRefId($is_ref_id ? $id : self::lookupRefId($id));
-        if ($ref_id) {
+        if ($ref_id && ilObject2::_exists($ref_id, true)) {
             global $DIC;
             $rbacreview = $DIC['rbacreview'];
             $crs = new ilObjCourse($ref_id);
