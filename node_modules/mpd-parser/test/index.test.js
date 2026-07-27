@@ -21,6 +21,7 @@ import audioOnly from './manifests/audio-only.mpd';
 import multiperiodStartnumber from './manifests/multiperiod-startnumber.mpd';
 import multiperiodStartnumberRemovedPeriods from
   './manifests/multiperiod-startnumber-removed-periods.mpd';
+import qualityRanking from './manifests/quality-ranking.mpd';
 import {
   parsedManifest as maatVttSegmentTemplateManifest
 } from './manifests/maat_vtt_segmentTemplate.js';
@@ -71,6 +72,9 @@ import {
 import {
   parsedManifest as multiperiodStartnumberRemovedPeriodsManifest
 } from './manifests/multiperiod-startnumber-removed-periods.js';
+import {
+  parsedManifest as qualityRankingManifest
+} from './manifests/quality-ranking.js';
 
 QUnit.module('mpd-parser');
 
@@ -142,6 +146,10 @@ QUnit.test('has parse', function(assert) {
   name: 'multiperiod_startnumber',
   input: multiperiodStartnumber,
   expected: multiperiodStartnumberManifest
+}, {
+  name: 'quality-ranking',
+  input: qualityRanking,
+  expected: qualityRankingManifest
 }].forEach(({ name, input, expected }) => {
   QUnit.test(`${name} test manifest`, function(assert) {
     const actual = parse(input);

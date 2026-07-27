@@ -31,7 +31,6 @@ class ComposerStaticInit64f7216efcdcf8ddae98e6499b2ca798
     );
 
     public static $classMap = array (
-        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Detection\\MobileDetect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced/Detection/MobileDetect.php',
         'Mobile_Detect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/Mobile_Detect.php',
         'ilMultiSelectSearchInputGUI' => __DIR__ . '/../..' . '/classes/GUI/Form/Input/class.ilMultiSelectSearchInputGUI.php',
@@ -42,6 +41,9 @@ class ComposerStaticInit64f7216efcdcf8ddae98e6499b2ca798
         'ilViMPConfigGUI' => __DIR__ . '/../..' . '/classes/class.ilViMPConfigGUI.php',
         'ilViMPPlugin' => __DIR__ . '/../..' . '/classes/class.ilViMPPlugin.php',
         'srGenericMultiInputGUI' => __DIR__ . '/../..' . '/classes/GUI/Form/Input/class.srGenericMultiInputGUI.php',
+        'srag\\Plugins\\ViMP\\Content\\MediumMetadataDTO' => __DIR__ . '/../..' . '/src/UIComponents/Content/MediumMetadataDTO.php',
+        'srag\\Plugins\\ViMP\\Content\\MediumMetadataDTOBuilder' => __DIR__ . '/../..' . '/src/UIComponents/Content/MediumMetadataDTOBuilder.php',
+        'srag\\Plugins\\ViMP\\Content\\MediumMetadataParser' => __DIR__ . '/../..' . '/src/UIComponents/Content/MediumMetadataParser.php',
         'srag\\Plugins\\ViMP\\Cron\\ViMPJob' => __DIR__ . '/../..' . '/src/Cron/ViMPJob.php',
         'srag\\Plugins\\ViMP\\UIComponents\\PlayerModal\\MediumAttribute' => __DIR__ . '/../..' . '/src/UIComponents/PlayerModal/MediumAttribute.php',
         'srag\\Plugins\\ViMP\\UIComponents\\PlayerModal\\PlayerContainerDTO' => __DIR__ . '/../..' . '/src/UIComponents/PlayerModal/PlayerContainerDTO.php',
@@ -83,7 +85,9 @@ class ComposerStaticInit64f7216efcdcf8ddae98e6499b2ca798
         'xvmpFormGUI' => __DIR__ . '/../..' . '/classes/GUI/Form/class.xvmpFormGUI.php',
         'xvmpGUI' => __DIR__ . '/../..' . '/classes/GUI/Abstract/class.xvmpGUI.php',
         'xvmpLearningProgressGUI' => __DIR__ . '/../..' . '/classes/GUI/class.xvmpLearningProgressGUI.php',
+        'xvmpLearningProgressSummaryTableGUI' => __DIR__ . '/../..' . '/classes/GUI/Table/class.xvmpLearningProgressSummaryTableGUI.php',
         'xvmpLearningProgressTableGUI' => __DIR__ . '/../..' . '/classes/GUI/Table/class.xvmpLearningProgressTableGUI.php',
+        'xvmpLearningProgressUserTableGUI' => __DIR__ . '/../..' . '/classes/GUI/Table/class.xvmpLearningProgressUserTableGUI.php',
         'xvmpLog' => __DIR__ . '/../..' . '/classes/Util/class.xvmpLog.php',
         'xvmpMedium' => __DIR__ . '/../..' . '/classes/Model/API/class.xvmpMedium.php',
         'xvmpObject' => __DIR__ . '/../..' . '/classes/Model/API/class.xvmpObject.php',
