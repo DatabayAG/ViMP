@@ -7,23 +7,23 @@ namespace Composer\Autoload;
 class ComposerStaticInit64f7216efcdcf8ddae98e6499b2ca798
 {
     public static $prefixLengthsPsr4 = array (
-        's' => 
+        's' =>
         array (
             'srag\\Plugins\\ViMP\\' => 18,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'srag\\Plugins\\ViMP\\' => 
+        'srag\\Plugins\\ViMP\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
     );
 
     public static $prefixesPsr0 = array (
-        'D' => 
+        'D' =>
         array (
-            'Detection' => 
+            'Detection' =>
             array (
                 0 => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced',
             ),
@@ -31,6 +31,7 @@ class ComposerStaticInit64f7216efcdcf8ddae98e6499b2ca798
     );
 
     public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Detection\\MobileDetect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced/Detection/MobileDetect.php',
         'Mobile_Detect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/Mobile_Detect.php',
         'ilMultiSelectSearchInputGUI' => __DIR__ . '/../..' . '/classes/GUI/Form/Input/class.ilMultiSelectSearchInputGUI.php',
@@ -41,9 +42,6 @@ class ComposerStaticInit64f7216efcdcf8ddae98e6499b2ca798
         'ilViMPConfigGUI' => __DIR__ . '/../..' . '/classes/class.ilViMPConfigGUI.php',
         'ilViMPPlugin' => __DIR__ . '/../..' . '/classes/class.ilViMPPlugin.php',
         'srGenericMultiInputGUI' => __DIR__ . '/../..' . '/classes/GUI/Form/Input/class.srGenericMultiInputGUI.php',
-        'srag\\Plugins\\ViMP\\Content\\MediumMetadataDTO' => __DIR__ . '/../..' . '/src/UIComponents/Content/MediumMetadataDTO.php',
-        'srag\\Plugins\\ViMP\\Content\\MediumMetadataDTOBuilder' => __DIR__ . '/../..' . '/src/UIComponents/Content/MediumMetadataDTOBuilder.php',
-        'srag\\Plugins\\ViMP\\Content\\MediumMetadataParser' => __DIR__ . '/../..' . '/src/UIComponents/Content/MediumMetadataParser.php',
         'srag\\Plugins\\ViMP\\Cron\\ViMPJob' => __DIR__ . '/../..' . '/src/Cron/ViMPJob.php',
         'srag\\Plugins\\ViMP\\UIComponents\\PlayerModal\\MediumAttribute' => __DIR__ . '/../..' . '/src/UIComponents/PlayerModal/MediumAttribute.php',
         'srag\\Plugins\\ViMP\\UIComponents\\PlayerModal\\PlayerContainerDTO' => __DIR__ . '/../..' . '/src/UIComponents/PlayerModal/PlayerContainerDTO.php',

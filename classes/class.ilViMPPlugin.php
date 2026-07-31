@@ -113,6 +113,25 @@ class ilViMPPlugin extends ilRepositoryObjectPlugin implements ilCronJobProvider
     }
 
     /**
+     * Web-relative plugin path under the ILIAS public document root.
+     * Must not split on the string "public" — installs under …/public_html/… break that.
+     */
+    public function getRelativeDirectory(): string
+    {
+        $absolute_path = realpath($this->getPluginInfo()->getPath());
+        if ($absolute_path === false) {
+            return './Customizing/global/plugins/Services/Repository/RepositoryObject/' . $this->getPluginName();
+        }
+
+        $pos = strpos($absolute_path, '/Customizing/');
+        if ($pos !== false) {
+            return '.' . substr($absolute_path, $pos);
+        }
+
+        return './Customizing/global/plugins/Services/Repository/RepositoryObject/' . $this->getPluginName();
+    }
+
+    /**
      * @param string $relative_path path after [PLUGIN_PATH]/templates/
      * @param bool   $versioned
      * @return string
@@ -120,24 +139,15 @@ class ilViMPPlugin extends ilRepositoryObjectPlugin implements ilCronJobProvider
     public function getAssetURL(string $relative_path, bool $versioned = true) : string
     {
         $version_suffix = $versioned ? '?version=' . str_replace('.', '-', $this->getVersion()) : '';
-        $url =  $this->getDirectory() . '/templates/' . ltrim($relative_path, '/') . $version_suffix;
-        return $this->buildHttpUrl($url);
+
+        return $this->getRelativeDirectory() . '/templates/' . ltrim($relative_path, '/') . $version_suffix;
     }
 
     public function getExternAssetURL(string $relative_path, bool $versioned = true) : string
     {
         $version_suffix = $versioned ? '?version=' . str_replace('.', '-', $this->getVersion()) : '';
-        $url =  $this->getDirectory() . '/' . ltrim($relative_path, '/') . $version_suffix;
-        return $this->buildHttpUrl($url);
-    }
 
-    protected function buildHttpUrl(string $path): string {
-        $cleaned_url = explode("public", $path);
-        if(isset($cleaned_url[1])) {
-            $cleaned_url = $cleaned_url[1];
-        }
-        $http_path = ilUtil::_getHttpPath();
-        return $http_path . $cleaned_url;
+        return $this->getRelativeDirectory() . '/' . ltrim($relative_path, '/') . $version_suffix;
     }
     /**
      * @param $lang_var

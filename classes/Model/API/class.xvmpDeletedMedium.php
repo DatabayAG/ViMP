@@ -49,7 +49,7 @@ class xvmpDeletedMedium extends xvmpMedium
      */
     public function getThumbnail(int $width = 0, int $height = 0) : string
     {
-        return ilViMPPlugin::getInstance()->getDirectory() . '/templates/images/not_available.png';
+        return ilViMPPlugin::getInstance()->getAssetURL('images/not_available.png', false);
     }
 
     /**
