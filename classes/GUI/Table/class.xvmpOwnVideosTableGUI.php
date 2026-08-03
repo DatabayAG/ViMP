@@ -152,7 +152,7 @@ class xvmpOwnVideosTableGUI extends xvmpTableGUI
                 'txt' => $this->pl->txt('categories')
             )
         );
-        foreach (xvmpConf::getConfig(xvmpConf::F_FILTER_FIELDS) as $filter_field) {
+        foreach (xvmpConf::getConfig(xvmpConf::F_FILTER_FIELDS) ?? [] as $filter_field) {
             $selectable_columns[$filter_field[xvmpConf::F_FILTER_FIELD_ID]] = array(
                 'sort_field' => $filter_field[xvmpConf::F_FILTER_FIELD_ID],
                 'txt' => $filter_field[xvmpConf::F_FILTER_FIELD_TITLE]
@@ -207,7 +207,7 @@ class xvmpOwnVideosTableGUI extends xvmpTableGUI
         $this->addAndReadFilterItem($filter_item);
 
         // custom filters
-        foreach (xvmpConf::getConfig(xvmpConf::F_FILTER_FIELDS) as $field) {
+        foreach (xvmpConf::getConfig(xvmpConf::F_FILTER_FIELDS) ?? [] as $field) {
             if (!$field[xvmpConf::F_FILTER_FIELD_ID]) {
                 continue;
             }
@@ -320,7 +320,7 @@ class xvmpOwnVideosTableGUI extends xvmpTableGUI
             });
         }
 
-        foreach (xvmpConf::getConfig(xvmpConf::F_FILTER_FIELDS) as $custom_filter_field) {
+        foreach (xvmpConf::getConfig(xvmpConf::F_FILTER_FIELDS) ?? [] as $custom_filter_field) {
             $field_id = $custom_filter_field[xvmpConf::F_FILTER_FIELD_ID];
             if ($post_filter[$field_id]) {
                 $data = array_filter($data, function ($video) use ($post_filter, $field_id) {

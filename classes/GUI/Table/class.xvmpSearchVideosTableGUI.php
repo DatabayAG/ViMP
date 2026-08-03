@@ -128,7 +128,7 @@ class xvmpSearchVideosTableGUI extends xvmpTableGUI
                 'txt' => $this->pl->txt('categories')
             )
         );
-        foreach (xvmpConf::getConfig(xvmpConf::F_FILTER_FIELDS) as $filter_field) {
+        foreach (xvmpConf::getConfig(xvmpConf::F_FILTER_FIELDS) ?? [] as $filter_field) {
             $selectable_columns[$filter_field[xvmpConf::F_FILTER_FIELD_ID]] = array(
                 'sort_field' => $filter_field[xvmpConf::F_FILTER_FIELD_ID],
                 'txt' => $filter_field[xvmpConf::F_FILTER_FIELD_TITLE]
@@ -260,7 +260,7 @@ class xvmpSearchVideosTableGUI extends xvmpTableGUI
         $this->addAndReadFilterItem($filter_item);
 
         // custom filters
-        foreach (xvmpConf::getConfig(xvmpConf::F_FILTER_FIELDS) as $field) {
+        foreach (xvmpConf::getConfig(xvmpConf::F_FILTER_FIELDS) ?? [] as $field) {
             if (!$field[xvmpConf::F_FILTER_FIELD_ID]) {
                 continue;
             }
