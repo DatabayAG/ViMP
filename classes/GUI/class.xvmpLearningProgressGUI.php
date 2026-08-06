@@ -64,6 +64,11 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
      */
     public function executeCommand(): void
     {
+        if (!$this->gui->canAccessLearningProgress()) {
+            $this->tpl->setOnScreenMessage('failure', $this->plugin->txt('access_denied'), true);
+            $this->ctrl->redirect($this->gui, $this->gui->getStandardCmd());
+        }
+
         $cmd = $this->ctrl->getCmd();
 
         $this->$cmd();

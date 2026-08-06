@@ -177,6 +177,14 @@ class ilObjViMPGUI extends ilObjectPluginGUI
                     $this->tpl->printToStdout();
                     break;
                 case 'xvmplearningprogressgui':
+                    if (!$this->canAccessLearningProgress()) {
+                        $this->dic->ui()->mainTemplate()->setOnScreenMessage(
+                            'failure',
+                            $this->pl->txt('access_denied'),
+                            true
+                        );
+                        $this->ctrl->redirectByClass(xvmpContentGUI::class, xvmpGUI::CMD_STANDARD);
+                    }
                     if (!$this->ctrl->isAsynch()) {
                         $this->initHeader();
                         $this->setTabs();
@@ -186,6 +194,14 @@ class ilObjViMPGUI extends ilObjectPluginGUI
                     $this->tpl->printToStdout();
                     break;
                 case 'xvmpLearningProgressUserTableGUI':
+                    if (!$this->canAccessLearningProgress()) {
+                        $this->dic->ui()->mainTemplate()->setOnScreenMessage(
+                            'failure',
+                            $this->pl->txt('access_denied'),
+                            true
+                        );
+                        $this->ctrl->redirectByClass(xvmpContentGUI::class, xvmpGUI::CMD_STANDARD);
+                    }
                     if (!$this->ctrl->isAsynch()) {
                         $this->initHeader();
                         $this->setTabs();
@@ -275,7 +291,7 @@ class ilObjViMPGUI extends ilObjectPluginGUI
             }
         }
 
-        if (ilLearningProgressAccess::checkAccess($this->object->getRefId()) && xvmpSettings::find($this->obj_id)->getLPActive()) {
+        if ($this->canAccessLearningProgress()) {
             $this->tabs_gui->addTab(
                 self::TAB_LEARNING_PROGRESS,
                 $this->lng->txt(self::TAB_LEARNING_PROGRESS),
@@ -284,7 +300,6 @@ class ilObjViMPGUI extends ilObjectPluginGUI
                     xvmpGUI::CMD_STANDARD
                 )
             );
-
         }
 
         if (ilObjViMPAccess::hasWriteAccess()) {
@@ -480,6 +495,16 @@ class ilObjViMPGUI extends ilObjectPluginGUI
     public function hasPermission(string $permission): bool
     {
         return $this->checkPermissionBool($permission);
+    }
+
+    public function canAccessLearningProgress(): bool
+    {
+        $can_configure_lp = $this->checkPermissionBool('write')
+            || $this->checkPermissionBool('edit_learning_progress');
+
+        return ilLearningProgressAccess::checkAccess($this->object->getRefId())
+            && xvmpSettings::find($this->obj_id)->getLPActive()
+            && ($this->object->isLearningProgressModeActive() || $can_configure_lp);
     }
 
     /**
