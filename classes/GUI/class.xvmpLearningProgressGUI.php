@@ -88,6 +88,13 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
             $this->ctrl->redirect($this, 'showLPSettings');
         }
 
+        if (
+            $this->gui->hasPermission('write')
+            || $this->gui->hasPermission('read_learning_progress')
+        ) {
+            $this->ctrl->redirect($this, 'showLPUsers');
+        }
+
         $lop_gui = new ilLPListOfProgressGUI(
             3,
             $this->object->getRefId(),
