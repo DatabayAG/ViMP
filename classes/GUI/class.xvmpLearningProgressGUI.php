@@ -64,6 +64,11 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
      */
     public function executeCommand(): void
     {
+        if (!$this->gui->canAccessLearningProgress()) {
+            $this->tpl->setOnScreenMessage('failure', $this->plugin->txt('access_denied'), true);
+            $this->ctrl->redirect($this->gui, $this->gui->getStandardCmd());
+        }
+
         $cmd = $this->ctrl->getCmd();
 
         $this->$cmd();
@@ -79,6 +84,17 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
     }
 
     protected function index() {
+        if (!$this->object->isLearningProgressModeActive()) {
+            $this->ctrl->redirect($this, 'showLPSettings');
+        }
+
+        if (
+            $this->gui->hasPermission('write')
+            || $this->gui->hasPermission('read_learning_progress')
+        ) {
+            $this->ctrl->redirect($this, 'showLPUsers');
+        }
+
         $lop_gui = new ilLPListOfProgressGUI(
             3,
             $this->object->getRefId(),
@@ -102,46 +118,61 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
         $read_users_lp = $this->gui->hasPermission('read_learning_progress');
         $write_settings = $this->gui->hasPermission('write');
         $write_settings_lp = $this->gui->hasPermission('edit_learning_progress');
+        $can_configure_lp = $write_settings || $write_settings_lp;
+        $lp_mode_active = $this->object->isLearningProgressModeActive();
 
-        if ($read_users_lp) {
-            if (! ($write_settings || $write_settings_lp)) {
+        if ($read_users_lp && !$can_configure_lp && $lp_mode_active) {
+            $ilTabs->addSubTab(
+                'info',
+                $this->plugin->txt('info'),
+                $this->ctrl->getLinkTarget($this, 'index')
+            );
+        }
+
+        if ($lp_mode_active && ($read_users_lp || $write_settings)) {
+            $ilTabs->addSubTab(
+                'lp_users',
+                $this->plugin->txt('lp_users'),
+                $this->ctrl->getLinkTarget($this, 'showLPUsers')
+            );
+            $ilTabs->addSubTab(
+                'lp_summary',
+                $this->plugin->txt('lp_summary'),
+                $this->ctrl->getLinkTarget($this, 'showLPSummary')
+            );
+        }
+
+        if ($can_configure_lp) {
+            $ilTabs->addSubTab(
+                'lp_settings',
+                $this->lng->txt('trac_settings'),
+                $this->ctrl->getLinkTarget($this, 'showLPSettings')
+            );
+            if ($lp_mode_active) {
                 $ilTabs->addSubTab(
-                    'info',
-                    $this->plugin->txt('info'),
-                    $this->ctrl->getLinkTarget($this, 'index')
+                    'selected_video',
+                    $this->plugin->txt('selected_videos'),
+                    $this->ctrl->getLinkTarget($this, self::CMD_SELECT_VIDEO)
                 );
             }
         }
+    }
 
-        if ($read_users_lp || $write_settings) {
-            if ($this->setting->getLpActive()) {
-                $ilTabs->addSubTab(
-                    'lp_users',
-                    $this->plugin->txt('lp_users'),
-                    $this->ctrl->getLinkTarget($this, 'showLPUsers')
-                );
-                $ilTabs->addSubTab(
-                    'lp_summary',
-                    $this->plugin->txt('lp_summary'),
-                    $this->ctrl->getLinkTarget($this, 'showLPSummary')
-                );
-            }
-            if ($write_settings || $write_settings_lp) {
-                $ilTabs->addSubTab(
-                    'lp_settings',
-                    $this->lng->txt('trac_settings'),
-                    $this->ctrl->getLinkTarget($this, 'showLPSettings')
-                );
-                if ($this->setting->getLpMode()) {
-                    $ilTabs->addSubTab(
-                        'selected_video',
-                        $this->plugin->txt('selected_videos'),
-                        $this->ctrl->getLinkTarget($this, self::CMD_SELECT_VIDEO)
-                    );
-                }
-            }
-
+    private function ensureLearningProgressModeActiveOrRedirectToSettings(): void
+    {
+        if ($this->object->isLearningProgressModeActive()) {
+            return;
         }
+
+        if (
+            $this->gui->hasPermission('write')
+            || $this->gui->hasPermission('edit_learning_progress')
+        ) {
+            $this->ctrl->redirect($this, 'showLPSettings');
+        }
+
+        $this->tpl->setOnScreenMessage('failure', $this->plugin->txt('access_denied'), true);
+        $this->ctrl->redirect($this->gui, $this->gui->getStandardCmd());
     }
 
     /**
@@ -157,7 +188,7 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
          */
         global $ilTabs;
 
-        $this->gui->ensureAtLeastOnePermission(['write', 'read_learning_progress']);
+        $this->gui->ensureAtLeastOnePermission(['write', 'edit_learning_progress', 'read_learning_progress']);
 
         $this->addLearningProgressSubTabs();
         $ilTabs->activateSubTab('lp_settings');
@@ -223,7 +254,7 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
      */
     public function saveLearningProgressSettings(): void
     {
-        $this->gui->ensureAtLeastOnePermission(['write', 'read_learning_progress']);
+        $this->gui->ensureAtLeastOnePermission(['write', 'edit_learning_progress']);
 
         $form = $this->getLearningProgressSettingsForm();
         if ($form->checkInput()) {
@@ -269,6 +300,7 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
         global $ilTabs;
 
         $this->gui->ensureAtLeastOnePermission(['write', 'read_learning_progress']);
+        $this->ensureLearningProgressModeActiveOrRedirectToSettings();
 
         $this->addLearningProgressSubTabs();
         $ilTabs->activateSubTab('lp_users');
@@ -288,6 +320,7 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
         global $ilTabs;
 
         $this->gui->ensureAtLeastOnePermission(['write', 'read_learning_progress']);
+        $this->ensureLearningProgressModeActiveOrRedirectToSettings();
 
         $this->addLearningProgressSubTabs();
         $ilTabs->activateSubTab('lp_summary');
@@ -303,7 +336,8 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
          */
         global $ilTabs, $DIC;
 
-        $this->gui->ensureAtLeastOnePermission(['write', 'read_learning_progress']);
+        $this->gui->ensureAtLeastOnePermission(['write', 'edit_learning_progress', 'read_learning_progress']);
+        $this->ensureLearningProgressModeActiveOrRedirectToSettings();
 
         $this->addLearningProgressSubTabs();
         $ilTabs->activateSubTab('selected_video');
@@ -490,6 +524,9 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
 
     protected function save() : void
     {
+        $this->gui->ensureAtLeastOnePermission(['write', 'edit_learning_progress']);
+        $this->ensureLearningProgressModeActiveOrRedirectToSettings();
+
         foreach (filter_input(INPUT_POST, 'lp_required_percentage', FILTER_DEFAULT,
             FILTER_REQUIRE_ARRAY) as $mid => $percentage) {
             /** @var xvmpSelectedMedia $selected_medium */

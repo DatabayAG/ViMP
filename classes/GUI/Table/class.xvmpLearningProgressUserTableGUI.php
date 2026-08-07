@@ -15,6 +15,7 @@ class xvmpLearningProgressUserTableGUI extends ilTrObjectUsersPropsTableGUI
         $this->setRowTemplate('tpl.object_users_props_row.html', $this->parent_obj->plugin->getDirectory());
         if (!$a_print_view) {
             $this->addColumn($this->lng->txt('actions'), '');
+            $this->getItems();
         }
     }
 

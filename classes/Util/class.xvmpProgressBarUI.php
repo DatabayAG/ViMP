@@ -52,7 +52,7 @@ class xvmpProgressBarUI
     {
         if (!self::$js_loaded) {
             $this->dic->ui()->mainTemplate()->addJavaScript(
-                $this->plugin->getDirectory() . '/templates/js/xvmp_progress_bar.min.js?v=' . self::$version
+                $this->plugin->getAssetURL('js/xvmp_progress_bar.min.js', false) . '?v=' . self::$version
             );
             $this->dic->ui()->mainTemplate()->addOnLoadCode('VimpProgressBar.lng.transcoded = "' .
                 $this->plugin->txt('status_legal') . '";');
