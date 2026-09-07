@@ -8,11 +8,16 @@ use srag\Plugins\ViMP\UIComponents\Player\VideoPlayer;
 
 /**
  * Class xvmpLearningProgressGUI
+ *
+ * Not a subclass of ilLearningProgressBaseGUI: that class's final
+ * executeCommand() requires read_learning_progress and raises
+ * permission_denied when ref_id is 0 or the user is a learner.
+ *
  * @ilCtrl_Calls xvmpLearningProgressGUI: xvmpLearningProgressUserTableGUI, xvmpLearningProgressSummaryTableGUI, xvmpLearningProgressTableGUI, ilLPListOfProgressGUI
  * @ilCtrl_Calls xvmpLearningProgressGUI: ilobjplugindispatchgui, ilLPListOfProgressGUI, ilLPProgressTableGUI
  * @ilCtrl_isCalledBy xvmpLearningProgressGUI: ilObjViMPGUI
  */
-class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
+class xvmpLearningProgressGUI
 {
     private ?ActiveRecord $setting;
     /**
@@ -43,6 +48,8 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
 
     public $plugin;
 
+    protected ilObjUser $user;
+
     public function __construct( $gui,  $object)
     {
         global $tpl, $lng, $ilCtrl, $DIC;
@@ -56,7 +63,13 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
         $this->tpl = $tpl;
         $this->lng = $lng;
         $this->ctrl = $ilCtrl;
-        parent::__construct(0);
+        $this->user = $DIC->user();
+        $this->lng->loadLanguageModule('trac');
+    }
+
+    public function executeCommand(): void
+    {
+        $this->handleCommand();
     }
 
     /**
@@ -69,7 +82,7 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
             $this->ctrl->redirect($this->gui, $this->gui->getStandardCmd());
         }
 
-        $cmd = $this->ctrl->getCmd();
+        $cmd = $this->ctrl->getCmd(self::CMD_STANDARD);
 
         $this->$cmd();
     }
@@ -81,6 +94,45 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
     public function getObjId(): int
     {
         return $this->object->getId();
+    }
+
+    private function getLegendHTML(): string
+    {
+        $icons = ilLPStatusIcons::getInstance(ilLPStatusIcons::ICON_VARIANT_LONG);
+        $tpl = new ilTemplate(
+            'tpl.lp_legend.html',
+            true,
+            true,
+            'components/ILIAS/Tracking'
+        );
+        $tpl->setVariable(
+            'IMG_NOT_ATTEMPTED',
+            $icons->renderIconForStatus(ilLPStatus::LP_STATUS_NOT_ATTEMPTED_NUM)
+        );
+        $tpl->setVariable(
+            'IMG_IN_PROGRESS',
+            $icons->renderIconForStatus(ilLPStatus::LP_STATUS_IN_PROGRESS_NUM)
+        );
+        $tpl->setVariable(
+            'IMG_COMPLETED',
+            $icons->renderIconForStatus(ilLPStatus::LP_STATUS_COMPLETED_NUM)
+        );
+        $tpl->setVariable(
+            'IMG_FAILED',
+            $icons->renderIconForStatus(ilLPStatus::LP_STATUS_FAILED_NUM)
+        );
+        $tpl->setVariable('TXT_NOT_ATTEMPTED', $this->lng->txt('trac_not_attempted'));
+        $tpl->setVariable('TXT_IN_PROGRESS', $this->lng->txt('trac_in_progress'));
+        $tpl->setVariable('TXT_COMPLETED', $this->lng->txt('trac_completed'));
+        $tpl->setVariable('TXT_FAILED', $this->lng->txt('trac_failed'));
+
+        $ui_factory = $this->dic->ui()->factory();
+        $panel = $ui_factory->panel()->secondary()->legacy(
+            '',
+            $ui_factory->legacy($tpl->get())
+        );
+
+        return $this->dic->ui()->renderer()->render($panel);
     }
 
     protected function index() {
@@ -306,7 +358,7 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
         $ilTabs->activateSubTab('lp_users');
 
         $table = new xvmpLearningProgressUserTableGUI($this, 'showLPUsers', $this->object->getId(), $this->object->getRefId());
-        $this->tpl->setContent(implode('<br />', [$table->getHTML(), $this->__getLegendHTML()]));
+        $this->tpl->setContent(implode('<br />', [$table->getHTML(), $this->getLegendHTML()]));
     }
 
     /**
@@ -326,7 +378,7 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
         $ilTabs->activateSubTab('lp_summary');
 
         $table = new xvmpLearningProgressSummaryTableGUI($this, 'showLPSummary', $this->object->getRefId());
-        $this->tpl->setContent(implode('<br />', [$table->getHTML(), $this->__getLegendHTML()]));
+        $this->tpl->setContent(implode('<br />', [$table->getHTML(), $this->getLegendHTML()]));
     }
 
     public function selectVideo(): void
@@ -387,7 +439,7 @@ class xvmpLearningProgressGUI extends ilLearningProgressBaseGUI
             $info->addProperty($this->lng->txt('trac_comment'), $comment);
         }
 
-        $this->tpl->setContent(implode('<br />', [$info->getHTML(), $this->__getLegendHTML()]));
+        $this->tpl->setContent(implode('<br />', [$info->getHTML(), $this->getLegendHTML()]));
     }
 
     /**
