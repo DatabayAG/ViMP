@@ -116,6 +116,7 @@ flush_video_cache_tooltip#:#The video data is saved temporarily in ILIAS to allo
 repository_preview#:#Repository Preview
 no_preview#:#No Preview
 perm_upload#:#Upload
+perm_readlink#:#Read Link
 access_denied#:#Permission denied.
 status_legal#:#Transcoded successfully
 status_converting#:#Transcoding
@@ -179,6 +180,7 @@ root_create_xvmp#:#Create VIMP
 xvmp_visible#:#Visible: VIMP is visible
 xvmp_read#:#Read: User can watch the videos
 xvmp_rep_robj_xvmp_perm_upload#:#Upload: User can upload videos
+xvmp_rep_robj_xvmp_perm_readlink#:#Read Link: User can copy the streaming link
 xvmp_write#:#Edit Settings: User can edit content and settings of VIMP object
 xvmp_delete#:#Delete: User can delete VIMP object
 xvmp_edit_permission#:#Change Permissions: User can change permission settings
