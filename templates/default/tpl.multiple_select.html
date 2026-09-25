@@ -1,11 +1,17 @@
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    function xvmpInitMultiSelect_{ID}() {
         var sr_id_input = "{ID}";
+        var sr_id_input_selector = $("#" + sr_id_input);
+        if (sr_id_input_selector.length === 0 || sr_id_input_selector.hasClass("select2-hidden-accessible")) {
+            return;
+        }
         var sr_link_input = "{AJAX_LINK}";
-        var settings = {placeholder: "{PLACEHOLDER}",
-                        minimumInputLength: "{MINIMUM_INPUT_LENGTH}"
+        var settings = {
+            placeholder: "{PLACEHOLDER}",
+            minimumInputLength: {MINIMUM_INPUT_LENGTH},
+            width: "100%"
         };
-        if(sr_link_input.length > 0){
+        if (sr_link_input.length > 0) {
             settings["ajax"] = {
                 url: sr_link_input,
                 dataType: 'json',
@@ -21,15 +27,18 @@
                     }
                 }
             }
-
         }
-        $("#"+sr_id_input).select2(settings);
-    });
+        sr_id_input_selector.select2(settings);
+    }
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", xvmpInitMultiSelect_{ID});
+    } else {
+        xvmpInitMultiSelect_{ID}();
+    }
 </script>
 
-<select style="width:{WIDTH}; display:none;" class="chosen {CSS_CLASS}" data-placeholder="{PLACEHOLDER}" class="sr_multi_select_input" id="{ID}" name="{POST_VAR}" {ALL_DISABLED} multiple>
+<select style="width:100%;" class="chosen {CSS_CLASS} sr_multi_select_input" data-placeholder="{PLACEHOLDER}" id="{ID}" name="{POST_VAR}" {ALL_DISABLED} multiple>
     <!-- BEGIN item -->
     <option value="{VAL}" {SELECTED} {DISABLED}>{TEXT}</option>
     <!-- END item -->
 </select>
-
