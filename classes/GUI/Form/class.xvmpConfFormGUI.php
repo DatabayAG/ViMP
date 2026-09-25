@@ -355,8 +355,9 @@ class xvmpConfFormGUI extends xvmpFormGUI
             $key = rtrim($item->getPostVar(), '[]');
             if ($key == xvmpConf::F_OBJECT_TITLE) {
                 $sql = $this->db->query('select value from lng_data where module = "rep_robj_xvmp" and identifier = "rep_robj_xvmp_obj_xvmp"');
-                if($this->db->fetchObject($sql) !== null) {
-                    $value = $this->db->fetchObject($sql)->value;
+                $row = $this->db->fetchObject($sql);
+                if ($row !== null) {
+                    $value = $row->value;
                 }
             } else {
                 $value = xvmpConf::getConfig($key);
