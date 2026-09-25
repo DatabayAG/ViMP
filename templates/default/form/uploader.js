@@ -34,19 +34,20 @@ var xoctFileuploader = {
 
                         $('#form_' + xoctFileuploaderSettings.form_id + ' input[name="cmd[create]"], ' +
                             '#form_' + xoctFileuploaderSettings.form_id + ' input[name="cmd[updateVideo]"]').click(function (e) {
-                            if (xoctFileuploader.checkPreRequirements() !== true) {
-                                e.preventDefault();
-                                alert(xoctFileuploaderSettings.lng.form_val_select);
-                                return false;
-                            }
                             self.cmd = $(this).attr('name');
+                            if (xoctFileuploader.checkPreRequirements() !== true) {
+                                alert(xoctFileuploaderSettings.lng.form_val_select);
+                                return true;
+                            }
                             if (self.has_files) {
                                 e.preventDefault();
                                 xoctWaiter.show();
                                 self.start();
-                            } else if (xoctFileuploaderSettings.required) {
-                                e.preventDefault();
+                                return false;
+                            }
+                            if (xoctFileuploaderSettings.required) {
                                 alert(xoctFileuploaderSettings.lng.msg_select);
+                                return true;
                             }
                             return true;
                         });

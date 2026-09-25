@@ -255,6 +255,20 @@ class xvmpFileUploadInputGUI extends ilSubEnabledFormPropertyGUI
      */
     public function checkInput() : bool
     {
+        if (!$this->getRequired()) {
+            return true;
+        }
+
+        $posted = $_POST[$this->getPostVar()] ?? null;
+        $name = '';
+        if (is_array($posted)) {
+            $name = trim((string) ($posted['name'] ?? ''));
+        }
+        if ($name === '') {
+            $this->setAlert($this->lng->txt('msg_input_is_required'));
+            return false;
+        }
+
         return true;
     }
 

@@ -207,7 +207,9 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
             $this->dic->ui()->mainTemplate()->setOnScreenMessage('success', $this->pl->txt('form_saved'), true);
             $this->dic->ctrl()->redirect($this, self::CMD_STANDARD);
         }
-        $this->dic->ui()->mainTemplate()->setOnScreenMessage('failure', $this->pl->txt('msg_incomplete'));
+        if (!$xvmpEditVideoFormGUI->hasReportedFailure()) {
+            $this->dic->ui()->mainTemplate()->setOnScreenMessage('failure', $this->pl->txt('msg_incomplete'));
+        }
         $this->dic->ui()->mainTemplate()->setContent($xvmpEditVideoFormGUI->getHTML());
     }
 
@@ -233,7 +235,9 @@ class xvmpOwnVideosGUI extends xvmpVideosGUI
             $this->dic->ctrl()->redirect($this, self::CMD_STANDARD);
         }
 
-        $this->dic->ui()->mainTemplate()->setOnScreenMessage('failure', $this->pl->txt('form_incomplete'));
+        if (!$xvmpEditVideoFormGUI->hasReportedFailure()) {
+            $this->dic->ui()->mainTemplate()->setOnScreenMessage('failure', $this->pl->txt('form_incomplete'));
+        }
         $xvmpEditVideoFormGUI->setValuesByPost();
         $this->dic->ui()->mainTemplate()->setContent($xvmpEditVideoFormGUI->getHTML());
     }

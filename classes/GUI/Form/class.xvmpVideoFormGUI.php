@@ -27,6 +27,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
      * @var xvmpUploadService
      */
     protected xvmpUploadService $upload_service;
+    protected bool $failure_reported = false;
 
     /**
      * xvmpVideoFormGUI constructor.
@@ -301,6 +302,7 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
             $this->afterStoreVideo($mid);
             $this->upload_service->cleanUp();
         } catch (Exception $e) {
+            $this->failure_reported = true;
             $this->dic->logger()->root()->logStack(ilLogLevel::ERROR, $e->getMessage());
             $this->dic->ui()->mainTemplate()->setOnScreenMessage('failure', $e->getMessage());
             $this->upload_service->cleanUp();
@@ -488,4 +490,9 @@ abstract class xvmpVideoFormGUI extends xvmpFormGUI
     }
 
     abstract public function fillForm();
+
+    public function hasReportedFailure() : bool
+    {
+        return $this->failure_reported;
+    }
 }
