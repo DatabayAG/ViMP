@@ -1,23 +1,23 @@
 conf_object_title#:#Objektbezeichnung im Magazin
-conf_object_title_info#:#Diese Bezeichnung wird beim Erstellen eines neuen Objektes im Magazin verwendet.
+conf_object_title_info#:#Diese Bezeichnung wird beim Erstellen eines neuen Objekts im Magazin verwendet.
 conf_api_key#:#API-Key
-conf_api_key_info#:#Ein API-Key kann in VIMP im Backend unter dem Punkt "API-Keys" generiert werden.
-conf_api_user#:#API-Benutzername
-conf_api_user_info#:#Der API-Benutzer muss in VIMP existieren und dort über genügend Rechte verfügen, um neue Videos hochzuladen und beliebige Videos zu editieren und zu löschen.
+conf_api_key_info#:#Ein API-Key kann im VIMP-Backend unter dem Punkt "API-Keys" generiert werden.
+conf_api_user#:#API-Anmeldenamen
+conf_api_user_info#:#Das API-Konto muss in VIMP existieren und dort über genügend Rechte verfügen, um neue Videos hochzuladen und beliebige Videos zu editieren und zu löschen.
 conf_api_password#:#API-Passwort
-conf_api_password_info#:#Passwort des obigen Benutzers.
+conf_api_password_info#:#Passwort des obigen Kontos
 conf_api_url#:#API-URL
 conf_api_url_info#:#Basis Adresse der API. Z.B.: https://my-vimp.com/api
-conf_user_mapping_ext#:#User­Mapping (externe Benutzer)
-conf_user_mapping_ext_info#:#Nach dieser Formel werden die VIMP-Benutzernamen von externen ILIAS-Benutzern zusammengestellt. Folgende Platzhalter können verwendet werden:<br>&#123LOGIN}: Benutzername<br>&#123EXT_ID}: externe ID des Benutzers<br>&#123CLIENT_ID}: Client-ID dieser ILIAS-Installation
-conf_user_mapping_local#:#User­Mapping (lokale Benutzer)
-conf_user_mapping_local_info#:#Nach dieser Formel werden die VIMP-Benutzernamen von lokalen ILIAS-Benutzern zusammengestellt. Folgende Platzhalter können verwendet werden:<br>&#123LOGIN}: Benutzername<br>&#123EXT_ID}: externe ID des Benutzers<br>&#123CLIENT_ID}: Client-ID dieser ILIAS-Installation
+conf_user_mapping_ext#:#User­Mapping (externe Konten)
+conf_user_mapping_ext_info#:#Nach dieser Formel werden die VIMP-Anmeldenamen von externen ILIAS-Konten zusammengestellt. Folgende Platzhalter können verwendet werden:<br>&#123LOGIN}: Anmeldename<br>&#123EXT_ID}: externe ID des Kontos<br>&#123CLIENT_ID}: Client-ID dieser ILIAS-Installation
+conf_user_mapping_local#:#User­Mapping (lokale Konten)
+conf_user_mapping_local_info#:#Nach dieser Formel werden die VIMP-Anmeldenamen von lokalen ILIAS-Konten zusammengestellt. Folgende Platzhalter können verwendet werden:<br>&#123LOGIN}: Anmeldename<br>&#123EXT_ID}: externe ID des Kontos<br>&#123CLIENT_ID}: Client-ID dieser ILIAS-Installation
 conf_allow_public#:#Videos öffentlich schalten aktivieren
-conf_allow_public_info#:#Wenn aktiviert: Benutzer mit dem Recht "Einstellungen bearbeiten" dürfen beim Hochladen eines Videos auswählen, ob das Video den Status "Öffentlich" oder "Versteckt" hat. Ansonsten wird automatisch der Status "Versteckt" gesetzt.
+conf_allow_public_info#:#Wenn aktiviert: Konten mit dem Recht "Einstellungen bearbeiten" dürfen beim Hochladen eines Videos auswählen, ob das Video den Status "Öffentlich" oder "Versteckt" hat. Ansonsten wird automatisch der Status "Versteckt" gesetzt.
 conf_allow_public_upload#:#Recht „Upload“ darf Videos öffentlich schalten
-conf_allow_public_upload_info#:#Wenn aktiviert: Benutzer mit dem Recht "Upload" dürfen ebenfalls Videos öffentlich schalten
+conf_allow_public_upload_info#:#Wenn aktiviert: Konten mit dem Recht "Upload" dürfen ebenfalls Videos öffentlich schalten
 conf_form_fields#:#Zusätzliche Formular-Felder
-conf_form_fields_info#:#Zusätzliche in VIMP konfigurierte Medienfelder können hier angegeben werden, um diese im Formular zum Hochladen und Bearbeiten eines Videos zur Verfügung zu stellen.<br>Textfeld 1: Feld-Name<br>Textfeld 2: Anzeige-Name<br>Checkbox 1: Pflichtfeld<br>Checkbox 2: Feld wird beim Hochladeformular automatisch mit dem Benutzernamen gefüllt<br>Checkbox 3: Beim Video-Player anzeigen<br>Auswahlfeld: Feldtyp
+conf_form_fields_info#:#Zusätzliche in VIMP konfigurierte Medienfelder können hier angegeben werden, um diese im Formular zum Hochladen und Bearbeiten eines Videos zur Verfügung zu stellen.<br>Textfeld 1: Feld-Name<br>Textfeld 2: Anzeige-Name<br>Checkbox 1: Pflichtfeld<br>Checkbox 2: Feld wird beim Hochladeformular automatisch mit dem Anmeldenamen gefüllt<br>Checkbox 3: Beim Video-Player anzeigen<br>Auswahlfeld: Feldtyp
 conf_filter_fields#:#Zusätzliche Tabellen-Filter
 conf_filter_fields_info#:#Werden die zusätzlichen Medienfelder hier angegeben, stehen Sie anschliessend als Filter in Tabellen zur Verfügung.<br>Textfeld 1: Feld-Name<br>Textfeld 2: Anzeige-Name
 conf_media_permissions#:#Medienberechtigungen nutzen
@@ -26,22 +26,22 @@ conf_media_permissions_preselected#:#Vorauswahl
 conf_media_permissions_preselected_info#:#Angegebene Medienberechtigungen im Upload-Dialog vorauswählen.
 conf_media_permissions_0_info#:#Achtung: Kann zu Fehler führen, falls in VIMP keine Standardmedienrechte aktiv sind (siehe VIMP Backend > Konfiguration > Medien > Medienrecht)
 conf_mapping_priority#:#Priorität Mapping
-conf_mapping_priority_info#:#Definiert, auf welche Art zuerst nach dem Benutzer in VIMP gesucht wird. Wird dabei kein Benutzer gefunden, wird nach dem anderen Feld gesucht. Wird erneut nichts gefunden, wird ein entsprechender Benutzer erstellt.
-conf_mapping_priority_0#:#Email
+conf_mapping_priority_info#:#Definiert, auf welche Art zuerst nach dem Konto in VIMP gesucht wird. Wird dabei kein Konto gefunden, wird nach dem anderen Feld gesucht. Wird erneut nichts gefunden, wird ein entsprechendes Konto erstellt.
+conf_mapping_priority_0#:#E-Mail
 conf_mapping_priority_1#:#User-Mapping (wie oben definiert)
 conf_api_settings#:#API
 conf_general_settings#:#Allgemein
 conf_notification_subject#:#Betreff (Transk. Erfolgreich)
-conf_notification_subject_info#:#Betreff der Email, welche nach erfolgreicher Transkodierung an den Benutzer verschickt wird.
+conf_notification_subject_info#:#Betreff der E-Mail, welche nach erfolgreicher Transkodierung an das Konto verschickt wird
 conf_notification_body#:#Nachricht (Transk. Erfolgreich)
-conf_notification_body_info#:#Inhalt der Email, welche nach erfolgreicher Transkodierung an den Benutzer verschickt wird. Verwendbare Platzhalter:<br>&#123FIRSTNAME}<br>&#123LASTNAME}<br>&#123TITLE}<br>&#123DESCRIPTION}<br>&#123VIDEO_LINK}
+conf_notification_body_info#:#Inhalt der E-Mail, welche nach erfolgreicher Transkodierung an das Konto verschickt wird. Verwendbare Platzhalter:<br>&#123FIRSTNAME}<br>&#123LASTNAME}<br>&#123TITLE}<br>&#123DESCRIPTION}<br>&#123VIDEO_LINK}
 conf_notification_subject_failed#:#Betreff (Transk. Fehlgeschlagen)
-conf_notification_subject_failed_info#:#Betreff der Email, welche nach fehlgeschlagener Transkodierung an den Benutzer verschickt wird.
+conf_notification_subject_failed_info#:#Betreff der E-Mail, welche nach fehlgeschlagener Transkodierung an das Konto verschickt wird.
 conf_notification_body_failed#:#Nachricht (Transk. Fehlgeschlagen)
-conf_notification_body_failed_info#:#Inhalt der Email, welche nach fehlgeschlagener Transkodierung an den Benutzer verschickt wird. Verwendbare Platzhalter:<br>&#123FIRSTNAME}<br>&#123LASTNAME}<br>&#123TITLE}<br>&#123DESCRIPTION}<br>&#123VIDEO_LINK}
+conf_notification_body_failed_info#:#Inhalt der E-Mail, welche nach fehlgeschlagener Transkodierung an das Konto verschickt wird. Verwendbare Platzhalter:<br>&#123FIRSTNAME}<br>&#123LASTNAME}<br>&#123TITLE}<br>&#123DESCRIPTION}<br>&#123VIDEO_LINK}
 conf_cache_ttl_videos#:#TTL Videos (Metadaten)
 conf_cache_ttl_videos_info#:#Time-To-Live in Sekunden
-conf_cache_ttl_users#:#TTL Vimp-Benutzerdaten
+conf_cache_ttl_users#:#TTL VIMP-Anmeldedaten
 conf_cache_ttl_users_info#:#Time-To-Live in Sekunden
 conf_cache_ttl_categories#:#TTL Kategorien
 conf_cache_ttl_categories_info#:#Time-To-Live in Sekunden
@@ -50,13 +50,13 @@ conf_cache_ttl_token_info#:#Time-To-Live in Sekunden
 conf_cache_ttl_config#:#TTL Config
 conf_cache_ttl_config_info#:#Time-To-Live in Sekunden
 conf_cache#:#Caching
-conf_cache_info#:#Objekte werden zur Verbesserung der Performanz zwischengespeichert. Nach Ablauf der TTL wird ein Objekt aus dem Cache entfernt und neu geladen (bei Eingabe von 0 werden sie nicht automatisch entfernt). Der gesamte Cache kann mithilfe der Schaltfläche oben auf dieser Seite geleert werden. Innerhalb von VIMP-Objekten im Magazin können ausserdem die Videos dieser Objekte aus dem Cache entfernt und neu geladen werden.
+conf_cache_info#:#Objekte werden zur Verbesserung der Performanz zwischengespeichert. Nach Ablauf der TTL wird ein Objekt aus dem Cache entfernt und neu geladen (bei Eingabe von 0 werden sie nicht automatisch entfernt). Der gesamte Cache kann mithilfe des Buttons oben auf dieser Seite geleert werden. Innerhalb von VIMP-Objekten im Magazin können außerdem die Videos dieser Objekte aus dem Cache entfernt und neu geladen werden.
 conf_embed_player#:#Embedded Videoplayer nutzen
 conf_embed_player_info#:#Wenn aktiviert, wird der eingebettete Videoplayer von VIMP genutzt. Wenn der Lernfortschritt für ein Objekt aktiviert ist, wird jedoch dennoch der Plugin-eigene Player verwendet, da der Lernfortschritt mit dem eingebetteten Player nicht gemessen werden kann.
 conf_download_button#:#Download Button
-conf_download_button_info#:#Zeige den Download Button zum direkten herunterladen des Videos an. Das Video muss auf dem VIMP Server, die 'Download' Option aktiviert haben.
+conf_download_button_info#:#Zeige den Download Button zum direkten Herunterladen des Videos an. Das Video muss auf dem VIMP Server die 'Download' Option aktiviert haben.
 conf_streaming_button#:#Streaming Button
-conf_streaming_button_info#:#Zeige den Streaming Button zum kopieren des Videos an.
+conf_streaming_button_info#:#Zeige den Streaming Button zum Kopieren des Videos an.
 conf_views#:#Anzahl Views anzeigen
 conf_views_info#:#Zeige die Anzahl der Views an.
 conf_text#:#Textfeld
@@ -84,7 +84,7 @@ selected_videos_description_preview#:# Die Videos innerhalb des Rahmens werden i
 own_videos#:#Eigene Videos
 title#:#Titel
 description#:#Beschreibung
-username#:#Benutzername
+username#:#Anmeldename
 create_date#:#Erstellungsdatum
 created_at#:#Erstellt am
 created#:#Erstellt
@@ -94,30 +94,30 @@ status#:#Status
 upload_video#:#Video Hochladen
 edit_video#:#Video Bearbeiten
 tags#:#Tags
-tags_info#:#Kommaseparierte Werte eingeben.
+tags_info#:#Kommaseparierte Werte eingeben
 private#:#Privat
-private_info#:#Video kann ausschliesslich vom Besitzer angesehen, und somit in ILIAS nicht verwendet werden.
+private_info#:#Video kann ausschliesslich vom besitzenden Konto angesehen und somit in ILIAS nicht verwendet werden.
 public#:#Öffentlich
-public_info#:#Video kann von allen Benutzern angesehen und in ILIAS hinzugefügt werden.
+public_info#:#Video kann von allen Konten angesehen und in ILIAS hinzugefügt werden.
 hidden#:#Versteckt
-hidden_info#:#Video kann von allen Benutzern angesehen, jedoch nur vom Besitzer in ILIAS hinzugefügt werden.
+hidden_info#:#Video kann von allen Konten angesehen, jedoch nur vom besitzenden Konto in ILIAS hinzugefügt werden.
 layout#:#Darstellung
 notification#:#Benachrichtigung
-notification_info#:#Sie erhalten nach abgeschlossener Transkodierung des Videos eine Email-Benachrichtigung.
+notification_info#:#Sie erhalten nach abgeschlossener Transkodierung des Videos eine E-Mail-Benachrichtigung.
 add_automatically#:#Automatisch Hinzufügen
 add_automatically_info#:#Das Video wird nach dem Upload direkt diesem Video-Container hinzugefügt.
-video_uploaded#:#Video erfolgreich hochgeladen. Bitte beachten Sie, dass das Video zuerst transkodiert werden muss, bevor es angesehen werden kann. Dieser Vorgang kann, je nach Grösse des Videos, einige Zeit in Anspruch nehmen.
+video_uploaded#:#Video erfolgreich hochgeladen. Bitte beachten Sie, dass das Video zuerst transkodiert werden muss, bevor es angesehen werden kann. Dieser Vorgang kann, je nach Größe des Videos, einige Zeit in Anspruch nehmen.
 form_saved#:#Änderungen erfolgreich gespeichert.
 duration#:#Länge
 author#:#Autor
-flush_cache#:#Gesamter Cache Leeren
+flush_cache#:#Gesamten Cache Leeren
 flush_video_cache#:#Videodaten neu laden
-flush_video_cache_tooltip#:#Die Videodaten werden in ILIAS zwischengespeichert, um ein schnelleres Laden der Seite zu ermöglichen. Klicken Sie auf die Schaltfläche, um die Daten zu aktualisieren.
+flush_video_cache_tooltip#:#Die Videodaten werden in ILIAS zwischengespeichert, um ein schnelleres Laden der Seite zu ermöglichen. Klicken Sie auf den Button, um die Daten zu aktualisieren.
 repository_preview#:#Vorschau im Magazin
 no_preview#:#Keine Vorschau
 perm_upload#:#Upload
 perm_readlink#:#Link lesen
-access_denied#:#Zugriff verweigert.
+access_denied#:#Zugriff verweigert
 status_legal#:#Transkodierung abgeschlossen
 status_converting#:#Transkodierung läuft
 status_error#:#Fehler in der Transkodierung
@@ -128,8 +128,8 @@ from#:#Von
 to#:#Bis
 category#:#Kategorie
 views#:#Aufrufe
-save_settings#:#Einstellungen Speichern
-exception_message#:#Es konnte keine Verbindung mit dem VIMP-Server hergestellt werden
+save_settings#:#Einstellungen speichern
+exception_message#:#Es konnte keine Verbindung mit dem VIMP-Server hergestellt werden.
 not_available#:#Nicht verfügbar
 not_available_description#:#Dieses Video wurde in VIMP nicht gefunden. Möglicherweise wurde es von der Plattform entfernt.
 confirm_delete_text#:#Achtung: Durch diese Aktion wird das Video endgültig in VIMP gelöscht und kann in keinem ILIAS-Objekt mehr verwendet werden. Sind Sie sicher, dass Sie das Video löschen möchten?
@@ -141,35 +141,35 @@ upload_select#:#Datei auswählen
 upload_clear#:#Zurücksetzen
 supported_filetypes#:#Unterstützte Dateitypen
 watched#:#Angesehen
-hint_learning_progress_gui#:#Hinweis: Änderungen in dieser Ansicht werden nicht direkt übernommen, sondern müssen über die Schaltfläche "Einstellungen speichern" abgespeichert werden. Videos, welche über Youtube oder Vimeo eingebunden wurden, können nicht für den Lernfortschritt verwendet werden.
+hint_learning_progress_gui#:#Hinweis: Änderungen in dieser Ansicht werden nicht direkt übernommen, sondern müssen über den Button "Einstellungen speichern" abgespeichert werden. Videos, welche über Youtube oder Vimeo eingebunden wurden, können nicht für den Lernfortschritt verwendet werden.
 log#:#Log
 log_action_1#:#Upload
 log_action_2#:#Bearbeitet
 log_action_3#:#Gelöscht
 log_action_4#:#Hinzugefügt
 log_action_5#:#Entfernt
-log_action_6#:#Besitzer geändert
+log_action_6#:#Besitzendes Konto geändert
 datetime#:#Datum und Uhrzeit
 action#:#Aktion
 mid#:#Medium-ID
 data#:#Daten
 categories#:#Kategorien
-user#:#Benutzer
+user#:#Konto
 required#:#Erforderlich
 form_msg_select#:#Bitte wählen Sie eine Datei zum Hochladen aus.
 form_val_select#:#Füllen Sie bitte alle benötigten Felder aus.
-form_msg_not_supported#:#Dateityp nicht unterstützt.
+form_msg_not_supported#:#Dateityp nicht unterstützt
 msg_incomplete#:#Einige Felder dieses Formulares sind Pflichtfelder und müssen ausgefüllt werden. Bitte ergänzen Sie diese Felder.
 form_incomplete#:#Einige Felder dieses Formulares sind Pflichtfelder und müssen ausgefüllt werden. Bitte ergänzen Sie diese Felder.
 object_title#:#VIMP-Objekt
 video_title#:#Video-Titel
-msg_username_not_found#:#Der Benutzername konnte nicht gefunden werden.
-msg_warning_change_owner#:#Achtung: Sie sind im Begriff, den Besitzer eines Ihrer Videos zu ändern. Nach dem Besitzerwechsel können Sie dieses Video nicht mehr bearbeiten. Sind Sie sicher, dass Sie fortfahren möchten?
+msg_username_not_found#:#Der Anmeldename konnte nicht gefunden werden.
+msg_warning_change_owner#:#Achtung: Sie sind im Begriff, das besitzende Konto eines Ihrer Videos zu ändern. Nach dem Wechsel können Sie dieses Video nicht mehr bearbeiten. Sind Sie sicher, dass Sie fortfahren möchten?
 msg_please_enter_filter#:#Bitte schränken Sie die Suche mithilfe der verfügbaren Filter ein.
 msg_no_videos#:#Diesem Objekt wurden noch keine Videos hinzugefügt.
-msg_error_login_not_found#:#Es konnte kein Benutzer mit diesem Benutzernamen in ILIAS gefunden werden.
-confirmation_new_owner#:#Video Titel: "%s", neuer Besitzer: %s
-new_owner#:#Neuer Besitzer
+msg_error_login_not_found#:#Es konnte kein Konto mit diesem Anmeldenamen in ILIAS gefunden werden.
+confirmation_new_owner#:#Video Titel: "%s", neues besitzendes Konto: %s
+new_owner#:#Neues besitzendes Konto
 xvmp_new#:#Neues VIMP-Objekt anlegen
 xvmp_add#:#Erstellen
 cat_create_xvmp#:#VIMP Erstellen
@@ -184,9 +184,9 @@ xvmp_rep_robj_xvmp_perm_readlink#:#Streaming-URL-Button wird angezeigt
 xvmp_write#:#Einstellungen bearbeiten: Einstellungen und Inhalte können bearbeitet werden
 xvmp_delete#:#Löschen: Objekt kann gelöscht werden
 xvmp_edit_permission#:#Rechteeinstellungen ändern: Rechteeinstellungen ändern
-form_title_change_owner#:#Benutzer suchen
+form_title_change_owner#:#Konto suchen
 search#:#Suchen
-permission_denied#:#Zugriff verweigert.
+permission_denied#:#Zugriff verweigert
 enable_learning_progress#:#Lernfortschritt aktiviert
 enable_learning_progress_info#:#Der Lernfortschritt kann nur aktiviert werden, wenn der Lernfortschritt global aktiviert ist.
 added#:#Hinzugefügt
@@ -195,7 +195,7 @@ info_not_available#:#Nicht Verfügbar
 info_transcoding_short#:#Wird Transkodiert
 info_transcoding_full#:#Dieses Video wird noch transkodiert und lässt sich daher momentan nicht abspielen.
 info_transcoding_possible_full#:#Dieses Video wird noch transkodiert und lässt sich daher möglicherweise nicht abspielen.
-info_autocomplete#:#Autovervollständigung: Ab der Eingabe des dritten Buchstabens werden mögliche Benutzer vorgeschlagen. Es kann nach Benutzername, Email, Vor- oder Nachname gesucht werden.
+info_autocomplete#:#Autovervollständigung: Ab der Eingabe des dritten Buchstabens werden mögliche Konten vorgeschlagen. Es kann nach Anmeldenamen, E-Mail, Vor- oder Nachname gesucht werden.
 btn_show_own_videos#:#Meine Videos anzeigen
 cron_title#:#Benachrichtigungen senden
 cron_description#:#Benachrichtigungen senden
@@ -223,20 +223,15 @@ availability_to_short#:#Bis %s
 available#:#Verfügbar
 obj_xvmp#:#VIMP
 objs_xvmp#:#VIMP
-copied#:#In die Zwischenablage kopiert.
-conf_ui_settings#:#Benutzeroberfläche
-change_owner#:#Besitzer ändern
+copied#:#Link in Zwischenablage kopiert
+conf_ui_settings#:#Benutzungsoberfläche
+change_owner#:#Besitzendes Konto ändern
 auto_subtitle#:#Automatische Untertitel generieren<br><br><div class="help-block">Bei Nutzung dieser Funktion erfolgt eine Übertragung <br>der Tonspur an den externen Dienst "Amberscript".<br> Bitte beachten Sie die dazugehörige <a href="https://www.amberscript.com/de/datenschutzerklaerung/">Datenschutzerklärung</a></div>
-lp_matrix#:#Matrixansicht
-lp_mode_desc_by_all_answered_questions#:#Das Objekt gilt als 'Bearbeitet', wenn für alle definierten Fragen eine Antwort gewählt wurde, unabhängig von der Korrektheit. Falls keine Fragen konfiguriert wurden, gilt das Objekt beim Erreichen der Endposition des Videos als 'Bearbeitet'.
-lp_mode_desc_by_questions#:#Das Objekt gilt als 'Bearbeitet', wenn für alle definierten Fragen eine 'richtige' Antwort gewählt und die Endposition des Videos erreicht wurde. Falls keine Fragen konfiguriert wurden, gilt das Objekt beim Erreichen der Endposition des Videos als 'Bearbeitet'.
-lp_mode_title_by_all_answered_questions#:#Fragen beantwortet
-lp_mode_title_by_questions#:#Fragen korrekt beantwortet
 lp_settings#:#Einstellungen
 lp_summary#:#Zusammenfassung
-lp_users#:#Benutzer
-lp_mode_title_by_videos#:#Videos welche angesehen werden müssen
-lp_mode_desc_by_videos#:#Stellen sie bitte sicher, das sie die für den Lernfortschritt relevanten Videos unter dem Tab 'Ausgewählte Videos' konfigurieren.
+lp_users#:#Konten
+lp_mode_title_by_videos#:#Videos müssen angesehen werden
+lp_mode_desc_by_videos#:#Stellen Sie bitte sicher, das Sie die für den Lernfortschritt relevanten Videos unter dem Reiter 'Ausgewählte Videos' konfigurieren.
 trac_learning_progress_tbl_header#:#Lernfortschritt von:
 conf_curl_timeout#:#CURL Timeout
 conf_curl_timeout_info#:#Timeout in Millisekunden
