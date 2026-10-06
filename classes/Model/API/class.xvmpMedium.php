@@ -602,8 +602,8 @@ class xvmpMedium extends xvmpObject
     {
         global $DIC;
         $user = $DIC['ilUser'];
-        $vimp_user = (array) xvmpUser::getVimpUser($user);
-        return ($vimp_user && ($vimp_user['uid'] == $this->getUid()));
+	$vimp_user = (array) xvmpUser::getVimpUser($user);
+	return (isset($vimp_user['uid']) && ($vimp_user['uid'] == $this->getUid()));
     }
 
     /**
