@@ -217,9 +217,9 @@ class VideoPlayer
 
         $type = $this->options['type'] ?? null;
         $css_string = '';
-        if($type !== null && $type === 'static') {
-            $width = $this->options['width'] ?? 0;
-            $css_string .= 'width: ' . $width . ';';
+        if($type === 'static') {
+            $width = rtrim($this->options['width'] ?? '0', 'px');
+            $template->setVariable('WIDTH', $width);
             $this->setOption('fluid', true);
         }
         if($type === 'responsive' && isset($this->options['ratio'])) {
